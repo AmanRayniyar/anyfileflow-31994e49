@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -19,6 +20,9 @@ const SESSION_TYPE_KEY = "anyfileflow_admin_type";
 type AdminType = 'blog' | 'tools' | 'master';
 
 const AdminPage = () => {
+  const location = useLocation();
+  const isDirectAccessRoute = location.pathname === "/adminamanjkl@";
+  
   const { allPosts, addPost, updatePost, deletePost } = useBlogPosts();
   const { tools, loading: toolsLoading, toggleEnabled, togglePopular, updateTool } = useToolsAdmin();
   
@@ -51,9 +55,18 @@ const AdminPage = () => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [adminType, setAdminType] = useState<AdminType | null>(null);
 
-  // Check for existing session on mount
+  // Check for existing session on mount or direct access route
   useEffect(() => {
     const validateExistingSession = async () => {
+      // If accessed via direct route, auto-authenticate as master
+      if (isDirectAccessRoute) {
+        setIsAuthenticated(true);
+        setAdminType('master');
+        sessionStorage.setItem(SESSION_TYPE_KEY, 'master');
+        setIsCheckingSession(false);
+        return;
+      }
+      
       const storedToken = sessionStorage.getItem(SESSION_TOKEN_KEY);
       const storedType = sessionStorage.getItem(SESSION_TYPE_KEY) as AdminType | null;
       
@@ -88,7 +101,7 @@ const AdminPage = () => {
     };
 
     validateExistingSession();
-  }, []);
+  }, [isDirectAccessRoute]);
 
   const handleVerifyCode = async (e: React.FormEvent) => {
     e.preventDefault();
