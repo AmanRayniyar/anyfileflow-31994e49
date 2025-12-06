@@ -167,6 +167,42 @@ const GeneratorTool = ({ tool }: GeneratorToolProps) => {
         break;
       }
 
+      case "lorem-generator": {
+        const words = ["lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipiscing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua"];
+        const paragraphs: string[] = [];
+        for (let p = 0; p < options.count; p++) {
+          let sentence = "";
+          const sentenceCount = 3 + Math.floor(Math.random() * 3);
+          for (let s = 0; s < sentenceCount; s++) {
+            const wordCount = 8 + Math.floor(Math.random() * 12);
+            const sentenceWords = Array.from({ length: wordCount }, () => words[Math.floor(Math.random() * words.length)]);
+            sentenceWords[0] = sentenceWords[0].charAt(0).toUpperCase() + sentenceWords[0].slice(1);
+            sentence += sentenceWords.join(" ") + ". ";
+          }
+          paragraphs.push(sentence.trim());
+        }
+        result = paragraphs.join("\n\n");
+        break;
+      }
+
+      case "word-generator": {
+        const words = ["alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda", "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon"];
+        result = Array.from({ length: options.count }, () => words[Math.floor(Math.random() * words.length)]).join("\n");
+        break;
+      }
+
+      case "paragraph-generator": {
+        const templates = [
+          "The quick brown fox jumps over the lazy dog. This sentence contains every letter of the alphabet.",
+          "Technology continues to evolve at an unprecedented pace, reshaping how we live and work.",
+          "Nature provides us with countless wonders, from the smallest insects to the tallest mountains.",
+          "Education is the foundation of progress, empowering individuals to reach their full potential.",
+          "Art and creativity are essential expressions of the human spirit, connecting us across cultures."
+        ];
+        result = Array.from({ length: options.count }, () => templates[Math.floor(Math.random() * templates.length)]).join("\n\n");
+        break;
+      }
+
       default:
         result = "Generator not implemented";
     }

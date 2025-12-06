@@ -24,26 +24,12 @@ const Index = () => {
         <Header />
         <main>
           <Hero />
-          
-          {/* AdSense Banner */}
-          <div className="container mx-auto px-4 py-4">
-            <div className="h-[90px] bg-secondary/30 rounded-lg flex items-center justify-center text-muted-foreground text-sm" role="complementary" aria-label="Advertisement">
-              Advertisement Space
-            </div>
-          </div>
 
           {/* All Categories with All Tools */}
           <div className="container mx-auto px-4 py-8">
             {categories.map((category) => (
               <CategorySection key={category.id} category={category} limit={100} />
             ))}
-          </div>
-
-          {/* AdSense Banner */}
-          <div className="container mx-auto px-4 py-4">
-            <div className="h-[250px] bg-secondary/30 rounded-lg flex items-center justify-center text-muted-foreground text-sm" role="complementary" aria-label="Advertisement">
-              Advertisement Space
-            </div>
           </div>
 
           {/* Blog Preview */}

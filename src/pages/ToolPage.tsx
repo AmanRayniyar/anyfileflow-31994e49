@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Info } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { useEffect } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ImageConverter from "@/components/ImageConverter";
@@ -15,6 +16,10 @@ import ToolCard from "@/components/ToolCard";
 import { cn } from "@/lib/utils";
 
 const ToolPage = () => {
+  // Scroll to top on mount
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { toolId } = useParams<{ toolId: string }>();
   const tool = toolId ? getToolById(toolId) : undefined;
 
@@ -39,7 +44,7 @@ const ToolPage = () => {
   const category = getCategoryById(tool.category);
   const relatedTools = getToolsByCategory(tool.category)
     .filter((t) => t.id !== tool.id)
-    .slice(0, 3);
+    .slice(0, 6);
   const Icon = tool.icon;
 
   const renderToolComponent = () => {

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Github, Twitter, Linkedin, Youtube, Mail } from "lucide-react";
+import { Mail, MessageSquare } from "lucide-react";
 import logo from "@/assets/logo.png";
 
 const Footer = () => {
@@ -7,86 +7,70 @@ const Footer = () => {
 
   return (
     <footer className="bg-card border-t border-border">
-      {/* AdSense-friendly spacing */}
-      <div className="container mx-auto px-4 py-4">
-        <div className="h-[90px] bg-secondary/30 rounded-lg flex items-center justify-center text-muted-foreground text-sm">
-          Advertisement Space
-        </div>
-      </div>
-
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Brand */}
-          <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-2 mb-4">
-              <img src={logo} alt="AnyFile Flow Logo" className="h-12 w-12 rounded-lg" />
-              <span className="text-xl font-bold">
+          <div>
+            <Link to="/" className="flex items-center gap-2 mb-3">
+              <img src={logo} alt="AnyFile Flow Logo" className="h-10 w-10 rounded-lg" loading="lazy" />
+              <span className="text-lg font-bold">
                 <span className="flow-text">AnyFile</span>
                 <span className="text-foreground"> Flow</span>
               </span>
             </Link>
-            <p className="text-sm text-muted-foreground mb-2">
-              200+ free online tools for all your file conversion needs. Fast, secure, and easy to use.
+            <p className="text-xs text-muted-foreground mb-2">
+              200+ free online tools for file conversion.
             </p>
-            <p className="text-sm text-muted-foreground mb-4">
-              <strong>Founded by:</strong> Aman Rauniyar
+            <p className="text-xs text-muted-foreground mb-1">
+              <strong>Founder:</strong> Aman Rauniyar
             </p>
-            <div className="flex gap-3">
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Twitter">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="YouTube">
-                <Youtube className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="GitHub">
-                <Github className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="LinkedIn">
-                <Linkedin className="h-5 w-5" />
-              </a>
-              <a href="mailto:contact@anyfileflow.com" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="Email">
-                <Mail className="h-5 w-5" />
-              </a>
-            </div>
+            <a href="mailto:anyfileflow@gmail.com" className="text-xs text-primary hover:underline flex items-center gap-1">
+              <Mail className="h-3 w-3" /> anyfileflow@gmail.com
+            </a>
           </div>
 
-          {/* Image Tools */}
+          {/* Tools */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3">Image Tools</h3>
-            <ul className="space-y-2">
-              <li><Link to="/tool/jpg-to-png" className="text-sm text-muted-foreground hover:text-foreground transition-colors">JPG to PNG</Link></li>
-              <li><Link to="/tool/png-to-jpg" className="text-sm text-muted-foreground hover:text-foreground transition-colors">PNG to JPG</Link></li>
-              <li><Link to="/tool/image-compressor" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Image Compressor</Link></li>
-              <li><Link to="/tool/background-remover" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Remove Background</Link></li>
-              <li><Link to="/tool/image-resizer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Image Resizer</Link></li>
+            <h3 className="font-semibold text-foreground text-sm mb-2">Popular Tools</h3>
+            <ul className="space-y-1">
+              <li><Link to="/tool/jpg-to-png" className="text-xs text-muted-foreground hover:text-foreground transition-colors">JPG to PNG</Link></li>
+              <li><Link to="/tool/png-to-jpg" className="text-xs text-muted-foreground hover:text-foreground transition-colors">PNG to JPG</Link></li>
+              <li><Link to="/tool/image-compressor" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Image Compressor</Link></li>
+              <li><Link to="/tool/word-counter" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Word Counter</Link></li>
+              <li><Link to="/tool/bmi-calculator" className="text-xs text-muted-foreground hover:text-foreground transition-colors">BMI Calculator</Link></li>
             </ul>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3">Quick Links</h3>
-            <ul className="space-y-2">
-              <li><Link to="/tools" className="text-sm text-muted-foreground hover:text-foreground transition-colors">All Tools</Link></li>
-              <li><Link to="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
-              <li><Link to="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About Us</Link></li>
-              <li><Link to="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Contact Us</Link></li>
+            <h3 className="font-semibold text-foreground text-sm mb-2">Quick Links</h3>
+            <ul className="space-y-1">
+              <li><Link to="/tools" className="text-xs text-muted-foreground hover:text-foreground transition-colors">All Tools</Link></li>
+              <li><Link to="/blog" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
+              <li><Link to="/about" className="text-xs text-muted-foreground hover:text-foreground transition-colors">About Us</Link></li>
+              <li><Link to="/contact" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Contact Us</Link></li>
+              <li>
+                <a href="mailto:anyfileflow@gmail.com?subject=Feedback" className="text-xs text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                  <MessageSquare className="h-3 w-3" /> Feedback
+                </a>
+              </li>
             </ul>
           </div>
 
           {/* Legal */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3">Legal</h3>
-            <ul className="space-y-2">
-              <li><Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link></li>
-              <li><Link to="/disclaimer" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Disclaimer</Link></li>
+            <h3 className="font-semibold text-foreground text-sm mb-2">Legal</h3>
+            <ul className="space-y-1">
+              <li><Link to="/privacy-policy" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Terms of Service</Link></li>
+              <li><Link to="/disclaimer" className="text-xs text-muted-foreground hover:text-foreground transition-colors">Disclaimer</Link></li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border">
-          <p className="text-center text-sm text-muted-foreground">
-            © {currentYear} AnyFile Flow. All rights reserved. Founded by <strong>Aman Rauniyar</strong>.
+        <div className="mt-6 pt-4 border-t border-border">
+          <p className="text-center text-xs text-muted-foreground">
+            © {currentYear} AnyFile Flow. All rights reserved. Founded by Aman Rauniyar.
           </p>
         </div>
       </div>
