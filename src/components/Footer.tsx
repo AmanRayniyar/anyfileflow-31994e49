@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Mail, MessageSquare } from "lucide-react";
 import logo from "@/assets/logo.png";
+import founderImg from "@/assets/founder.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -21,9 +22,12 @@ const Footer = () => {
             <p className="text-xs text-muted-foreground mb-2">
               200+ free online tools for file conversion.
             </p>
-            <p className="text-xs text-muted-foreground mb-1">
-              <strong>Founder:</strong> Aman Rauniyar
-            </p>
+            <div className="flex items-center gap-2 mb-1">
+              <img src={founderImg} alt="Aman Rauniyar" className="h-8 w-8 rounded-full object-cover" loading="lazy" />
+              <p className="text-xs text-muted-foreground">
+                <strong>Founder:</strong> Aman Rauniyar
+              </p>
+            </div>
             <a href="mailto:anyfileflow@gmail.com" className="text-xs text-primary hover:underline flex items-center gap-1">
               <Mail className="h-3 w-3" /> anyfileflow@gmail.com
             </a>
