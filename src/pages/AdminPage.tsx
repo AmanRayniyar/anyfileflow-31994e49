@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useBlogPosts, BlogPost } from "@/hooks/useBlog";
-import { Plus, Edit, Trash2, Eye, EyeOff, Save } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const AdminPage = () => {
   const { allPosts, addPost, updatePost, deletePost } = useBlogPosts();
@@ -24,6 +25,47 @@ const AdminPage = () => {
     tags: "",
     published: true
   });
+
+  // Authentication state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [secretCode, setSecretCode] = useState("");
+  const [isVerifying, setIsVerifying] = useState(false);
+
+  const handleVerifyCode = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!secretCode.trim()) {
+      toast.error("Please enter the secret code");
+      return;
+    }
+
+    setIsVerifying(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke('verify-admin', {
+        body: { code: secretCode, codeType: 'blog' }
+      });
+
+      if (error) {
+        console.error('Verification error:', error);
+        toast.error("Verification failed. Please try again.");
+        return;
+      }
+
+      if (data?.valid) {
+        setIsAuthenticated(true);
+        toast.success("Access granted!");
+        setSecretCode("");
+      } else {
+        toast.error("Invalid secret code");
+      }
+    } catch (error) {
+      console.error('Error verifying code:', error);
+      toast.error("Verification failed. Please try again.");
+    } finally {
+      setIsVerifying(false);
+    }
+  };
 
   const resetForm = () => {
     setFormData({
@@ -90,6 +132,63 @@ const AdminPage = () => {
       .replace(/(^-|-$)/g, "");
   };
 
+  // Show login form if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <>
+        <Helmet>
+          <title>Admin Login - AnyFile Flow</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+
+        <div className="min-h-screen bg-background">
+          <Header />
+          <main className="container mx-auto px-4 py-12">
+            <div className="max-w-md mx-auto">
+              <div className="bg-card border border-border rounded-xl p-8">
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
+                    <Lock className="h-8 w-8 text-primary" />
+                  </div>
+                  <h1 className="text-2xl font-bold text-foreground">Admin Access</h1>
+                  <p className="text-muted-foreground mt-2">Enter the secret code to access the admin panel</p>
+                </div>
+
+                <form onSubmit={handleVerifyCode} className="space-y-4">
+                  <div>
+                    <label htmlFor="secretCode" className="block text-sm font-medium mb-2">
+                      Secret Code
+                    </label>
+                    <Input
+                      id="secretCode"
+                      type="password"
+                      value={secretCode}
+                      onChange={(e) => setSecretCode(e.target.value)}
+                      placeholder="Enter secret code"
+                      autoComplete="off"
+                      disabled={isVerifying}
+                    />
+                  </div>
+                  <Button type="submit" className="w-full" disabled={isVerifying}>
+                    {isVerifying ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Verifying...
+                      </>
+                    ) : (
+                      "Access Admin Panel"
+                    )}
+                  </Button>
+                </form>
+              </div>
+            </div>
+          </main>
+          <Footer />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <Helmet>
@@ -103,11 +202,16 @@ const AdminPage = () => {
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <h1 className="text-3xl font-bold text-foreground">Blog Admin Panel</h1>
-              {!isCreating && (
-                <Button onClick={() => setIsCreating(true)}>
-                  <Plus className="h-4 w-4 mr-2" /> New Post
+              <div className="flex items-center gap-2">
+                {!isCreating && (
+                  <Button onClick={() => setIsCreating(true)}>
+                    <Plus className="h-4 w-4 mr-2" /> New Post
+                  </Button>
+                )}
+                <Button variant="outline" onClick={() => setIsAuthenticated(false)}>
+                  Logout
                 </Button>
-              )}
+              </div>
             </div>
 
             {isCreating ? (
