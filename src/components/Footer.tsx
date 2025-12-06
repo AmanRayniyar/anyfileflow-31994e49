@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, MessageSquare, Facebook, Github } from "lucide-react";
+import { Mail, MessageSquare, Facebook, Github, Instagram } from "lucide-react";
 import logo from "@/assets/logo.png";
 import founderImg from "@/assets/founder.png";
 
@@ -34,6 +34,9 @@ const Footer = () => {
                   </a>
                   <a href="https://github.com/AmanRayniyar" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
                     <Github className="h-4 w-4" />
+                  </a>
+                  <a href="https://www.instagram.com/amanrauniyar2064/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Instagram className="h-4 w-4" />
                   </a>
                 </div>
               </div>
