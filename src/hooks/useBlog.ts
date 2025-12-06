@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export interface BlogPost {
   id: string;
@@ -6,7 +7,7 @@ export interface BlogPost {
   slug: string;
   excerpt: string;
   content: string;
-  image?: string;
+  image?: string | null;
   author: string;
   category: string;
   tags: string[];
@@ -15,223 +16,153 @@ export interface BlogPost {
   published: boolean;
 }
 
-const STORAGE_KEY = "anyfileflow_blog_posts";
+interface DbBlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  image: string | null;
+  author: string;
+  category: string;
+  tags: string[] | null;
+  created_at: string;
+  updated_at: string;
+  published: boolean;
+}
 
-const defaultPosts: BlogPost[] = [
-  {
-    id: "1",
-    title: "How to Convert JPG to PNG Without Losing Quality",
-    slug: "convert-jpg-to-png-without-losing-quality",
-    excerpt: "Learn the best practices for converting JPG images to PNG format while maintaining the highest image quality.",
-    content: `<h2>Understanding JPG and PNG Formats</h2>
-<p>JPG and PNG are two of the most popular image formats on the web. While JPG uses lossy compression, PNG uses lossless compression, making it ideal for images that require transparency or high quality.</p>
-
-<h2>Why Convert JPG to PNG?</h2>
-<p>There are several reasons you might want to convert a JPG to PNG:</p>
-<ul>
-<li>You need transparency support</li>
-<li>You want to preserve image quality for editing</li>
-<li>You need a format suitable for graphics and logos</li>
-</ul>
-
-<h2>How to Use Our Converter</h2>
-<p>Our JPG to PNG converter is simple and fast. Just drag and drop your image, and we'll convert it instantly in your browser. No upload to servers means your files stay private.</p>`,
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&h=400&fit=crop",
-    author: "Aman Rauniyar",
-    category: "Tutorials",
-    tags: ["jpg", "png", "image conversion"],
-    createdAt: "2024-01-15T10:00:00Z",
-    updatedAt: "2024-01-15T10:00:00Z",
-    published: true
-  },
-  {
-    id: "2",
-    title: "Top 10 Free Online Tools for Content Creators",
-    slug: "top-10-free-online-tools-content-creators",
-    excerpt: "Discover the best free online tools that every content creator should have in their toolkit.",
-    content: `<h2>Essential Tools for Modern Creators</h2>
-<p>As a content creator, having the right tools can make all the difference in your workflow and the quality of your output.</p>
-
-<h2>1. Image Converters</h2>
-<p>Convert between different image formats instantly without losing quality.</p>
-
-<h2>2. Video Compressors</h2>
-<p>Reduce video file sizes for faster uploads and better streaming.</p>
-
-<h2>3. Audio Editors</h2>
-<p>Cut, trim, and enhance your audio files with easy-to-use tools.</p>`,
-    image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=800&h=400&fit=crop",
-    author: "Aman Rauniyar",
-    category: "Tips",
-    tags: ["tools", "content creation", "productivity"],
-    createdAt: "2024-01-10T10:00:00Z",
-    updatedAt: "2024-01-10T10:00:00Z",
-    published: true
-  },
-  {
-    id: "3",
-    title: "Understanding File Compression: A Complete Guide",
-    slug: "understanding-file-compression-complete-guide",
-    excerpt: "Everything you need to know about file compression, from basic concepts to advanced techniques.",
-    content: `<h2>What is File Compression?</h2>
-<p>File compression is the process of reducing the size of a file by encoding its data more efficiently.</p>
-
-<h2>Types of Compression</h2>
-<p>There are two main types: lossy and lossless compression. Each has its own use cases and trade-offs.</p>
-
-<h2>When to Use Each Type</h2>
-<p>Lossless compression is perfect for text and data files, while lossy compression works well for media files.</p>`,
-    image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop",
-    author: "Aman Rauniyar",
-    category: "Guides",
-    tags: ["compression", "files", "tutorial"],
-    createdAt: "2024-01-05T10:00:00Z",
-    updatedAt: "2024-01-05T10:00:00Z",
-    published: true
-  },
-  {
-    id: "4",
-    title: "5 Ways to Optimize Images for Faster Website Loading",
-    slug: "optimize-images-faster-website-loading",
-    excerpt: "Learn proven techniques to reduce image file sizes while maintaining visual quality for better web performance.",
-    content: `<h2>Why Image Optimization Matters</h2>
-<p>Images often account for 50-70% of a webpage's total size. Optimizing them can dramatically improve load times and user experience.</p>
-
-<h2>1. Choose the Right Format</h2>
-<p>Use JPG for photographs, PNG for graphics with transparency, and WebP for best compression.</p>
-
-<h2>2. Resize Before Uploading</h2>
-<p>Don't upload 4000px images when you only need 800px. Resize to the actual display size.</p>
-
-<h2>3. Use Compression Tools</h2>
-<p>Our image compressor can reduce file sizes by up to 80% without visible quality loss.</p>
-
-<h2>4. Implement Lazy Loading</h2>
-<p>Load images only when they're about to enter the viewport.</p>
-
-<h2>5. Use Modern Formats</h2>
-<p>WebP and AVIF offer superior compression compared to traditional formats.</p>`,
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
-    author: "Aman Rauniyar",
-    category: "Performance",
-    tags: ["images", "optimization", "web performance"],
-    createdAt: "2024-02-01T10:00:00Z",
-    updatedAt: "2024-02-01T10:00:00Z",
-    published: true
-  },
-  {
-    id: "5",
-    title: "Audio Editing for Beginners: Getting Started",
-    slug: "audio-editing-beginners-guide",
-    excerpt: "A comprehensive guide to basic audio editing techniques using free online tools.",
-    content: `<h2>Introduction to Audio Editing</h2>
-<p>Audio editing doesn't have to be complicated. With the right tools and techniques, anyone can produce professional-sounding audio.</p>
-
-<h2>Basic Operations</h2>
-<p>Learn to cut, trim, merge, and adjust audio levels with our suite of audio tools.</p>
-
-<h2>Common Audio Formats</h2>
-<p>Understand the differences between MP3, WAV, OGG, and other popular formats.</p>
-
-<h2>Tips for Better Audio</h2>
-<ul>
-<li>Always work with high-quality source files</li>
-<li>Normalize audio levels for consistency</li>
-<li>Remove background noise when possible</li>
-</ul>`,
-    image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&h=400&fit=crop",
-    author: "Aman Rauniyar",
-    category: "Tutorials",
-    tags: ["audio", "editing", "beginners"],
-    createdAt: "2024-02-10T10:00:00Z",
-    updatedAt: "2024-02-10T10:00:00Z",
-    published: true
-  },
-  {
-    id: "6",
-    title: "The Ultimate Guide to PDF Tools",
-    slug: "ultimate-guide-pdf-tools",
-    excerpt: "Master PDF manipulation with our comprehensive guide to merging, splitting, compressing, and converting PDFs.",
-    content: `<h2>Working with PDFs</h2>
-<p>PDF is the universal document format for sharing files that look the same everywhere. Learn how to work with them efficiently.</p>
-
-<h2>Merge PDFs</h2>
-<p>Combine multiple PDF files into one document in seconds.</p>
-
-<h2>Split PDFs</h2>
-<p>Extract specific pages or split large documents into smaller files.</p>
-
-<h2>Compress PDFs</h2>
-<p>Reduce file size for easy sharing via email or cloud storage.</p>
-
-<h2>Convert PDFs</h2>
-<p>Convert to and from various formats including images, Word documents, and more.</p>`,
-    image: "https://images.unsplash.com/photo-1568667256549-094345857637?w=800&h=400&fit=crop",
-    author: "Aman Rauniyar",
-    category: "Guides",
-    tags: ["pdf", "documents", "conversion"],
-    createdAt: "2024-02-15T10:00:00Z",
-    updatedAt: "2024-02-15T10:00:00Z",
-    published: true
-  }
-];
+const mapDbToPost = (db: DbBlogPost): BlogPost => ({
+  id: db.id,
+  title: db.title,
+  slug: db.slug,
+  excerpt: db.excerpt,
+  content: db.content,
+  image: db.image,
+  author: db.author,
+  category: db.category,
+  tags: db.tags || [],
+  createdAt: db.created_at,
+  updatedAt: db.updated_at,
+  published: db.published
+});
 
 export function useBlogPosts() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchPosts = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data, error: fetchError } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (fetchError) throw fetchError;
+      setPosts((data || []).map(mapDbToPost));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to fetch posts");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      setPosts(JSON.parse(stored));
-    } else {
-      setPosts(defaultPosts);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultPosts));
-    }
+    fetchPosts();
   }, []);
 
-  const savePosts = (newPosts: BlogPost[]) => {
-    setPosts(newPosts);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newPosts));
+  const addPost = async (post: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => {
+    try {
+      const { data, error: insertError } = await supabase
+        .from("blog_posts")
+        .insert({
+          title: post.title,
+          slug: post.slug,
+          excerpt: post.excerpt,
+          content: post.content,
+          image: post.image || null,
+          author: post.author,
+          category: post.category,
+          tags: post.tags,
+          published: post.published
+        })
+        .select()
+        .single();
+
+      if (insertError) throw insertError;
+      
+      const newPost = mapDbToPost(data);
+      setPosts(prev => [newPost, ...prev]);
+      return newPost;
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : "Failed to add post");
+    }
   };
 
-  const addPost = (post: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => {
-    const newPost: BlogPost = {
-      ...post,
-      id: Date.now().toString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    const newPosts = [newPost, ...posts];
-    savePosts(newPosts);
-    return newPost;
+  const updatePost = async (id: string, updates: Partial<BlogPost>) => {
+    try {
+      const dbUpdates: Record<string, unknown> = {};
+      if (updates.title !== undefined) dbUpdates.title = updates.title;
+      if (updates.slug !== undefined) dbUpdates.slug = updates.slug;
+      if (updates.excerpt !== undefined) dbUpdates.excerpt = updates.excerpt;
+      if (updates.content !== undefined) dbUpdates.content = updates.content;
+      if (updates.image !== undefined) dbUpdates.image = updates.image;
+      if (updates.author !== undefined) dbUpdates.author = updates.author;
+      if (updates.category !== undefined) dbUpdates.category = updates.category;
+      if (updates.tags !== undefined) dbUpdates.tags = updates.tags;
+      if (updates.published !== undefined) dbUpdates.published = updates.published;
+
+      const { error: updateError } = await supabase
+        .from("blog_posts")
+        .update(dbUpdates)
+        .eq("id", id);
+
+      if (updateError) throw updateError;
+
+      setPosts(prev =>
+        prev.map(post =>
+          post.id === id
+            ? { ...post, ...updates, updatedAt: new Date().toISOString() }
+            : post
+        )
+      );
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : "Failed to update post");
+    }
   };
 
-  const updatePost = (id: string, updates: Partial<BlogPost>) => {
-    const newPosts = posts.map((post) =>
-      post.id === id
-        ? { ...post, ...updates, updatedAt: new Date().toISOString() }
-        : post
-    );
-    savePosts(newPosts);
-  };
+  const deletePost = async (id: string) => {
+    try {
+      const { error: deleteError } = await supabase
+        .from("blog_posts")
+        .delete()
+        .eq("id", id);
 
-  const deletePost = (id: string) => {
-    const newPosts = posts.filter((post) => post.id !== id);
-    savePosts(newPosts);
+      if (deleteError) throw deleteError;
+
+      setPosts(prev => prev.filter(post => post.id !== id));
+    } catch (err) {
+      throw new Error(err instanceof Error ? err.message : "Failed to delete post");
+    }
   };
 
   const getPostBySlug = (slug: string) => {
-    return posts.find((post) => post.slug === slug && post.published);
+    return posts.find(post => post.slug === slug && post.published);
   };
 
-  const publishedPosts = posts.filter((post) => post.published);
+  const publishedPosts = posts.filter(post => post.published);
 
   return {
     posts: publishedPosts,
     allPosts: posts,
+    loading,
+    error,
     addPost,
     updatePost,
     deletePost,
-    getPostBySlug
+    getPostBySlug,
+    refetch: fetchPosts
   };
 }
