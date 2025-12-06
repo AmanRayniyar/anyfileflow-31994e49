@@ -1,7 +1,8 @@
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Info } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { useEffect } from "react";
+import ShareButton from "@/components/ShareButton";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ImageConverter from "@/components/ImageConverter";
@@ -105,11 +106,20 @@ const ToolPage = () => {
                   <div className={cn("p-3 sm:p-4 rounded-xl shrink-0", category?.bgClass)}>
                     <Icon className={cn("h-6 w-6 sm:h-8 sm:w-8", category?.colorClass)} aria-hidden="true" />
                   </div>
-                  <div>
-                    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-1 sm:mb-2">
-                      {tool.name}
-                    </h1>
-                    <p className="text-sm sm:text-base text-muted-foreground">{tool.description}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-1 sm:mb-2">
+                          {tool.name}
+                        </h1>
+                        <p className="text-sm sm:text-base text-muted-foreground">{tool.description}</p>
+                      </div>
+                      <ShareButton 
+                        title={`${tool.name} - AnyFile Flow`}
+                        description={tool.description}
+                        url={`https://anyfileflow.com/tool/${tool.id}`}
+                      />
+                    </div>
                   </div>
                 </header>
 
