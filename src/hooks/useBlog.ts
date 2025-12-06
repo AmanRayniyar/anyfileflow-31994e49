@@ -88,6 +88,91 @@ const defaultPosts: BlogPost[] = [
     createdAt: "2024-01-05T10:00:00Z",
     updatedAt: "2024-01-05T10:00:00Z",
     published: true
+  },
+  {
+    id: "4",
+    title: "5 Ways to Optimize Images for Faster Website Loading",
+    slug: "optimize-images-faster-website-loading",
+    excerpt: "Learn proven techniques to reduce image file sizes while maintaining visual quality for better web performance.",
+    content: `<h2>Why Image Optimization Matters</h2>
+<p>Images often account for 50-70% of a webpage's total size. Optimizing them can dramatically improve load times and user experience.</p>
+
+<h2>1. Choose the Right Format</h2>
+<p>Use JPG for photographs, PNG for graphics with transparency, and WebP for best compression.</p>
+
+<h2>2. Resize Before Uploading</h2>
+<p>Don't upload 4000px images when you only need 800px. Resize to the actual display size.</p>
+
+<h2>3. Use Compression Tools</h2>
+<p>Our image compressor can reduce file sizes by up to 80% without visible quality loss.</p>
+
+<h2>4. Implement Lazy Loading</h2>
+<p>Load images only when they're about to enter the viewport.</p>
+
+<h2>5. Use Modern Formats</h2>
+<p>WebP and AVIF offer superior compression compared to traditional formats.</p>`,
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
+    author: "Aman Rauniyar",
+    category: "Performance",
+    tags: ["images", "optimization", "web performance"],
+    createdAt: "2024-02-01T10:00:00Z",
+    updatedAt: "2024-02-01T10:00:00Z",
+    published: true
+  },
+  {
+    id: "5",
+    title: "Audio Editing for Beginners: Getting Started",
+    slug: "audio-editing-beginners-guide",
+    excerpt: "A comprehensive guide to basic audio editing techniques using free online tools.",
+    content: `<h2>Introduction to Audio Editing</h2>
+<p>Audio editing doesn't have to be complicated. With the right tools and techniques, anyone can produce professional-sounding audio.</p>
+
+<h2>Basic Operations</h2>
+<p>Learn to cut, trim, merge, and adjust audio levels with our suite of audio tools.</p>
+
+<h2>Common Audio Formats</h2>
+<p>Understand the differences between MP3, WAV, OGG, and other popular formats.</p>
+
+<h2>Tips for Better Audio</h2>
+<ul>
+<li>Always work with high-quality source files</li>
+<li>Normalize audio levels for consistency</li>
+<li>Remove background noise when possible</li>
+</ul>`,
+    image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=800&h=400&fit=crop",
+    author: "Aman Rauniyar",
+    category: "Tutorials",
+    tags: ["audio", "editing", "beginners"],
+    createdAt: "2024-02-10T10:00:00Z",
+    updatedAt: "2024-02-10T10:00:00Z",
+    published: true
+  },
+  {
+    id: "6",
+    title: "The Ultimate Guide to PDF Tools",
+    slug: "ultimate-guide-pdf-tools",
+    excerpt: "Master PDF manipulation with our comprehensive guide to merging, splitting, compressing, and converting PDFs.",
+    content: `<h2>Working with PDFs</h2>
+<p>PDF is the universal document format for sharing files that look the same everywhere. Learn how to work with them efficiently.</p>
+
+<h2>Merge PDFs</h2>
+<p>Combine multiple PDF files into one document in seconds.</p>
+
+<h2>Split PDFs</h2>
+<p>Extract specific pages or split large documents into smaller files.</p>
+
+<h2>Compress PDFs</h2>
+<p>Reduce file size for easy sharing via email or cloud storage.</p>
+
+<h2>Convert PDFs</h2>
+<p>Convert to and from various formats including images, Word documents, and more.</p>`,
+    image: "https://images.unsplash.com/photo-1568667256549-094345857637?w=800&h=400&fit=crop",
+    author: "Aman Rauniyar",
+    category: "Guides",
+    tags: ["pdf", "documents", "conversion"],
+    createdAt: "2024-02-15T10:00:00Z",
+    updatedAt: "2024-02-15T10:00:00Z",
+    published: true
   }
 ];
 

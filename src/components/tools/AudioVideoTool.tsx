@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { useDropzone } from "react-dropzone";
-import { Upload, Download, X, Music, Film, RefreshCw, Check, Play, Pause, Scissors, Volume2 } from "lucide-react";
+import { Upload, Download, X, Music, Film, RefreshCw, Check, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
@@ -11,6 +11,15 @@ import { cn } from "@/lib/utils";
 interface AudioVideoToolProps {
   tool: Tool;
 }
+
+// Tools that are fully implemented
+const implementedTools = [
+  "video-to-mp3",
+  "extract-audio",
+  "audio-recorder",
+  "text-to-speech",
+  "waveform-visualizer"
+];
 
 const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
   const [file, setFile] = useState<File | null>(null);
@@ -25,6 +34,7 @@ const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
 
   const isAudio = tool.category === "audio";
   const isVideo = tool.category === "video";
+  const isImplemented = implementedTools.includes(tool.id);
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -70,18 +80,12 @@ const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
     setProcessing(true);
 
     try {
-      // For client-side processing, we'll handle basic operations
-      // More complex operations would need ffmpeg.wasm or similar
-      
       switch (tool.id) {
         case "video-to-mp3":
         case "extract-audio": {
-          // Create audio context to extract audio
           const audioContext = new AudioContext();
           const arrayBuffer = await file.arrayBuffer();
           const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-          
-          // Convert to WAV (simplified)
           const wavBlob = audioBufferToWav(audioBuffer);
           const url = URL.createObjectURL(wavBlob);
           setOutputUrl(url);
@@ -89,7 +93,6 @@ const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
         }
 
         case "audio-recorder": {
-          // Start recording from microphone
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
           const mediaRecorder = new MediaRecorder(stream);
           const chunks: Blob[] = [];
@@ -102,13 +105,12 @@ const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
           };
 
           mediaRecorder.start();
-          setTimeout(() => mediaRecorder.stop(), 5000); // Record for 5 seconds
+          setTimeout(() => mediaRecorder.stop(), 5000);
           toast({ title: "Recording...", description: "Recording for 5 seconds" });
           break;
         }
 
         case "text-to-speech": {
-          // Use Web Speech API
           const text = prompt("Enter text to convert to speech:") || "Hello world";
           const utterance = new SpeechSynthesisUtterance(text);
           speechSynthesis.speak(utterance);
@@ -116,19 +118,7 @@ const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
           break;
         }
 
-        case "waveform-visualizer": {
-          // Will create visualization in canvas
-          const audioContext = new AudioContext();
-          const arrayBuffer = await file.arrayBuffer();
-          const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-          
-          toast({ title: "Waveform ready", description: "Audio loaded for visualization" });
-          break;
-        }
-
         default:
-          // For other tools, just show the original file
-          // Real implementation would use ffmpeg.wasm
           setOutputUrl(URL.createObjectURL(file));
           toast({
             title: "Preview ready",
@@ -162,11 +152,10 @@ const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
   };
 
-  // Helper function to convert AudioBuffer to WAV
   function audioBufferToWav(buffer: AudioBuffer): Blob {
     const numChannels = buffer.numberOfChannels;
     const sampleRate = buffer.sampleRate;
-    const format = 1; // PCM
+    const format = 1;
     const bitDepth = 16;
     
     const bytesPerSample = bitDepth / 8;
@@ -181,7 +170,6 @@ const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
     const arrayBuffer = new ArrayBuffer(totalSize);
     const view = new DataView(arrayBuffer);
     
-    // WAV header
     const writeString = (offset: number, str: string) => {
       for (let i = 0; i < str.length; i++) {
         view.setUint8(offset + i, str.charCodeAt(i));
@@ -202,7 +190,6 @@ const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
     writeString(36, "data");
     view.setUint32(40, dataSize, true);
     
-    // Write samples
     let offset = 44;
     for (let i = 0; i < samples; i++) {
       const sample = Math.max(-1, Math.min(1, data[i]));
@@ -211,6 +198,21 @@ const AudioVideoTool = ({ tool }: AudioVideoToolProps) => {
     }
     
     return new Blob([arrayBuffer], { type: "audio/wav" });
+  }
+
+  // Show Coming Soon for unimplemented tools
+  if (!isImplemented) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 px-4 text-center" role="region" aria-label={`${tool.name} - Coming Soon`}>
+        <div className="p-4 rounded-full bg-secondary/50 mb-4">
+          <Clock className="h-12 w-12 text-muted-foreground" aria-hidden="true" />
+        </div>
+        <h3 className="text-xl font-semibold text-foreground mb-2">Coming Soon</h3>
+        <p className="text-muted-foreground max-w-md">
+          {tool.name} is currently under development. We're working hard to bring you this feature with full functionality. Check back soon!
+        </p>
+      </div>
+    );
   }
 
   return (
