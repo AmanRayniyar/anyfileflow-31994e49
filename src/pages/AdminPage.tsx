@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -9,6 +9,8 @@ import { useBlogPosts, BlogPost } from "@/hooks/useBlog";
 import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+
+const SESSION_TOKEN_KEY = "anyfileflow_admin_session";
 
 const AdminPage = () => {
   const { allPosts, addPost, updatePost, deletePost } = useBlogPosts();
@@ -28,8 +30,42 @@ const AdminPage = () => {
 
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [secretCode, setSecretCode] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
+
+  // Check for existing session on mount
+  useEffect(() => {
+    const validateExistingSession = async () => {
+      const storedToken = sessionStorage.getItem(SESSION_TOKEN_KEY);
+      
+      if (!storedToken) {
+        setIsCheckingSession(false);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase.functions.invoke('verify-admin', {
+          body: { action: 'validate-session', sessionToken: storedToken }
+        });
+
+        if (error || !data?.valid) {
+          sessionStorage.removeItem(SESSION_TOKEN_KEY);
+          setIsAuthenticated(false);
+        } else {
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        console.error('Session validation error:', error);
+        sessionStorage.removeItem(SESSION_TOKEN_KEY);
+        setIsAuthenticated(false);
+      } finally {
+        setIsCheckingSession(false);
+      }
+    };
+
+    validateExistingSession();
+  }, []);
 
   const handleVerifyCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +88,9 @@ const AdminPage = () => {
         return;
       }
 
-      if (data?.valid) {
+      if (data?.valid && data?.sessionToken) {
+        // Store session token securely in sessionStorage
+        sessionStorage.setItem(SESSION_TOKEN_KEY, data.sessionToken);
         setIsAuthenticated(true);
         toast.success("Access granted!");
         setSecretCode("");
@@ -65,6 +103,24 @@ const AdminPage = () => {
     } finally {
       setIsVerifying(false);
     }
+  };
+
+  const handleLogout = async () => {
+    const storedToken = sessionStorage.getItem(SESSION_TOKEN_KEY);
+    
+    try {
+      // Invalidate session server-side
+      await supabase.functions.invoke('verify-admin', {
+        body: { action: 'logout', sessionToken: storedToken }
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+    
+    // Clear local session
+    sessionStorage.removeItem(SESSION_TOKEN_KEY);
+    setIsAuthenticated(false);
+    toast.success("Logged out successfully");
   };
 
   const resetForm = () => {
@@ -131,6 +187,29 @@ const AdminPage = () => {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
   };
+
+  // Show loading state while checking session
+  if (isCheckingSession) {
+    return (
+      <>
+        <Helmet>
+          <title>Admin Login - AnyFile Flow</title>
+          <meta name="robots" content="noindex, nofollow" />
+        </Helmet>
+
+        <div className="min-h-screen bg-background">
+          <Header />
+          <main className="container mx-auto px-4 py-12">
+            <div className="max-w-md mx-auto text-center">
+              <Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" />
+              <p className="mt-4 text-muted-foreground">Checking session...</p>
+            </div>
+          </main>
+          <Footer />
+        </div>
+      </>
+    );
+  }
 
   // Show login form if not authenticated
   if (!isAuthenticated) {
@@ -208,7 +287,7 @@ const AdminPage = () => {
                     <Plus className="h-4 w-4 mr-2" /> New Post
                   </Button>
                 )}
-                <Button variant="outline" onClick={() => setIsAuthenticated(false)}>
+                <Button variant="outline" onClick={handleLogout}>
                   Logout
                 </Button>
               </div>
