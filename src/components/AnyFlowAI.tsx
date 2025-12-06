@@ -3,6 +3,7 @@ import { Bot, X, Send, Loader2, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useAnyFlowAI } from "@/hooks/useAnyFlowAI";
 
 type Message = {
   role: "user" | "assistant";
@@ -12,7 +13,7 @@ type Message = {
 const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/anyflow-ai`;
 
 const AnyFlowAI = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { isOpen, toggle, close } = useAnyFlowAI();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -120,7 +121,7 @@ const AnyFlowAI = () => {
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggle}
         className={cn(
           "gap-1.5 px-2 py-1.5 text-xs font-medium transition-all",
           isOpen ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground"
@@ -148,7 +149,7 @@ const AnyFlowAI = () => {
             <Button
               variant="ghost"
               size="sm"
-              onClick={() => setIsOpen(false)}
+              onClick={close}
               className="h-7 w-7 p-0"
               aria-label="Close chat"
             >
