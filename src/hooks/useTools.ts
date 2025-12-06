@@ -23,6 +23,9 @@ export function useToolsAdmin() {
   const fetchTools = async () => {
     setLoading(true);
     try {
+      // Admin users with proper authentication will see all tools
+      // due to the "Admins can read all tools" RLS policy
+      // Non-authenticated requests will only see enabled tools
       const { data, error } = await supabase
         .from("tools")
         .select("*")
