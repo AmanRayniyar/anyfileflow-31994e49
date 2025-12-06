@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useBlogPosts, BlogPost } from "@/hooks/useBlog";
 import { useToolsAdmin, DbTool } from "@/hooks/useTools";
-import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText, Code, ChevronDown, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
@@ -20,9 +19,6 @@ const SESSION_TYPE_KEY = "anyfileflow_admin_type";
 type AdminType = 'blog' | 'tools' | 'master';
 
 const AdminPage = () => {
-  const location = useLocation();
-  const isDirectAccessRoute = location.pathname === "/adminamanjkl@";
-  
   const { allPosts, addPost, updatePost, deletePost } = useBlogPosts();
   const { tools, loading: toolsLoading, toggleEnabled, togglePopular, updateTool } = useToolsAdmin();
   
@@ -42,6 +38,7 @@ const AdminPage = () => {
 
   // Tool editing state
   const [editingTool, setEditingTool] = useState<DbTool | null>(null);
+  const [expandedTools, setExpandedTools] = useState<Set<string>>(new Set());
   const [toolFormData, setToolFormData] = useState({
     name: "",
     description: "",
@@ -55,18 +52,9 @@ const AdminPage = () => {
   const [isVerifying, setIsVerifying] = useState(false);
   const [adminType, setAdminType] = useState<AdminType | null>(null);
 
-  // Check for existing session on mount or direct access route
+  // Check for existing session on mount
   useEffect(() => {
     const validateExistingSession = async () => {
-      // If accessed via direct route, auto-authenticate as master
-      if (isDirectAccessRoute) {
-        setIsAuthenticated(true);
-        setAdminType('master');
-        sessionStorage.setItem(SESSION_TYPE_KEY, 'master');
-        setIsCheckingSession(false);
-        return;
-      }
-      
       const storedToken = sessionStorage.getItem(SESSION_TOKEN_KEY);
       const storedType = sessionStorage.getItem(SESSION_TYPE_KEY) as AdminType | null;
       
@@ -101,7 +89,7 @@ const AdminPage = () => {
     };
 
     validateExistingSession();
-  }, [isDirectAccessRoute]);
+  }, []);
 
   const handleVerifyCode = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -240,6 +228,18 @@ const AdminPage = () => {
       name: tool.name,
       description: tool.description,
       custom_content: tool.custom_content || ""
+    });
+  };
+
+  const toggleToolExpanded = (toolId: string) => {
+    setExpandedTools(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(toolId)) {
+        newSet.delete(toolId);
+      } else {
+        newSet.add(toolId);
+      }
+      return newSet;
     });
   };
 
@@ -587,44 +587,79 @@ const AdminPage = () => {
           <div className="text-sm text-muted-foreground mb-4">
             {tools.length} tools found
           </div>
-          {tools.map((tool) => (
-            <div key={tool.id} className="bg-card border border-border rounded-lg p-4 flex items-center justify-between gap-4">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-medium text-foreground truncate">{tool.name}</h3>
-                  {tool.popular && <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />}
+          {tools.map((tool) => {
+            const isExpanded = expandedTools.has(tool.id);
+            return (
+              <div key={tool.id} className="bg-card border border-border rounded-lg overflow-hidden">
+                <div className="p-4 flex items-center justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-medium text-foreground truncate">{tool.name}</h3>
+                      {tool.popular && <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />}
+                      {tool.custom_content && (
+                        <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">Has Code</span>
+                      )}
+                    </div>
+                    <p className="text-sm text-muted-foreground truncate">{tool.description}</p>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      ID: <code className="bg-muted px-1 rounded">{tool.id}</code> • {tool.category} • {tool.from_type} → {tool.to_type} • Type: {tool.tool_type}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => toggleToolExpanded(tool.id)}
+                      aria-label={isExpanded ? "Collapse" : "Expand"}
+                    >
+                      <Code className="h-4 w-4 mr-1" />
+                      {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                    </Button>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted-foreground">Enabled</span>
+                      <Switch
+                        checked={tool.enabled}
+                        onCheckedChange={() => handleToggleEnabled(tool)}
+                      />
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleTogglePopular(tool)}
+                      aria-label={tool.popular ? "Unmark as popular" : "Mark as popular"}
+                    >
+                      {tool.popular ? (
+                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                      ) : (
+                        <StarOff className="h-4 w-4" />
+                      )}
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={() => handleEditTool(tool)} aria-label="Edit tool">
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground truncate">{tool.description}</p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {tool.category} • {tool.from_type} → {tool.to_type}
-                </p>
+                
+                {isExpanded && (
+                  <div className="border-t border-border p-4 bg-muted/30">
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-sm font-medium text-foreground">Custom Content (HTML/Code)</label>
+                      <Button size="sm" variant="outline" onClick={() => handleEditTool(tool)}>
+                        <Edit className="h-3 w-3 mr-1" /> Edit
+                      </Button>
+                    </div>
+                    {tool.custom_content ? (
+                      <pre className="bg-background border border-border rounded-lg p-3 text-xs overflow-x-auto max-h-48 overflow-y-auto">
+                        <code>{tool.custom_content}</code>
+                      </pre>
+                    ) : (
+                      <p className="text-sm text-muted-foreground italic">No custom content. Click Edit to add HTML/code for this tool.</p>
+                    )}
+                  </div>
+                )}
               </div>
-              <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">Enabled</span>
-                  <Switch
-                    checked={tool.enabled}
-                    onCheckedChange={() => handleToggleEnabled(tool)}
-                  />
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleTogglePopular(tool)}
-                  aria-label={tool.popular ? "Unmark as popular" : "Mark as popular"}
-                >
-                  {tool.popular ? (
-                    <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                  ) : (
-                    <StarOff className="h-4 w-4" />
-                  )}
-                </Button>
-                <Button variant="ghost" size="icon" onClick={() => handleEditTool(tool)} aria-label="Edit tool">
-                  <Edit className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
