@@ -7,7 +7,7 @@ import { categories, searchTools, Tool } from "@/data/tools";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import logo from "@/assets/logo.png";
-
+import AnyFlowAI from "@/components/AnyFlowAI";
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -163,6 +163,9 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-1">
+            {/* AnyFlow AI */}
+            <AnyFlowAI />
+            
             {/* Feedback Button */}
             <a
               href="mailto:anyfileflow@gmail.com?subject=Feedback"
