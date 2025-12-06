@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import DOMPurify from "dompurify";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -7,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useBlogPosts, BlogPost } from "@/hooks/useBlog";
 import { useToolsAdmin, DbTool } from "@/hooks/useTools";
-import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText, Code, ChevronDown, ChevronUp } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText, Code, ChevronDown, ChevronUp, ExternalLink, Monitor } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
@@ -39,6 +40,9 @@ const AdminPage = () => {
   // Tool editing state
   const [editingTool, setEditingTool] = useState<DbTool | null>(null);
   const [expandedTools, setExpandedTools] = useState<Set<string>>(new Set());
+  const [showPreview, setShowPreview] = useState(false);
+  const [inlineEditingCode, setInlineEditingCode] = useState<{ [key: string]: string }>({});
+  const [savingToolId, setSavingToolId] = useState<string | null>(null);
   const [toolFormData, setToolFormData] = useState({
     name: "",
     description: "",
@@ -528,6 +532,42 @@ const AdminPage = () => {
     </div>
   );
 
+  // Inline save tool code
+  const handleInlineSaveCode = async (toolId: string) => {
+    setSavingToolId(toolId);
+    const codeContent = inlineEditingCode[toolId];
+    
+    const result = await updateTool(toolId, {
+      custom_content: codeContent && codeContent.trim() ? codeContent : null
+    });
+
+    if (result.success) {
+      toast.success("Tool code saved successfully!");
+      // Clear the inline editing state for this tool
+      setInlineEditingCode(prev => {
+        const newState = { ...prev };
+        delete newState[toolId];
+        return newState;
+      });
+    } else {
+      toast.error(result.error || "Failed to save tool code");
+    }
+    setSavingToolId(null);
+  };
+
+  // Get code for inline editing
+  const getInlineCode = (tool: DbTool) => {
+    return inlineEditingCode.hasOwnProperty(tool.id) 
+      ? inlineEditingCode[tool.id] 
+      : (tool.custom_content || "");
+  };
+
+  // Check if tool has unsaved changes
+  const hasUnsavedChanges = (tool: DbTool) => {
+    if (!inlineEditingCode.hasOwnProperty(tool.id)) return false;
+    return inlineEditingCode[tool.id] !== (tool.custom_content || "");
+  };
+
   // Tools Panel Component
   const ToolsPanel = () => (
     <div className="space-y-6">
@@ -539,45 +579,88 @@ const AdminPage = () => {
         </div>
       ) : editingTool ? (
         <div className="bg-card border border-border rounded-xl p-6 space-y-6">
-          <h3 className="text-lg font-semibold">Edit Tool: {editingTool.id}</h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold">Edit Tool: {editingTool.id}</h3>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowPreview(!showPreview)}
+              >
+                <Monitor className="h-4 w-4 mr-1" />
+                {showPreview ? "Hide Preview" : "Show Preview"}
+              </Button>
+              <a 
+                href={`/tool/${editingTool.id}`} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex"
+              >
+                <Button variant="outline" size="sm">
+                  <ExternalLink className="h-4 w-4 mr-1" /> View Tool
+                </Button>
+              </a>
+            </div>
+          </div>
 
-          <div className="grid gap-4">
-            <div>
-              <label htmlFor="toolName" className="block text-sm font-medium mb-1">Name</label>
-              <Input
-                id="toolName"
-                value={toolFormData.name}
-                onChange={(e) => setToolFormData({ ...toolFormData, name: e.target.value })}
-              />
+          <div className={showPreview ? "grid grid-cols-1 lg:grid-cols-2 gap-6" : ""}>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="toolName" className="block text-sm font-medium mb-1">Name</label>
+                <Input
+                  id="toolName"
+                  value={toolFormData.name}
+                  onChange={(e) => setToolFormData({ ...toolFormData, name: e.target.value })}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="toolDescription" className="block text-sm font-medium mb-1">Description</label>
+                <Textarea
+                  id="toolDescription"
+                  value={toolFormData.description}
+                  onChange={(e) => setToolFormData({ ...toolFormData, description: e.target.value })}
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="toolCustomContent" className="block text-sm font-medium mb-1">
+                  Custom Content (HTML/JavaScript)
+                </label>
+                <Textarea
+                  id="toolCustomContent"
+                  value={toolFormData.custom_content}
+                  onChange={(e) => setToolFormData({ ...toolFormData, custom_content: e.target.value })}
+                  rows={showPreview ? 15 : 10}
+                  placeholder="Enter custom HTML, CSS, or JavaScript code for this tool..."
+                  className="font-mono text-sm"
+                />
+              </div>
             </div>
 
-            <div>
-              <label htmlFor="toolDescription" className="block text-sm font-medium mb-1">Description</label>
-              <Textarea
-                id="toolDescription"
-                value={toolFormData.description}
-                onChange={(e) => setToolFormData({ ...toolFormData, description: e.target.value })}
-                rows={3}
-              />
-            </div>
-
-            <div>
-              <label htmlFor="toolCustomContent" className="block text-sm font-medium mb-1">Custom Content (HTML)</label>
-              <Textarea
-                id="toolCustomContent"
-                value={toolFormData.custom_content}
-                onChange={(e) => setToolFormData({ ...toolFormData, custom_content: e.target.value })}
-                rows={6}
-                placeholder="Optional custom HTML content for the tool page"
-              />
-            </div>
+            {showPreview && (
+              <div className="space-y-2">
+                <label className="block text-sm font-medium">Live Preview</label>
+                <div className="border border-border rounded-lg bg-background p-4 min-h-[300px] overflow-auto">
+                  <div 
+                    dangerouslySetInnerHTML={{ 
+                      __html: DOMPurify.sanitize(toolFormData.custom_content || "<p class='text-muted-foreground text-sm'>No custom content to preview</p>", {
+                        ADD_TAGS: ['style'],
+                        ADD_ATTR: ['style', 'class']
+                      })
+                    }} 
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="flex gap-3">
             <Button onClick={handleSaveTool}>
               <Save className="h-4 w-4 mr-2" /> Save
             </Button>
-            <Button variant="outline" onClick={() => setEditingTool(null)}>
+            <Button variant="outline" onClick={() => { setEditingTool(null); setShowPreview(false); }}>
               Cancel
             </Button>
           </div>
@@ -585,10 +668,14 @@ const AdminPage = () => {
       ) : (
         <div className="space-y-2">
           <div className="text-sm text-muted-foreground mb-4">
-            {tools.length} tools found
+            {tools.length} tools found • Click on any tool to expand and edit its code inline
           </div>
           {tools.map((tool) => {
             const isExpanded = expandedTools.has(tool.id);
+            const currentCode = getInlineCode(tool);
+            const unsaved = hasUnsavedChanges(tool);
+            const isSaving = savingToolId === tool.id;
+            
             return (
               <div key={tool.id} className="bg-card border border-border rounded-lg overflow-hidden">
                 <div className="p-4 flex items-center justify-between gap-4">
@@ -599,6 +686,9 @@ const AdminPage = () => {
                       {tool.custom_content && (
                         <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded">Has Code</span>
                       )}
+                      {unsaved && (
+                        <span className="text-xs bg-yellow-500/10 text-yellow-600 px-2 py-0.5 rounded">Unsaved</span>
+                      )}
                     </div>
                     <p className="text-sm text-muted-foreground truncate">{tool.description}</p>
                     <p className="text-xs text-muted-foreground mt-1">
@@ -606,6 +696,16 @@ const AdminPage = () => {
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
+                    <a 
+                      href={`/tool/${tool.id}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex"
+                    >
+                      <Button variant="ghost" size="sm">
+                        <ExternalLink className="h-4 w-4" />
+                      </Button>
+                    </a>
                     <Button
                       variant="ghost"
                       size="sm"
@@ -642,19 +742,63 @@ const AdminPage = () => {
                 
                 {isExpanded && (
                   <div className="border-t border-border p-4 bg-muted/30">
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-medium text-foreground">Custom Content (HTML/Code)</label>
-                      <Button size="sm" variant="outline" onClick={() => handleEditTool(tool)}>
-                        <Edit className="h-3 w-3 mr-1" /> Edit
-                      </Button>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      {/* Code Editor */}
+                      <div>
+                        <div className="flex items-center justify-between mb-2">
+                          <label className="text-sm font-medium text-foreground">Custom Content (HTML/Code)</label>
+                          <div className="flex gap-2">
+                            <Button 
+                              size="sm" 
+                              onClick={() => handleInlineSaveCode(tool.id)}
+                              disabled={isSaving || !unsaved}
+                            >
+                              {isSaving ? (
+                                <>
+                                  <Loader2 className="h-3 w-3 mr-1 animate-spin" />
+                                  Saving...
+                                </>
+                              ) : (
+                                <>
+                                  <Save className="h-3 w-3 mr-1" />
+                                  Save Code
+                                </>
+                              )}
+                            </Button>
+                          </div>
+                        </div>
+                        <Textarea
+                          value={currentCode}
+                          onChange={(e) => setInlineEditingCode(prev => ({
+                            ...prev,
+                            [tool.id]: e.target.value
+                          }))}
+                          placeholder="Enter custom HTML, CSS, or JavaScript code for this tool..."
+                          className="font-mono text-xs min-h-[250px] resize-y"
+                        />
+                      </div>
+                      
+                      {/* Live Preview */}
+                      <div>
+                        <label className="block text-sm font-medium text-foreground mb-2">Live Preview</label>
+                        <div className="border border-border rounded-lg bg-background p-4 min-h-[250px] overflow-auto">
+                          {currentCode ? (
+                            <div 
+                              dangerouslySetInnerHTML={{ 
+                                __html: DOMPurify.sanitize(currentCode, {
+                                  ADD_TAGS: ['style'],
+                                  ADD_ATTR: ['style', 'class']
+                                })
+                              }} 
+                            />
+                          ) : (
+                            <p className="text-sm text-muted-foreground italic">
+                              No custom content. Enter HTML/code on the left to see a live preview.
+                            </p>
+                          )}
+                        </div>
+                      </div>
                     </div>
-                    {tool.custom_content ? (
-                      <pre className="bg-background border border-border rounded-lg p-3 text-xs overflow-x-auto max-h-48 overflow-y-auto">
-                        <code>{tool.custom_content}</code>
-                      </pre>
-                    ) : (
-                      <p className="text-sm text-muted-foreground italic">No custom content. Click Edit to add HTML/code for this tool.</p>
-                    )}
                   </div>
                 )}
               </div>
