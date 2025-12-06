@@ -1,8 +1,14 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Info } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ImageConverter from "@/components/ImageConverter";
+import TextTool from "@/components/tools/TextTool";
+import HealthTool from "@/components/tools/HealthTool";
+import DataTool from "@/components/tools/DataTool";
+import GeneratorTool from "@/components/tools/GeneratorTool";
+import AudioVideoTool from "@/components/tools/AudioVideoTool";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
 import ToolCard from "@/components/ToolCard";
@@ -16,7 +22,7 @@ const ToolPage = () => {
     return (
       <div className="min-h-screen bg-background">
         <Header />
-        <main className="container mx-auto px-4 py-16">
+        <main className="container mx-auto px-4 py-16" role="main">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-foreground mb-4">Tool Not Found</h1>
             <p className="text-muted-foreground mb-6">The tool you're looking for doesn't exist.</p>
@@ -36,158 +42,126 @@ const ToolPage = () => {
     .slice(0, 3);
   const Icon = tool.icon;
 
-  const isImageConversion = tool.category === "image" && 
-    (tool.id.includes("-to-") || tool.id === "image-compress" || tool.id === "image-resize");
+  const renderToolComponent = () => {
+    switch (tool.toolType) {
+      case 'image-convert':
+      case 'image-edit':
+        return <ImageConverter fromFormat={tool.from} toFormat={tool.to} toolName={tool.name} />;
+      case 'text':
+        return <TextTool tool={tool} />;
+      case 'health':
+        return <HealthTool tool={tool} />;
+      case 'data':
+        return <DataTool tool={tool} />;
+      case 'generator':
+        return <GeneratorTool tool={tool} />;
+      case 'audio':
+      case 'video':
+        return <AudioVideoTool tool={tool} />;
+      default:
+        return <ImageConverter fromFormat={tool.from} toFormat={tool.to} toolName={tool.name} />;
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="container mx-auto px-4 py-8">
-        {/* Breadcrumb */}
-        <div className="flex items-center gap-2 mb-6">
-          <Link
-            to="/tools"
-            className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            All Tools
-          </Link>
-          <span className="text-muted-foreground">/</span>
-          <span className="text-sm text-muted-foreground">{category?.name}</span>
-          <span className="text-muted-foreground">/</span>
-          <span className="text-sm font-medium text-foreground">{tool.name}</span>
-        </div>
+    <>
+      <Helmet>
+        <title>{tool.name} - Free Online Tool | AnyFile Flow</title>
+        <meta name="description" content={`${tool.description}. Free, fast, and secure. No registration required.`} />
+        <meta property="og:title" content={`${tool.name} - AnyFile Flow`} />
+        <meta property="og:description" content={tool.description} />
+        <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
+      </Helmet>
+      
+      <div className="min-h-screen bg-background">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-md z-50">
+          Skip to main content
+        </a>
+        <Header />
+        <main id="main-content" className="container mx-auto px-4 py-6 sm:py-8" role="main">
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-6 flex-wrap">
+            <Link to="/tools" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+              <span>All Tools</span>
+            </Link>
+            <span className="text-muted-foreground" aria-hidden="true">/</span>
+            <span className="text-sm text-muted-foreground">{category?.name}</span>
+            <span className="text-muted-foreground" aria-hidden="true">/</span>
+            <span className="text-sm font-medium text-foreground">{tool.name}</span>
+          </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2">
-            <div className="bg-card border border-border rounded-2xl p-6 md:p-8">
-              {/* Tool Header */}
-              <div className="flex items-start gap-4 mb-8">
-                <div className={cn("p-4 rounded-xl", category?.bgClass)}>
-                  <Icon className={cn("h-8 w-8", category?.colorClass)} />
-                </div>
-                <div>
-                  <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
-                    {tool.name}
-                  </h1>
-                  <p className="text-muted-foreground">{tool.description}</p>
-                </div>
-              </div>
-
-              {/* Converter */}
-              {isImageConversion ? (
-                <ImageConverter
-                  fromFormat={tool.from}
-                  toFormat={tool.to}
-                  toolName={tool.name}
-                />
-              ) : (
-                <div className="text-center py-16 bg-secondary/30 rounded-xl">
-                  <div className="p-4 rounded-full bg-primary/10 inline-block mb-4">
-                    <Icon className="h-12 w-12 text-primary" />
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+            {/* Main Content */}
+            <article className="lg:col-span-2">
+              <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 md:p-8">
+                {/* Tool Header */}
+                <header className="flex items-start gap-3 sm:gap-4 mb-6 sm:mb-8">
+                  <div className={cn("p-3 sm:p-4 rounded-xl shrink-0", category?.bgClass)}>
+                    <Icon className={cn("h-6 w-6 sm:h-8 sm:w-8", category?.colorClass)} aria-hidden="true" />
                   </div>
-                  <h3 className="text-xl font-semibold text-foreground mb-2">
-                    {tool.name}
-                  </h3>
-                  <p className="text-muted-foreground max-w-md mx-auto mb-6">
-                    This tool is currently being prepared. Check back soon for full functionality!
-                  </p>
-                  <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-                    <Info className="h-4 w-4" />
-                    <span>Convert {tool.from} to {tool.to}</span>
+                  <div>
+                    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-1 sm:mb-2">
+                      {tool.name}
+                    </h1>
+                    <p className="text-sm sm:text-base text-muted-foreground">{tool.description}</p>
                   </div>
-                </div>
-              )}
-            </div>
+                </header>
 
-            {/* Info Section */}
-            <div className="bg-card border border-border rounded-2xl p-6 md:p-8 mt-6">
-              <h2 className="text-xl font-bold text-foreground mb-4">
-                How to use {tool.name}
-              </h2>
-              <ol className="space-y-3 text-muted-foreground">
-                <li className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
-                    1
-                  </span>
-                  <span>Upload your {tool.from} file(s) by dragging and dropping or clicking to browse.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
-                    2
-                  </span>
-                  <span>Click the "Convert" button to start the conversion process.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
-                    3
-                  </span>
-                  <span>Download your converted {tool.to} file(s) once the conversion is complete.</span>
-                </li>
-              </ol>
-
-              <div className="mt-6 p-4 bg-secondary/50 rounded-xl">
-                <h3 className="font-semibold text-foreground mb-2">Why use AnyFile Flow?</h3>
-                <ul className="space-y-1 text-sm text-muted-foreground">
-                  <li>✓ 100% free with no hidden costs</li>
-                  <li>✓ No registration or email required</li>
-                  <li>✓ Files processed locally in your browser</li>
-                  <li>✓ Fast and secure conversions</li>
-                </ul>
+                {/* Tool Component */}
+                {renderToolComponent()}
               </div>
-            </div>
+
+              {/* Info Section */}
+              <section className="bg-card border border-border rounded-2xl p-4 sm:p-6 md:p-8 mt-6" aria-labelledby="how-to-use">
+                <h2 id="how-to-use" className="text-lg sm:text-xl font-bold text-foreground mb-4">
+                  How to use {tool.name}
+                </h2>
+                <ol className="space-y-3 text-sm sm:text-base text-muted-foreground" role="list">
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary" aria-hidden="true">1</span>
+                    <span>Upload your {tool.from} file(s) by dragging and dropping or clicking to browse.</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary" aria-hidden="true">2</span>
+                    <span>Adjust settings if needed, then click the process button.</span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary" aria-hidden="true">3</span>
+                    <span>Download your {tool.to} result once processing is complete.</span>
+                  </li>
+                </ol>
+
+                <div className="mt-6 p-4 bg-secondary/50 rounded-xl">
+                  <h3 className="font-semibold text-foreground mb-2">Why use AnyFile Flow?</h3>
+                  <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground" role="list">
+                    <li>✓ 100% free with no hidden costs</li>
+                    <li>✓ No registration or email required</li>
+                    <li>✓ Files processed locally in your browser</li>
+                    <li>✓ Fast and secure processing</li>
+                  </ul>
+                </div>
+              </section>
+            </article>
+
+            {/* Sidebar */}
+            <aside className="lg:col-span-1">
+              <div className="lg:sticky lg:top-24 space-y-6">
+                <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
+                  <h3 id="related-tools" className="font-bold text-foreground mb-4">Related Tools</h3>
+                  <div className="space-y-3">
+                    {relatedTools.map((relatedTool) => (
+                      <ToolCard key={relatedTool.id} tool={relatedTool} />
+                    ))}
+                  </div>
+                </section>
+              </div>
+            </aside>
           </div>
-
-          {/* Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="sticky top-24 space-y-6">
-              {/* Related Tools */}
-              <div className="bg-card border border-border rounded-2xl p-6">
-                <h3 className="font-bold text-foreground mb-4">Related Tools</h3>
-                <div className="space-y-3">
-                  {relatedTools.map((relatedTool) => (
-                    <ToolCard key={relatedTool.id} tool={relatedTool} />
-                  ))}
-                </div>
-              </div>
-
-              {/* Quick Links */}
-              <div className="bg-secondary/50 rounded-2xl p-6">
-                <h3 className="font-bold text-foreground mb-4">Popular Conversions</h3>
-                <div className="space-y-2">
-                  <Link
-                    to="/tool/jpg-to-png"
-                    className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    → JPG to PNG
-                  </Link>
-                  <Link
-                    to="/tool/png-to-jpg"
-                    className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    → PNG to JPG
-                  </Link>
-                  <Link
-                    to="/tool/pdf-to-word"
-                    className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    → PDF to Word
-                  </Link>
-                  <Link
-                    to="/tool/image-compress"
-                    className="block text-sm text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    → Image Compressor
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-      <Footer />
-    </div>
+        </main>
+        <Footer />
+      </div>
+    </>
   );
 };
 
