@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Calendar, User } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
+import LazyImage from "@/components/LazyImage";
 
 const BlogPreview = () => {
   const { posts } = useBlogPosts();
@@ -29,11 +30,11 @@ const BlogPreview = () => {
           {recentPosts.map((post) => (
             <article key={post.id} className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
               {post.image && (
-                <img 
+                <LazyImage 
                   src={post.image} 
                   alt={post.title}
                   className="w-full h-48 object-cover"
-                  loading="lazy"
+                  wrapperClassName="w-full h-48"
                 />
               )}
               <div className="p-5">
