@@ -14,7 +14,123 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      admin_codes: {
+        Row: {
+          code_type: string
+          created_at: string
+          hashed_code: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          code_type: string
+          created_at?: string
+          hashed_code: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          code_type?: string
+          created_at?: string
+          hashed_code?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      blog_posts: {
+        Row: {
+          author: string
+          category: string
+          content: string
+          created_at: string
+          excerpt: string
+          id: string
+          image: string | null
+          published: boolean
+          slug: string
+          tags: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author?: string
+          category: string
+          content: string
+          created_at?: string
+          excerpt: string
+          id?: string
+          image?: string | null
+          published?: boolean
+          slug: string
+          tags?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author?: string
+          category?: string
+          content?: string
+          created_at?: string
+          excerpt?: string
+          id?: string
+          image?: string | null
+          published?: boolean
+          slug?: string
+          tags?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      tools: {
+        Row: {
+          category: string
+          created_at: string
+          custom_content: string | null
+          description: string
+          enabled: boolean
+          from_type: string
+          icon: string
+          id: string
+          name: string
+          popular: boolean
+          to_type: string
+          tool_type: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          custom_content?: string | null
+          description: string
+          enabled?: boolean
+          from_type: string
+          icon?: string
+          id: string
+          name: string
+          popular?: boolean
+          to_type: string
+          tool_type?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          custom_content?: string | null
+          description?: string
+          enabled?: boolean
+          from_type?: string
+          icon?: string
+          id?: string
+          name?: string
+          popular?: boolean
+          to_type?: string
+          tool_type?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
