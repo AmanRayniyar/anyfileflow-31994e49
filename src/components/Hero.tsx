@@ -1,9 +1,11 @@
-import { ArrowRight, Zap, Shield, Clock } from "lucide-react";
+import { ArrowRight, Zap, Shield, Clock, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { tools } from "@/data/tools";
-
+import { useAnyFlowAI } from "@/hooks/useAnyFlowAI";
 const Hero = () => {
+  const { open } = useAnyFlowAI();
+
   return (
     <section className="relative overflow-hidden py-16 md:py-24">
       {/* Background decoration */}
@@ -46,6 +48,10 @@ const Hero = () => {
               <Link to="/tool/jpg-to-png">
                 Try JPG to PNG
               </Link>
+            </Button>
+            <Button variant="outline" size="xl" onClick={open} className="gap-2">
+              <Sparkles className="h-5 w-5" />
+              Try AnyFlow AI
             </Button>
           </div>
 
