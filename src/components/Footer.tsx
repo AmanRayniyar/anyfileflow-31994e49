@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, MessageSquare } from "lucide-react";
+import { Mail, MessageSquare, Facebook, Github } from "lucide-react";
 import logo from "@/assets/logo.png";
 import founderImg from "@/assets/founder.png";
 
@@ -24,9 +24,19 @@ const Footer = () => {
             </p>
             <div className="flex items-center gap-2 mb-1">
               <img src={founderImg} alt="Aman Rauniyar" className="h-8 w-8 rounded-full object-cover" loading="lazy" />
-              <p className="text-xs text-muted-foreground">
-                <strong>Founder:</strong> Aman Rauniyar
-              </p>
+              <div>
+                <p className="text-xs text-muted-foreground">
+                  <strong>Founder:</strong> Aman Rauniyar
+                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  <a href="https://www.facebook.com/aman.rauniyar.980" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Facebook className="h-4 w-4" />
+                  </a>
+                  <a href="https://github.com/AmanRayniyar" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
+                    <Github className="h-4 w-4" />
+                  </a>
+                </div>
+              </div>
             </div>
             <a href="mailto:anyfileflow@gmail.com" className="text-xs text-primary hover:underline flex items-center gap-1">
               <Mail className="h-3 w-3" /> anyfileflow@gmail.com
