@@ -1,7 +1,6 @@
 import { ArrowRight, Zap, Shield, Clock } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import SearchBar from "./SearchBar";
 import { tools } from "@/data/tools";
 
 const Hero = () => {
@@ -34,11 +33,6 @@ const Hero = () => {
             The ultimate toolkit for all your file conversions. Fast, free, and secure. 
             No registration required – just drag, drop, and convert.
           </p>
-
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-8 animate-fade-in" style={{ animationDelay: "0.3s" }}>
-            <SearchBar large />
-          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in" style={{ animationDelay: "0.4s" }}>
