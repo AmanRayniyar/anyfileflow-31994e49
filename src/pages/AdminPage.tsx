@@ -6,14 +6,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useBlogPosts, BlogPost } from "@/hooks/useBlog";
-import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2 } from "lucide-react";
+import { useToolsAdmin, DbTool } from "@/hooks/useTools";
+import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const SESSION_TOKEN_KEY = "anyfileflow_admin_session";
+const SESSION_TYPE_KEY = "anyfileflow_admin_type";
+
+type AdminType = 'blog' | 'tools' | 'master';
 
 const AdminPage = () => {
   const { allPosts, addPost, updatePost, deletePost } = useBlogPosts();
+  const { tools, loading: toolsLoading, toggleEnabled, togglePopular, updateTool } = useToolsAdmin();
+  
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [isCreating, setIsCreating] = useState(false);
   const [formData, setFormData] = useState({
@@ -28,16 +36,26 @@ const AdminPage = () => {
     published: true
   });
 
+  // Tool editing state
+  const [editingTool, setEditingTool] = useState<DbTool | null>(null);
+  const [toolFormData, setToolFormData] = useState({
+    name: "",
+    description: "",
+    custom_content: ""
+  });
+
   // Authentication state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [secretCode, setSecretCode] = useState("");
   const [isVerifying, setIsVerifying] = useState(false);
+  const [adminType, setAdminType] = useState<AdminType | null>(null);
 
   // Check for existing session on mount
   useEffect(() => {
     const validateExistingSession = async () => {
       const storedToken = sessionStorage.getItem(SESSION_TOKEN_KEY);
+      const storedType = sessionStorage.getItem(SESSION_TYPE_KEY) as AdminType | null;
       
       if (!storedToken) {
         setIsCheckingSession(false);
@@ -51,14 +69,19 @@ const AdminPage = () => {
 
         if (error || !data?.valid) {
           sessionStorage.removeItem(SESSION_TOKEN_KEY);
+          sessionStorage.removeItem(SESSION_TYPE_KEY);
           setIsAuthenticated(false);
+          setAdminType(null);
         } else {
           setIsAuthenticated(true);
+          setAdminType(storedType || data.codeType);
         }
       } catch (error) {
         console.error('Session validation error:', error);
         sessionStorage.removeItem(SESSION_TOKEN_KEY);
+        sessionStorage.removeItem(SESSION_TYPE_KEY);
         setIsAuthenticated(false);
+        setAdminType(null);
       } finally {
         setIsCheckingSession(false);
       }
@@ -79,7 +102,7 @@ const AdminPage = () => {
 
     try {
       // Try each code type: blog, tools, master
-      const codeTypes = ['blog', 'tools', 'master'];
+      const codeTypes: AdminType[] = ['blog', 'tools', 'master'];
       let authenticated = false;
       
       for (const codeType of codeTypes) {
@@ -88,9 +111,11 @@ const AdminPage = () => {
         });
 
         if (!error && data?.valid && data?.sessionToken) {
-          // Store session token securely in sessionStorage
+          // Store session token and type securely in sessionStorage
           sessionStorage.setItem(SESSION_TOKEN_KEY, data.sessionToken);
+          sessionStorage.setItem(SESSION_TYPE_KEY, codeType);
           setIsAuthenticated(true);
+          setAdminType(codeType);
           toast.success(`Access granted as ${codeType} admin!`);
           setSecretCode("");
           authenticated = true;
@@ -123,10 +148,13 @@ const AdminPage = () => {
     
     // Clear local session
     sessionStorage.removeItem(SESSION_TOKEN_KEY);
+    sessionStorage.removeItem(SESSION_TYPE_KEY);
     setIsAuthenticated(false);
+    setAdminType(null);
     toast.success("Logged out successfully");
   };
 
+  // Blog functions
   const resetForm = () => {
     setFormData({
       title: "",
@@ -191,6 +219,55 @@ const AdminPage = () => {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
   };
+
+  // Tool functions
+  const handleEditTool = (tool: DbTool) => {
+    setEditingTool(tool);
+    setToolFormData({
+      name: tool.name,
+      description: tool.description,
+      custom_content: tool.custom_content || ""
+    });
+  };
+
+  const handleSaveTool = async () => {
+    if (!editingTool) return;
+    
+    const result = await updateTool(editingTool.id, {
+      name: toolFormData.name,
+      description: toolFormData.description,
+      custom_content: toolFormData.custom_content || null
+    });
+
+    if (result.success) {
+      toast.success("Tool updated successfully!");
+      setEditingTool(null);
+    } else {
+      toast.error(result.error || "Failed to update tool");
+    }
+  };
+
+  const handleToggleEnabled = async (tool: DbTool) => {
+    const result = await toggleEnabled(tool.id, !tool.enabled);
+    if (result.success) {
+      toast.success(`Tool ${!tool.enabled ? 'enabled' : 'disabled'}`);
+    } else {
+      toast.error(result.error || "Failed to update tool");
+    }
+  };
+
+  const handleTogglePopular = async (tool: DbTool) => {
+    const result = await togglePopular(tool.id, !tool.popular);
+    if (result.success) {
+      toast.success(`Tool ${!tool.popular ? 'marked as popular' : 'unmarked as popular'}`);
+    } else {
+      toast.error(result.error || "Failed to update tool");
+    }
+  };
+
+  // Permission checks
+  const canAccessBlog = adminType === 'blog' || adminType === 'master';
+  const canAccessTools = adminType === 'tools' || adminType === 'master';
 
   // Show loading state while checking session
   if (isCheckingSession) {
@@ -272,6 +349,274 @@ const AdminPage = () => {
     );
   }
 
+  // Blog Panel Component
+  const BlogPanel = () => (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-semibold text-foreground">Blog Posts</h2>
+        {!isCreating && (
+          <Button onClick={() => setIsCreating(true)}>
+            <Plus className="h-4 w-4 mr-2" /> New Post
+          </Button>
+        )}
+      </div>
+
+      {isCreating ? (
+        <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 space-y-6">
+          <h3 className="text-lg font-semibold">
+            {editingPost ? "Edit Post" : "Create New Post"}
+          </h3>
+
+          <div className="grid gap-4">
+            <div>
+              <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
+              <Input
+                id="title"
+                value={formData.title}
+                onChange={(e) => {
+                  setFormData({ 
+                    ...formData, 
+                    title: e.target.value,
+                    slug: editingPost ? formData.slug : generateSlug(e.target.value)
+                  });
+                }}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="slug" className="block text-sm font-medium mb-1">Slug</label>
+              <Input
+                id="slug"
+                value={formData.slug}
+                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="excerpt" className="block text-sm font-medium mb-1">Excerpt</label>
+              <Textarea
+                id="excerpt"
+                value={formData.excerpt}
+                onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                rows={2}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="content" className="block text-sm font-medium mb-1">Content (HTML)</label>
+              <Textarea
+                id="content"
+                value={formData.content}
+                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                rows={10}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="image" className="block text-sm font-medium mb-1">Featured Image URL</label>
+              <Input
+                id="image"
+                type="url"
+                value={formData.image}
+                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="author" className="block text-sm font-medium mb-1">Author</label>
+                <Input
+                  id="author"
+                  value={formData.author}
+                  onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="category" className="block text-sm font-medium mb-1">Category</label>
+                <Input
+                  id="category"
+                  value={formData.category}
+                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="tags" className="block text-sm font-medium mb-1">Tags (comma-separated)</label>
+              <Input
+                id="tags"
+                value={formData.tags}
+                onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
+              />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                id="published"
+                checked={formData.published}
+                onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
+                className="rounded"
+              />
+              <label htmlFor="published" className="text-sm">Published</label>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <Button type="submit">
+              <Save className="h-4 w-4 mr-2" /> {editingPost ? "Update" : "Create"}
+            </Button>
+            <Button type="button" variant="outline" onClick={resetForm}>
+              Cancel
+            </Button>
+          </div>
+        </form>
+      ) : (
+        <div className="space-y-4">
+          {allPosts.length === 0 ? (
+            <div className="text-center py-12 bg-card border border-border rounded-xl">
+              <p className="text-muted-foreground">No posts yet. Create your first post!</p>
+            </div>
+          ) : (
+            allPosts.map((post) => (
+              <div key={post.id} className="bg-card border border-border rounded-xl p-4 flex items-center justify-between">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-medium text-foreground truncate">{post.title}</h3>
+                    {post.published ? (
+                      <Eye className="h-4 w-4 text-green-500" />
+                    ) : (
+                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    {new Date(post.createdAt).toLocaleDateString()} • {post.category}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" size="icon" onClick={() => handleEdit(post)} aria-label="Edit post">
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button variant="ghost" size="icon" onClick={() => handleDelete(post.id)} aria-label="Delete post">
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+  // Tools Panel Component
+  const ToolsPanel = () => (
+    <div className="space-y-6">
+      <h2 className="text-xl font-semibold text-foreground">Tools Management</h2>
+
+      {toolsLoading ? (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      ) : editingTool ? (
+        <div className="bg-card border border-border rounded-xl p-6 space-y-6">
+          <h3 className="text-lg font-semibold">Edit Tool: {editingTool.id}</h3>
+
+          <div className="grid gap-4">
+            <div>
+              <label htmlFor="toolName" className="block text-sm font-medium mb-1">Name</label>
+              <Input
+                id="toolName"
+                value={toolFormData.name}
+                onChange={(e) => setToolFormData({ ...toolFormData, name: e.target.value })}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="toolDescription" className="block text-sm font-medium mb-1">Description</label>
+              <Textarea
+                id="toolDescription"
+                value={toolFormData.description}
+                onChange={(e) => setToolFormData({ ...toolFormData, description: e.target.value })}
+                rows={3}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="toolCustomContent" className="block text-sm font-medium mb-1">Custom Content (HTML)</label>
+              <Textarea
+                id="toolCustomContent"
+                value={toolFormData.custom_content}
+                onChange={(e) => setToolFormData({ ...toolFormData, custom_content: e.target.value })}
+                rows={6}
+                placeholder="Optional custom HTML content for the tool page"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <Button onClick={handleSaveTool}>
+              <Save className="h-4 w-4 mr-2" /> Save
+            </Button>
+            <Button variant="outline" onClick={() => setEditingTool(null)}>
+              Cancel
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          <div className="text-sm text-muted-foreground mb-4">
+            {tools.length} tools found
+          </div>
+          {tools.map((tool) => (
+            <div key={tool.id} className="bg-card border border-border rounded-lg p-4 flex items-center justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <h3 className="font-medium text-foreground truncate">{tool.name}</h3>
+                  {tool.popular && <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />}
+                </div>
+                <p className="text-sm text-muted-foreground truncate">{tool.description}</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  {tool.category} • {tool.from_type} → {tool.to_type}
+                </p>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-muted-foreground">Enabled</span>
+                  <Switch
+                    checked={tool.enabled}
+                    onCheckedChange={() => handleToggleEnabled(tool)}
+                  />
+                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleTogglePopular(tool)}
+                  aria-label={tool.popular ? "Unmark as popular" : "Mark as popular"}
+                >
+                  {tool.popular ? (
+                    <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                  ) : (
+                    <StarOff className="h-4 w-4" />
+                  )}
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => handleEditTool(tool)} aria-label="Edit tool">
+                  <Edit className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <>
       <Helmet>
@@ -284,170 +629,41 @@ const AdminPage = () => {
         <main className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-between mb-8">
-              <h1 className="text-3xl font-bold text-foreground">Blog Admin Panel</h1>
-              <div className="flex items-center gap-2">
-                {!isCreating && (
-                  <Button onClick={() => setIsCreating(true)}>
-                    <Plus className="h-4 w-4 mr-2" /> New Post
-                  </Button>
-                )}
-                <Button variant="outline" onClick={handleLogout}>
-                  Logout
-                </Button>
+              <div>
+                <h1 className="text-3xl font-bold text-foreground">Admin Panel</h1>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Logged in as: {adminType} admin
+                </p>
               </div>
+              <Button variant="outline" onClick={handleLogout}>
+                Logout
+              </Button>
             </div>
 
-            {isCreating ? (
-              <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 space-y-6">
-                <h2 className="text-xl font-semibold">
-                  {editingPost ? "Edit Post" : "Create New Post"}
-                </h2>
-
-                <div className="grid gap-4">
-                  <div>
-                    <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
-                    <Input
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) => {
-                        setFormData({ 
-                          ...formData, 
-                          title: e.target.value,
-                          slug: editingPost ? formData.slug : generateSlug(e.target.value)
-                        });
-                      }}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="slug" className="block text-sm font-medium mb-1">Slug</label>
-                    <Input
-                      id="slug"
-                      value={formData.slug}
-                      onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="excerpt" className="block text-sm font-medium mb-1">Excerpt</label>
-                    <Textarea
-                      id="excerpt"
-                      value={formData.excerpt}
-                      onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                      rows={2}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="content" className="block text-sm font-medium mb-1">Content (HTML)</label>
-                    <Textarea
-                      id="content"
-                      value={formData.content}
-                      onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                      rows={10}
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="image" className="block text-sm font-medium mb-1">Featured Image URL</label>
-                    <Input
-                      id="image"
-                      type="url"
-                      value={formData.image}
-                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label htmlFor="author" className="block text-sm font-medium mb-1">Author</label>
-                      <Input
-                        id="author"
-                        value={formData.author}
-                        onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label htmlFor="category" className="block text-sm font-medium mb-1">Category</label>
-                      <Input
-                        id="category"
-                        value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="tags" className="block text-sm font-medium mb-1">Tags (comma-separated)</label>
-                    <Input
-                      id="tags"
-                      value={formData.tags}
-                      onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                    />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="published"
-                      checked={formData.published}
-                      onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                      className="rounded"
-                    />
-                    <label htmlFor="published" className="text-sm">Published</label>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <Button type="submit">
-                    <Save className="h-4 w-4 mr-2" /> {editingPost ? "Update" : "Create"}
-                  </Button>
-                  <Button type="button" variant="outline" onClick={resetForm}>
-                    Cancel
-                  </Button>
-                </div>
-              </form>
-            ) : (
-              <div className="space-y-4">
-                {allPosts.length === 0 ? (
-                  <div className="text-center py-12 bg-card border border-border rounded-xl">
-                    <p className="text-muted-foreground">No posts yet. Create your first post!</p>
-                  </div>
-                ) : (
-                  allPosts.map((post) => (
-                    <div key={post.id} className="bg-card border border-border rounded-xl p-4 flex items-center justify-between">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <h3 className="font-medium text-foreground truncate">{post.title}</h3>
-                          {post.published ? (
-                            <Eye className="h-4 w-4 text-green-500" />
-                          ) : (
-                            <EyeOff className="h-4 w-4 text-muted-foreground" />
-                          )}
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                          {new Date(post.createdAt).toLocaleDateString()} • {post.category}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleEdit(post)} aria-label="Edit post">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(post.id)} aria-label="Delete post">
-                          <Trash2 className="h-4 w-4 text-destructive" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            )}
+            {adminType === 'master' ? (
+              <Tabs defaultValue="blog" className="space-y-6">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="blog" className="flex items-center gap-2">
+                    <FileText className="h-4 w-4" />
+                    Blog
+                  </TabsTrigger>
+                  <TabsTrigger value="tools" className="flex items-center gap-2">
+                    <Settings className="h-4 w-4" />
+                    Tools
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="blog">
+                  <BlogPanel />
+                </TabsContent>
+                <TabsContent value="tools">
+                  <ToolsPanel />
+                </TabsContent>
+              </Tabs>
+            ) : canAccessBlog ? (
+              <BlogPanel />
+            ) : canAccessTools ? (
+              <ToolsPanel />
+            ) : null}
           </div>
         </main>
         <Footer />
