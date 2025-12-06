@@ -78,23 +78,27 @@ const AdminPage = () => {
     setIsVerifying(true);
 
     try {
-      const { data, error } = await supabase.functions.invoke('verify-admin', {
-        body: { code: secretCode, codeType: 'blog' }
-      });
+      // Try each code type: blog, tools, master
+      const codeTypes = ['blog', 'tools', 'master'];
+      let authenticated = false;
+      
+      for (const codeType of codeTypes) {
+        const { data, error } = await supabase.functions.invoke('verify-admin', {
+          body: { code: secretCode, codeType }
+        });
 
-      if (error) {
-        console.error('Verification error:', error);
-        toast.error("Verification failed. Please try again.");
-        return;
+        if (!error && data?.valid && data?.sessionToken) {
+          // Store session token securely in sessionStorage
+          sessionStorage.setItem(SESSION_TOKEN_KEY, data.sessionToken);
+          setIsAuthenticated(true);
+          toast.success(`Access granted as ${codeType} admin!`);
+          setSecretCode("");
+          authenticated = true;
+          break;
+        }
       }
-
-      if (data?.valid && data?.sessionToken) {
-        // Store session token securely in sessionStorage
-        sessionStorage.setItem(SESSION_TOKEN_KEY, data.sessionToken);
-        setIsAuthenticated(true);
-        toast.success("Access granted!");
-        setSecretCode("");
-      } else {
+      
+      if (!authenticated) {
         toast.error("Invalid secret code");
       }
     } catch (error) {
