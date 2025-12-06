@@ -11,6 +11,7 @@ import HealthTool from "@/components/tools/HealthTool";
 import DataTool from "@/components/tools/DataTool";
 import GeneratorTool from "@/components/tools/GeneratorTool";
 import AudioVideoTool from "@/components/tools/AudioVideoTool";
+import TypingTestTool from "@/components/tools/TypingTestTool";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
 import ToolCard from "@/components/ToolCard";
@@ -49,6 +50,11 @@ const ToolPage = () => {
   const Icon = tool.icon;
 
   const renderToolComponent = () => {
+    // Special case for typing test tool
+    if (tool.id === 'typing-test') {
+      return <TypingTestTool tool={tool} />;
+    }
+    
     switch (tool.toolType) {
       case 'image-convert':
       case 'image-edit':
