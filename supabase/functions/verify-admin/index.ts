@@ -6,6 +6,27 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// Session storage for admin tokens (in-memory, expires on function restart or after TTL)
+const adminSessions = new Map<string, { codeType: string; createdAt: number }>();
+const SESSION_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+// Clean up expired sessions
+function cleanupSessions() {
+  const now = Date.now();
+  for (const [token, session] of adminSessions) {
+    if (now - session.createdAt > SESSION_TTL_MS) {
+      adminSessions.delete(token);
+    }
+  }
+}
+
+// Generate a secure random token
+async function generateToken(): Promise<string> {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -13,8 +34,55 @@ serve(async (req) => {
   }
 
   try {
-    const { code, codeType } = await req.json();
+    const body = await req.json();
+    const { code, codeType, action, sessionToken } = body;
 
+    // Handle session validation
+    if (action === 'validate-session') {
+      cleanupSessions();
+      
+      if (!sessionToken) {
+        return new Response(
+          JSON.stringify({ valid: false, error: 'Session token required' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const session = adminSessions.get(sessionToken);
+      if (!session) {
+        return new Response(
+          JSON.stringify({ valid: false, error: 'Invalid or expired session' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      // Check if session is expired
+      if (Date.now() - session.createdAt > SESSION_TTL_MS) {
+        adminSessions.delete(sessionToken);
+        return new Response(
+          JSON.stringify({ valid: false, error: 'Session expired' }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      return new Response(
+        JSON.stringify({ valid: true, codeType: session.codeType }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Handle logout
+    if (action === 'logout') {
+      if (sessionToken) {
+        adminSessions.delete(sessionToken);
+      }
+      return new Response(
+        JSON.stringify({ success: true }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Handle login verification
     if (!code || !codeType) {
       console.log('Missing code or codeType');
       return new Response(
@@ -58,8 +126,20 @@ serve(async (req) => {
     const isValid = !!adminCode;
     console.log(`Verification result: ${isValid ? 'valid' : 'invalid'}`);
 
+    if (isValid) {
+      // Generate session token and store it server-side
+      cleanupSessions();
+      const token = await generateToken();
+      adminSessions.set(token, { codeType, createdAt: Date.now() });
+      
+      return new Response(
+        JSON.stringify({ valid: true, sessionToken: token }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     return new Response(
-      JSON.stringify({ valid: isValid }),
+      JSON.stringify({ valid: false }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
   } catch (error) {

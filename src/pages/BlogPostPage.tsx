@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { useParams, Link } from "react-router-dom";
 import { Calendar, User, Tag, ArrowLeft } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
+import DOMPurify from "dompurify";
 
 const BlogPostPage = () => {
   const { slug } = useParams();
@@ -79,7 +80,7 @@ const BlogPostPage = () => {
 
             <div 
               className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-primary prose-strong:text-foreground"
-              dangerouslySetInnerHTML={{ __html: post.content }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content) }}
             />
 
             <footer className="mt-12 pt-8 border-t border-border">
