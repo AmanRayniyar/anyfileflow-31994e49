@@ -49,7 +49,7 @@ const PDFUnlockTool: React.FC = () => {
           noInitialRun: true,
           print: () => {},
           printErr: () => {},
-        });
+        } as any);
         qpdfRef.current = qpdf;
         setIsLoading(false);
       } catch (error) {
