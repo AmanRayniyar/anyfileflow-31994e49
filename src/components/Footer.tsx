@@ -29,14 +29,14 @@ const Footer = () => {
                   <strong>Founder:</strong> Aman Rauniyar
                 </p>
                 <div className="flex items-center gap-2 mt-1">
-                  <a href="https://www.facebook.com/aman.rauniyar.980" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                    <Facebook className="h-4 w-4" />
+                  <a href="https://www.facebook.com/aman.rauniyar.980" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Visit founder's Facebook profile">
+                    <Facebook className="h-4 w-4" aria-hidden="true" />
                   </a>
-                  <a href="https://github.com/AmanRayniyar" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                    <Github className="h-4 w-4" />
+                  <a href="https://github.com/AmanRayniyar" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Visit founder's GitHub profile">
+                    <Github className="h-4 w-4" aria-hidden="true" />
                   </a>
-                  <a href="https://www.instagram.com/amanrauniyar2064/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
-                    <Instagram className="h-4 w-4" />
+                  <a href="https://www.instagram.com/amanrauniyar2064/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors" aria-label="Visit founder's Instagram profile">
+                    <Instagram className="h-4 w-4" aria-hidden="true" />
                   </a>
                 </div>
               </div>
