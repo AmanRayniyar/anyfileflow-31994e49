@@ -213,11 +213,7 @@ const ToolPage = () => {
 
               {/* Bottom Ad Banner */}
               <div className="mt-6">
-                <AdBanner 
-                  adKey="1c8743d7290c444a41fbe0a881b3fbc5" 
-                  width={728} 
-                  height={90} 
-                />
+                <AdBanner />
               </div>
             </article>
 
