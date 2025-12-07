@@ -16,17 +16,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "@/hooks/use-toast";
-import QRCodeStyling, { 
-  DrawType, 
-  TypeNumber, 
-  Mode, 
-  ErrorCorrectionLevel,
-  DotType,
-  CornerSquareType,
-  CornerDotType
-} from "qr-code-styling";
+import QRCodeStyling from "qr-code-styling";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
+
+// Define types locally to avoid import issues
+type DotType = 'square' | 'dots' | 'rounded' | 'extra-rounded' | 'classy' | 'classy-rounded';
+type CornerSquareType = 'square' | 'dot' | 'extra-rounded';
+type CornerDotType = 'square' | 'dot';
+type ErrorCorrectionLevel = 'L' | 'M' | 'Q' | 'H';
 
 type QRContentType = 'url' | 'text' | 'phone' | 'email' | 'sms' | 'wifi' | 'vcard';
 type ExportFormat = 'png' | 'jpeg' | 'svg';
@@ -170,7 +168,7 @@ END:VCARD`;
     const options: any = {
       width: size,
       height: size,
-      type: 'svg' as DrawType,
+      type: 'svg',
       data,
       dotsOptions: {
         color: useGradient ? undefined : fgColor,
@@ -360,7 +358,7 @@ END:VCARD`;
       const tempQR = new QRCodeStyling({
         width: exportSize,
         height: exportSize,
-        type: 'svg' as DrawType,
+        type: 'svg',
         data: item.content,
         dotsOptions: {
           color: useGradient ? undefined : fgColor,
