@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { PDFDocument } from 'pdf-lib';
+import { PDFDocument } from '@pdfme/pdf-lib';
 import { 
   Upload, Unlock, Download, FileText, X, AlertCircle, 
   Eye, EyeOff, CheckCircle, RefreshCw, Shield, Info,
@@ -72,9 +72,7 @@ const PDFUnlockTool: React.FC = () => {
       
       // Try to load without password first
       try {
-        const pdfDoc = await PDFDocument.load(arrayBuffer, { 
-          ignoreEncryption: true 
-        });
+        const pdfDoc = await PDFDocument.load(arrayBuffer);
         
         setPdfInfo({
           pageCount: pdfDoc.getPageCount(),
@@ -82,17 +80,32 @@ const PDFUnlockTool: React.FC = () => {
           title: pdfDoc.getTitle() || undefined
         });
         
-        // Check if it seems encrypted by trying to access content
-        toast.info('PDF loaded. Ready to process.');
+        toast.info('PDF loaded. This PDF does not appear to be password protected.');
         
-      } catch (error) {
+      } catch (error: any) {
         // PDF is encrypted and needs password
-        setStatus('needs-password');
-        setPdfInfo({
-          pageCount: 0,
-          isEncrypted: true
-        });
-        toast.info('This PDF is password protected. Enter the password to unlock.');
+        if (error.message?.includes('encrypted') || error.message?.includes('password')) {
+          setStatus('needs-password');
+          setPdfInfo({
+            pageCount: 0,
+            isEncrypted: true
+          });
+          toast.info('This PDF is password protected. Enter the password to unlock.');
+        } else {
+          // Try with ignoreEncryption
+          try {
+            const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+            setPdfInfo({
+              pageCount: pdfDoc.getPageCount(),
+              isEncrypted: true,
+              title: pdfDoc.getTitle() || undefined
+            });
+            setStatus('needs-password');
+            toast.info('This PDF has restrictions. You can try to remove them.');
+          } catch {
+            toast.error('Failed to load PDF file');
+          }
+        }
       }
     } catch (error) {
       console.error('Error loading PDF:', error);
@@ -111,23 +124,35 @@ const PDFUnlockTool: React.FC = () => {
     setErrorMessage('');
 
     try {
-      setProgress(20);
+      setProgress(10);
       const arrayBuffer = await file.arrayBuffer();
       
-      setProgress(40);
+      setProgress(30);
       
-      // Try to load with password if provided
-      const loadOptions: { ignoreEncryption?: boolean; password?: string } = {
-        ignoreEncryption: true
-      };
-      
-      if (password) {
-        loadOptions.password = password;
+      // Try to load with password
+      let pdfDoc;
+      try {
+        if (password) {
+          pdfDoc = await PDFDocument.load(arrayBuffer, { 
+            password: password,
+            ignoreEncryption: true 
+          });
+        } else {
+          pdfDoc = await PDFDocument.load(arrayBuffer, { 
+            ignoreEncryption: true 
+          });
+        }
+      } catch (error: any) {
+        if (error.message?.includes('password') || error.message?.includes('encrypted')) {
+          setStatus('needs-password');
+          setErrorMessage('Incorrect password. Please try again.');
+          toast.error('Incorrect password. Please try again.');
+          return;
+        }
+        throw error;
       }
       
-      const pdfDoc = await PDFDocument.load(arrayBuffer, loadOptions);
-      
-      setProgress(60);
+      setProgress(50);
       
       // Create a new PDF without encryption
       const newPdfDoc = await PDFDocument.create();
@@ -141,7 +166,7 @@ const PDFUnlockTool: React.FC = () => {
         newPdfDoc.addPage(page);
       });
       
-      setProgress(80);
+      setProgress(70);
       
       // Copy metadata
       newPdfDoc.setTitle(pdfDoc.getTitle() || file.name.replace('.pdf', ''));
@@ -150,6 +175,9 @@ const PDFUnlockTool: React.FC = () => {
       newPdfDoc.setCreator('AnyFile Flow PDF Unlocker');
       newPdfDoc.setProducer('AnyFile Flow - anyfileflow.com');
       
+      setProgress(85);
+      
+      // Save WITHOUT encryption (no passwords = unprotected)
       const pdfBytes = await newPdfDoc.save();
       const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' });
       
@@ -161,7 +189,7 @@ const PDFUnlockTool: React.FC = () => {
         isEncrypted: false,
         title: pdfDoc.getTitle() || undefined
       });
-      toast.success('PDF unlocked successfully!');
+      toast.success('PDF unlocked successfully! All restrictions removed.');
       
     } catch (error: any) {
       console.error('Error unlocking PDF:', error);
@@ -169,8 +197,8 @@ const PDFUnlockTool: React.FC = () => {
       
       if (error.message?.includes('password') || error.message?.includes('encrypted')) {
         setStatus('needs-password');
-        setErrorMessage('Incorrect password. Please try again.');
-        toast.error('Incorrect password. Please try again.');
+        setErrorMessage('This PDF requires the correct password to unlock.');
+        toast.error('Password required or incorrect.');
       } else {
         setErrorMessage('Failed to unlock PDF. The file might be corrupted or use unsupported encryption.');
         toast.error('Failed to unlock PDF');
@@ -252,7 +280,7 @@ const PDFUnlockTool: React.FC = () => {
               <p className="font-semibold text-foreground">{file.name}</p>
               <p className="text-sm text-muted-foreground">
                 {(file.size / 1024 / 1024).toFixed(2)} MB
-                {pdfInfo && ` • ${pdfInfo.pageCount} pages`}
+                {pdfInfo && pdfInfo.pageCount > 0 && ` • ${pdfInfo.pageCount} pages`}
               </p>
               {pdfInfo?.isEncrypted && (
                 <p className="text-xs text-yellow-600 dark:text-yellow-400 flex items-center gap-1 mt-1">
@@ -298,7 +326,7 @@ const PDFUnlockTool: React.FC = () => {
           <div className="space-y-3">
             <Label htmlFor="pdfPassword" className="flex items-center gap-2">
               <Key className="h-4 w-4" />
-              PDF Password {status === 'needs-password' ? '*' : '(if protected)'}
+              PDF Password {status === 'needs-password' ? '(Required)' : '(if protected)'}
             </Label>
             <div className="relative">
               <Input
@@ -320,7 +348,7 @@ const PDFUnlockTool: React.FC = () => {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </Button>
             </div>
-            {status === 'needs-password' && (
+            {status === 'needs-password' && !errorMessage && (
               <p className="text-sm text-yellow-600 dark:text-yellow-400">
                 This PDF requires a password to unlock
               </p>
@@ -340,7 +368,7 @@ const PDFUnlockTool: React.FC = () => {
             <div className="space-y-2">
               <Progress value={progress} className="h-2" />
               <p className="text-sm text-center text-muted-foreground">
-                Unlocking PDF... {progress}%
+                Removing PDF protection... {progress}%
               </p>
             </div>
           )}
@@ -386,7 +414,7 @@ const PDFUnlockTool: React.FC = () => {
                   PDF Unlocked Successfully!
                 </p>
                 <p className="text-sm text-green-600 dark:text-green-500">
-                  Your PDF is now unlocked and ready to download without password protection.
+                  All password protection and restrictions have been removed.
                 </p>
               </div>
             </div>
@@ -431,17 +459,17 @@ const PDFUnlockTool: React.FC = () => {
           <AccordionItem value="item-1">
             <AccordionTrigger>How does the PDF Unlocker work?</AccordionTrigger>
             <AccordionContent>
-              Our PDF Unlocker works by decrypting the PDF using the password you provide. 
-              If you know the correct password, the tool will remove the protection and create 
-              an unencrypted copy that you can use freely without requiring a password.
+              Our PDF Unlocker works by decrypting the PDF using the password you provide, 
+              then creating a new copy without any encryption or restrictions. The result 
+              is a clean PDF that can be opened, printed, and edited freely.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
             <AccordionTrigger>Can I unlock a PDF without the password?</AccordionTrigger>
             <AccordionContent>
-              For owner-password protected PDFs (which restrict printing, copying, etc.), 
-              you may be able to remove restrictions. However, for user-password protected 
-              PDFs (which require a password to open), you must know the correct password.
+              For PDFs with owner password only (restrictions on printing/copying), you may 
+              be able to remove restrictions without the password. However, for user-password 
+              protected PDFs (password required to open), you must provide the correct password.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
@@ -455,9 +483,9 @@ const PDFUnlockTool: React.FC = () => {
           <AccordionItem value="item-4">
             <AccordionTrigger>What types of PDF protection can be removed?</AccordionTrigger>
             <AccordionContent>
-              Our tool can remove password protection including: open passwords (user password), 
-              permission passwords (owner password), and restrictions on printing, copying, 
-              and editing. Some advanced DRM protection may not be removable.
+              Our tool can remove: open passwords (user password), permission passwords 
+              (owner password), and restrictions on printing, copying, editing, and annotations. 
+              Some advanced DRM protection may not be removable.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
@@ -465,15 +493,15 @@ const PDFUnlockTool: React.FC = () => {
             <AccordionContent>
               No! Your password is never stored or transmitted anywhere. All processing happens 
               entirely in your browser. The password is only used locally to decrypt the PDF 
-              and is never sent to any server.
+              and is immediately discarded after processing.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-6">
             <AccordionTrigger>What if I forgot my PDF password?</AccordionTrigger>
             <AccordionContent>
-              Unfortunately, if you forgot the password for a user-protected PDF (password 
-              required to open), recovery is extremely difficult due to strong encryption. 
-              You may need to contact the original creator of the document.
+              Unfortunately, if you forgot the password for a user-protected PDF, recovery is 
+              extremely difficult due to strong encryption. You may need to contact the original 
+              creator of the document to obtain the password.
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -499,6 +527,7 @@ const PDFUnlockTool: React.FC = () => {
             "Remove PDF password protection",
             "Remove printing restrictions",
             "Remove copying restrictions",
+            "Remove editing restrictions",
             "Client-side processing",
             "No file upload required",
             "Complete privacy"
@@ -528,13 +557,13 @@ const PDFUnlockTool: React.FC = () => {
               "@type": "HowToStep",
               "position": 3,
               "name": "Unlock PDF",
-              "text": "Click the 'Unlock PDF' button to remove the password protection from the document."
+              "text": "Click the Unlock PDF button to remove the password protection and all restrictions."
             },
             {
               "@type": "HowToStep",
               "position": 4,
               "name": "Download Unlocked PDF",
-              "text": "Once unlocked, download your PDF file which can now be opened without a password."
+              "text": "Once unlocked, download your PDF file which can now be opened, printed, and edited freely."
             }
           ]
         })
@@ -549,7 +578,7 @@ const PDFUnlockTool: React.FC = () => {
               "name": "How does the PDF Unlocker work?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Our PDF Unlocker works by decrypting the PDF using the password you provide. It removes the protection and creates an unencrypted copy."
+                "text": "Our PDF Unlocker works by decrypting the PDF using the password you provide, then creating a new copy without any encryption or restrictions."
               }
             },
             {
@@ -557,7 +586,7 @@ const PDFUnlockTool: React.FC = () => {
               "name": "Can I unlock a PDF without the password?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "For owner-password protected PDFs, you may be able to remove restrictions. However, for user-password protected PDFs, you must know the correct password."
+                "text": "For PDFs with owner password only (restrictions on printing/copying), you may be able to remove restrictions. For user-password protected PDFs, you must provide the correct password."
               }
             },
             {
