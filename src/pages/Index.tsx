@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import CategorySection from "@/components/CategorySection";
 import BlogPreview from "@/components/BlogPreview";
+import HomeAdBanner from "@/components/HomeAdBanner";
 import { categories } from "@/data/tools";
 
 const Index = () => {
@@ -40,6 +41,9 @@ const Index = () => {
 
           {/* Blog Preview */}
           <BlogPreview />
+
+          {/* Ad Banner */}
+          <HomeAdBanner />
         </main>
         <Footer />
       </div>
