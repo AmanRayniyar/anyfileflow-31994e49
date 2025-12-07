@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Mail, MessageSquare, Facebook, Github, Instagram } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-new.png";
 import founderImg from "@/assets/founder.png";
 
 const Footer = () => {
