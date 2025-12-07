@@ -213,7 +213,7 @@ const ToolPage = () => {
 
               {/* Bottom Ad Banner */}
               <div className="mt-6">
-                <AdBanner />
+                <AdBanner delay={500} />
               </div>
             </article>
 
@@ -221,7 +221,7 @@ const ToolPage = () => {
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
                 {/* Ad Banner */}
-                <AdBanner />
+                <AdBanner delay={0} />
                 
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
                   <h3 id="related-tools" className="font-bold text-foreground mb-4">Related Tools</h3>
