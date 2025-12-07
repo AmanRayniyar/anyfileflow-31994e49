@@ -12,6 +12,7 @@ import DataTool from "@/components/tools/DataTool";
 import GeneratorTool from "@/components/tools/GeneratorTool";
 import AudioVideoTool from "@/components/tools/AudioVideoTool";
 import TypingTestTool from "@/components/tools/TypingTestTool";
+import ImageCropperTool from "@/components/tools/ImageCropperTool";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
 import ToolCard from "@/components/ToolCard";
@@ -53,6 +54,11 @@ const ToolPage = () => {
     // Special case for typing test tool
     if (tool.id === 'typing-test') {
       return <TypingTestTool tool={tool} />;
+    }
+    
+    // Special case for image cropper tool
+    if (tool.id === 'image-cropper') {
+      return <ImageCropperTool tool={tool} />;
     }
     
     switch (tool.toolType) {
