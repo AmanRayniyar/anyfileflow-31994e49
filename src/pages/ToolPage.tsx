@@ -15,6 +15,8 @@ import TypingTestTool from "@/components/tools/TypingTestTool";
 import ImageCropperTool from "@/components/tools/ImageCropperTool";
 import AdvancedQRGenerator from "@/components/tools/AdvancedQRGenerator";
 import PomodoroTimerTool from "@/components/tools/PomodoroTimerTool";
+import PDFProtectTool from "@/components/tools/PDFProtectTool";
+import PDFUnlockTool from "@/components/tools/PDFUnlockTool";
 import ToolComments from "@/components/ToolComments";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
@@ -72,6 +74,16 @@ const ToolPage = () => {
     // Special case for Pomodoro timer
     if (tool.id === 'pomodoro-timer') {
       return <PomodoroTimerTool />;
+    }
+    
+    // Special case for PDF Protect
+    if (tool.id === 'pdf-protect') {
+      return <PDFProtectTool />;
+    }
+    
+    // Special case for PDF Unlocker
+    if (tool.id === 'pdf-unlocker') {
+      return <PDFUnlockTool />;
     }
     
     switch (tool.toolType) {
