@@ -23,13 +23,14 @@ const HomeAdBanner = () => {
   }, [isLoaded]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <p className="text-xs text-muted-foreground text-center mb-3">
+    <div className="container mx-auto px-4 py-6 sm:py-8">
+      <p className="text-xs text-muted-foreground text-center mb-2 sm:mb-3">
         To keep this site 100% free, a small ad is shown below
       </p>
       <div 
         ref={containerRef}
-        className="flex items-center justify-center"
+        className="flex items-center justify-center w-full overflow-x-auto"
+        style={{ minHeight: '90px' }}
       >
         {!isLoaded && (
           <span className="text-xs text-muted-foreground">Advertisement</span>

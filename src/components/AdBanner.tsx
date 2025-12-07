@@ -2,20 +2,15 @@ import { useEffect, useRef, useState } from "react";
 
 interface AdBannerProps {
   adKey?: string;
-  width?: number;
-  height?: number;
   delay?: number;
 }
 
 const AdBanner = ({ 
   adKey = '204ac3e1d66348d2a6d3c4f02054516d', 
-  width = 300, 
-  height = 250,
   delay = 0
 }: AdBannerProps) => {
   const adContainerRef = useRef<HTMLDivElement>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const scriptIdRef = useRef(`ad_${Math.random().toString(36).substring(2, 11)}`);
 
   useEffect(() => {
     if (isLoaded) return;
@@ -23,12 +18,12 @@ const AdBanner = ({
     const timer = setTimeout(() => {
       if (!adContainerRef.current) return;
 
-      // Set atOptions before loading invoke script
+      // Set atOptions before loading invoke script - responsive sizing
       (window as any).atOptions = {
         'key': adKey,
         'format': 'iframe',
-        'height': height,
-        'width': width,
+        'height': 250,
+        'width': 300,
         'params': {}
       };
 
@@ -36,7 +31,6 @@ const AdBanner = ({
       const invokeScript = document.createElement('script');
       invokeScript.type = 'text/javascript';
       invokeScript.src = `//www.highperformanceformat.com/${adKey}/invoke.js`;
-      invokeScript.id = scriptIdRef.current;
       
       // Append to the container
       adContainerRef.current.appendChild(invokeScript);
@@ -44,17 +38,16 @@ const AdBanner = ({
     }, delay);
 
     return () => clearTimeout(timer);
-  }, [adKey, width, height, delay, isLoaded]);
+  }, [adKey, delay, isLoaded]);
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-4 overflow-hidden">
-      <p className="text-xs text-muted-foreground text-center mb-3">
+    <div className="bg-card border border-border rounded-2xl p-3 sm:p-4 overflow-hidden">
+      <p className="text-xs text-muted-foreground text-center mb-2 sm:mb-3">
         To keep this site 100% free, a small ad is shown below
       </p>
       <div 
         ref={adContainerRef}
-        style={{ minHeight: height, width, maxWidth: '100%' }} 
-        className="flex items-center justify-center mx-auto"
+        className="flex items-center justify-center w-full min-h-[250px] max-w-full overflow-hidden"
       >
         {!isLoaded && (
           <span className="text-xs text-muted-foreground">Advertisement</span>

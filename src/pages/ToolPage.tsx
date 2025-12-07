@@ -1,30 +1,41 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import ShareButton from "@/components/ShareButton";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import ImageConverter from "@/components/ImageConverter";
-import TextTool from "@/components/tools/TextTool";
-import HealthTool from "@/components/tools/HealthTool";
-import DataTool from "@/components/tools/DataTool";
-import GeneratorTool from "@/components/tools/GeneratorTool";
-import AudioVideoTool from "@/components/tools/AudioVideoTool";
-import TypingTestTool from "@/components/tools/TypingTestTool";
-import ImageCropperTool from "@/components/tools/ImageCropperTool";
-import AdvancedQRGenerator from "@/components/tools/AdvancedQRGenerator";
-import PomodoroTimerTool from "@/components/tools/PomodoroTimerTool";
-import PDFProtectTool from "@/components/tools/PDFProtectTool";
-import PDFUnlockTool from "@/components/tools/PDFUnlockTool";
-import StopwatchTool from "@/components/tools/StopwatchTool";
-import CountdownTimerTool from "@/components/tools/CountdownTimerTool";
-import ToolComments from "@/components/ToolComments";
 import AdBanner from "@/components/AdBanner";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
 import ToolCard from "@/components/ToolCard";
 import { cn } from "@/lib/utils";
+
+// Lazy load tool components for faster initial load
+const ImageConverter = lazy(() => import("@/components/ImageConverter"));
+const TextTool = lazy(() => import("@/components/tools/TextTool"));
+const HealthTool = lazy(() => import("@/components/tools/HealthTool"));
+const DataTool = lazy(() => import("@/components/tools/DataTool"));
+const GeneratorTool = lazy(() => import("@/components/tools/GeneratorTool"));
+const AudioVideoTool = lazy(() => import("@/components/tools/AudioVideoTool"));
+const TypingTestTool = lazy(() => import("@/components/tools/TypingTestTool"));
+const ImageCropperTool = lazy(() => import("@/components/tools/ImageCropperTool"));
+const AdvancedQRGenerator = lazy(() => import("@/components/tools/AdvancedQRGenerator"));
+const PomodoroTimerTool = lazy(() => import("@/components/tools/PomodoroTimerTool"));
+const PDFProtectTool = lazy(() => import("@/components/tools/PDFProtectTool"));
+const PDFUnlockTool = lazy(() => import("@/components/tools/PDFUnlockTool"));
+const StopwatchTool = lazy(() => import("@/components/tools/StopwatchTool"));
+const CountdownTimerTool = lazy(() => import("@/components/tools/CountdownTimerTool"));
+const ToolComments = lazy(() => import("@/components/ToolComments"));
+
+// Tool loading skeleton
+const ToolLoader = () => (
+  <div className="animate-pulse space-y-4">
+    <div className="h-32 bg-muted rounded-xl" />
+    <div className="h-8 bg-muted rounded w-1/2" />
+    <div className="h-24 bg-muted rounded-xl" />
+  </div>
+);
 
 const ToolPage = () => {
   // Scroll to top on mount
@@ -174,7 +185,9 @@ const ToolPage = () => {
                 </header>
 
                 {/* Tool Component */}
-                {renderToolComponent()}
+                <Suspense fallback={<ToolLoader />}>
+                  {renderToolComponent()}
+                </Suspense>
               </div>
 
               {/* Info Section */}
@@ -209,7 +222,9 @@ const ToolPage = () => {
               </section>
 
               {/* Comments Section */}
-              <ToolComments toolId={tool.id} />
+              <Suspense fallback={<div className="h-32 bg-muted rounded-xl animate-pulse mt-6" />}>
+                <ToolComments toolId={tool.id} />
+              </Suspense>
             </article>
 
             {/* Sidebar */}
