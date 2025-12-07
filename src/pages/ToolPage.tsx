@@ -13,6 +13,7 @@ import GeneratorTool from "@/components/tools/GeneratorTool";
 import AudioVideoTool from "@/components/tools/AudioVideoTool";
 import TypingTestTool from "@/components/tools/TypingTestTool";
 import ImageCropperTool from "@/components/tools/ImageCropperTool";
+import ToolComments from "@/components/ToolComments";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
 import ToolCard from "@/components/ToolCard";
@@ -169,6 +170,9 @@ const ToolPage = () => {
                   </ul>
                 </div>
               </section>
+
+              {/* Comments Section */}
+              <ToolComments toolId={tool.id} />
             </article>
 
             {/* Sidebar */}
