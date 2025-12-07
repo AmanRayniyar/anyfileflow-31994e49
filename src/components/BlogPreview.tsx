@@ -53,7 +53,14 @@ const BlogPreview = () => {
                     {post.title}
                   </Link>
                 </h3>
-                <p className="text-sm text-muted-foreground line-clamp-2">{post.excerpt}</p>
+                <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{post.excerpt}</p>
+                <Link 
+                  to={`/blog/${post.slug}`} 
+                  className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                >
+                  Read more
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
               </div>
             </article>
           ))}
