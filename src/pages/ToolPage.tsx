@@ -17,6 +17,7 @@ import AdvancedQRGenerator from "@/components/tools/AdvancedQRGenerator";
 import PomodoroTimerTool from "@/components/tools/PomodoroTimerTool";
 import PDFProtectTool from "@/components/tools/PDFProtectTool";
 import PDFUnlockTool from "@/components/tools/PDFUnlockTool";
+import StopwatchTool from "@/components/tools/StopwatchTool";
 import ToolComments from "@/components/ToolComments";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
@@ -84,6 +85,11 @@ const ToolPage = () => {
     // Special case for PDF Unlocker
     if (tool.id === 'pdf-unlocker') {
       return <PDFUnlockTool />;
+    }
+    
+    // Special case for Stopwatch
+    if (tool.id === 'stopwatch') {
+      return <StopwatchTool />;
     }
     
     switch (tool.toolType) {
