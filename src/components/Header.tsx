@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { categories, searchTools, Tool } from "@/data/tools";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo-optimized.webp";
 import AnyFlowAI from "@/components/AnyFlowAI";
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
