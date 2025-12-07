@@ -20,6 +20,7 @@ import PDFUnlockTool from "@/components/tools/PDFUnlockTool";
 import StopwatchTool from "@/components/tools/StopwatchTool";
 import CountdownTimerTool from "@/components/tools/CountdownTimerTool";
 import ToolComments from "@/components/ToolComments";
+import AdBanner from "@/components/AdBanner";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
 import ToolCard from "@/components/ToolCard";
@@ -214,6 +215,9 @@ const ToolPage = () => {
             {/* Sidebar */}
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
+                {/* Ad Banner */}
+                <AdBanner />
+                
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
                   <h3 id="related-tools" className="font-bold text-foreground mb-4">Related Tools</h3>
                   <div className="space-y-3">
