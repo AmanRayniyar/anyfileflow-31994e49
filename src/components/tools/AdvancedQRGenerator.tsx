@@ -2,32 +2,25 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { 
   Download, Upload, Trash2, Copy, Check, Plus, Minus,
   Wifi, Phone, Mail, MessageSquare, User, Link, Type,
-  QrCode, Palette, Square, Circle, Settings, Image,
-  RotateCcw, Eye, Sparkles, FileText, Package
+  QrCode, Palette, Square, RotateCcw, Eye, Package, Image
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "@/hooks/use-toast";
-import QRCodeStyling from "qr-code-styling";
+import QRCode from "qrcode";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
-// Define types locally to avoid import issues
-type DotType = 'square' | 'dots' | 'rounded' | 'extra-rounded' | 'classy' | 'classy-rounded';
-type CornerSquareType = 'square' | 'dot' | 'extra-rounded';
-type CornerDotType = 'square' | 'dot';
-type ErrorCorrectionLevel = 'L' | 'M' | 'Q' | 'H';
-
 type QRContentType = 'url' | 'text' | 'phone' | 'email' | 'sms' | 'wifi' | 'vcard';
 type ExportFormat = 'png' | 'jpeg' | 'svg';
+type ErrorCorrectionLevel = 'L' | 'M' | 'Q' | 'H';
 
 interface VCardData {
   firstName: string;
@@ -89,19 +82,12 @@ const AdvancedQRGenerator = () => {
   const [fgColor, setFgColor] = useState('#000000');
   const [bgColor, setBgColor] = useState('#FFFFFF');
   const [transparentBg, setTransparentBg] = useState(false);
-  const [dotType, setDotType] = useState<DotType>('rounded');
-  const [cornerSquareType, setCornerSquareType] = useState<CornerSquareType>('extra-rounded');
-  const [cornerDotType, setCornerDotType] = useState<CornerDotType>('dot');
   const [errorCorrection, setErrorCorrection] = useState<ErrorCorrectionLevel>('M');
-  const [useGradient, setUseGradient] = useState(false);
-  const [gradientColor1, setGradientColor1] = useState('#000000');
-  const [gradientColor2, setGradientColor2] = useState('#4F46E5');
-  const [gradientType, setGradientType] = useState<'linear' | 'radial'>('linear');
+  const [margin, setMargin] = useState(4);
   
   // Logo state
   const [logoImage, setLogoImage] = useState<string | null>(null);
-  const [logoSize, setLogoSize] = useState(0.3);
-  const [logoMargin, setLogoMargin] = useState(5);
+  const [logoSize, setLogoSize] = useState(0.25);
   
   // Frame state
   const [showFrame, setShowFrame] = useState(false);
@@ -111,16 +97,16 @@ const AdvancedQRGenerator = () => {
   
   // Export state
   const [exportFormat, setExportFormat] = useState<ExportFormat>('png');
-  const [exportQuality, setExportQuality] = useState(1);
   const [exportSize, setExportSize] = useState(1024);
   
   // Batch state
   const [batchItems, setBatchItems] = useState<BatchItem[]>([]);
   const [batchInput, setBatchInput] = useState('');
   
-  // Refs
-  const qrRef = useRef<HTMLDivElement>(null);
-  const qrCode = useRef<QRCodeStyling | null>(null);
+  // QR state
+  const [qrDataUrl, setQrDataUrl] = useState<string>('');
+  const [qrSvg, setQrSvg] = useState<string>('');
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const logoInputRef = useRef<HTMLInputElement>(null);
   const [copied, setCopied] = useState(false);
 
@@ -160,66 +146,87 @@ END:VCARD`;
     }
   }, [contentType, content, phoneNumber, email, emailSubject, emailBody, smsNumber, smsBody, wifiData, vcardData]);
 
-  // Initialize and update QR code
-  useEffect(() => {
+  // Generate QR code
+  const generateQR = useCallback(async () => {
     const data = getQRData();
     if (!data) return;
 
-    const options: any = {
-      width: size,
-      height: size,
-      type: 'svg',
-      data,
-      dotsOptions: {
-        color: useGradient ? undefined : fgColor,
-        type: dotType,
-        gradient: useGradient ? {
-          type: gradientType,
-          colorStops: [
-            { offset: 0, color: gradientColor1 },
-            { offset: 1, color: gradientColor2 }
-          ]
-        } : undefined
-      },
-      backgroundOptions: {
-        color: transparentBg ? 'transparent' : bgColor,
-      },
-      cornersSquareOptions: {
-        color: useGradient ? gradientColor1 : fgColor,
-        type: cornerSquareType,
-      },
-      cornersDotOptions: {
-        color: useGradient ? gradientColor2 : fgColor,
-        type: cornerDotType,
-      },
-      qrOptions: {
+    try {
+      const options = {
         errorCorrectionLevel: errorCorrection,
-      },
-      imageOptions: {
-        crossOrigin: 'anonymous',
-        margin: logoMargin,
-        imageSize: logoSize,
-      },
-    };
+        margin: margin,
+        width: size,
+        color: {
+          dark: fgColor,
+          light: transparentBg ? '#00000000' : bgColor
+        }
+      };
 
-    if (logoImage) {
-      options.image = logoImage;
-    }
-
-    if (qrCode.current) {
-      qrCode.current.update(options);
-    } else {
-      qrCode.current = new QRCodeStyling(options);
-      if (qrRef.current) {
-        qrRef.current.innerHTML = '';
-        qrCode.current.append(qrRef.current);
+      // Generate as data URL for preview
+      const dataUrl = await QRCode.toDataURL(data, options);
+      
+      // If logo is present, overlay it
+      if (logoImage) {
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          // Draw QR code
+          const qrImg = new window.Image();
+          qrImg.crossOrigin = 'anonymous';
+          await new Promise<void>((resolve) => {
+            qrImg.onload = () => {
+              ctx.drawImage(qrImg, 0, 0, size, size);
+              resolve();
+            };
+            qrImg.src = dataUrl;
+          });
+          
+          // Draw logo
+          const logoImg = new window.Image();
+          logoImg.crossOrigin = 'anonymous';
+          await new Promise<void>((resolve) => {
+            logoImg.onload = () => {
+              const logoWidth = size * logoSize;
+              const logoHeight = size * logoSize;
+              const x = (size - logoWidth) / 2;
+              const y = (size - logoHeight) / 2;
+              
+              // White background for logo
+              ctx.fillStyle = '#FFFFFF';
+              ctx.fillRect(x - 5, y - 5, logoWidth + 10, logoHeight + 10);
+              
+              ctx.drawImage(logoImg, x, y, logoWidth, logoHeight);
+              resolve();
+            };
+            logoImg.src = logoImage;
+          });
+          
+          setQrDataUrl(canvas.toDataURL('image/png'));
+        }
+      } else {
+        setQrDataUrl(dataUrl);
       }
+
+      // Generate SVG for vector export
+      const svg = await QRCode.toString(data, { ...options, type: 'svg' });
+      setQrSvg(svg);
+      
+    } catch (error) {
+      console.error('QR generation error:', error);
+      toast({
+        title: "Generation failed",
+        description: "Could not generate QR code",
+        variant: "destructive"
+      });
     }
-  }, [
-    size, fgColor, bgColor, transparentBg, dotType, cornerSquareType, cornerDotType,
-    errorCorrection, useGradient, gradientColor1, gradientColor2, gradientType,
-    logoImage, logoSize, logoMargin, getQRData
-  ]);
+  }, [getQRData, errorCorrection, margin, size, fgColor, bgColor, transparentBg, logoImage, logoSize]);
+
+  // Generate QR on settings change
+  useEffect(() => {
+    generateQR();
+  }, [generateQR]);
 
   // Handle logo upload
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -248,39 +255,74 @@ END:VCARD`;
 
   // Download QR code
   const downloadQR = async (format?: ExportFormat, customSize?: number) => {
-    if (!qrCode.current) return;
+    const data = getQRData();
+    if (!data) return;
     
     const fmt = format || exportFormat;
     const downloadSize = customSize || exportSize;
     
-    // Create a new QR code with export size
-    const exportQR = new QRCodeStyling({
-      ...qrCode.current._options,
-      width: downloadSize,
-      height: downloadSize,
-    });
-    
     try {
       if (fmt === 'svg') {
-        const svgBlob = await exportQR.getRawData('svg');
-        if (svgBlob) {
-          saveAs(svgBlob, `qrcode-${Date.now()}.svg`);
-        }
-      } else {
-        const canvas = document.createElement('canvas');
-        canvas.width = downloadSize;
-        canvas.height = downloadSize;
-        
-        // For high DPI export
-        const dpiMultiplier = exportQuality === 1 ? 1 : 3; // 300 DPI
-        const hdCanvas = document.createElement('canvas');
-        hdCanvas.width = downloadSize * dpiMultiplier;
-        hdCanvas.height = downloadSize * dpiMultiplier;
-        
-        await exportQR.download({
-          name: `qrcode-${Date.now()}`,
-          extension: fmt === 'jpeg' ? 'jpeg' : 'png',
+        const svg = await QRCode.toString(data, {
+          errorCorrectionLevel: errorCorrection,
+          margin: margin,
+          width: downloadSize,
+          color: { dark: fgColor, light: transparentBg ? '#00000000' : bgColor },
+          type: 'svg'
         });
+        const blob = new Blob([svg], { type: 'image/svg+xml' });
+        saveAs(blob, `qrcode-${Date.now()}.svg`);
+      } else {
+        const options = {
+          errorCorrectionLevel: errorCorrection,
+          margin: margin,
+          width: downloadSize,
+          color: { dark: fgColor, light: transparentBg ? '#00000000' : bgColor }
+        };
+        
+        let dataUrl = await QRCode.toDataURL(data, options);
+        
+        // Add logo if present
+        if (logoImage) {
+          const canvas = document.createElement('canvas');
+          canvas.width = downloadSize;
+          canvas.height = downloadSize;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            const qrImg = new window.Image();
+            qrImg.crossOrigin = 'anonymous';
+            await new Promise<void>((resolve) => {
+              qrImg.onload = () => {
+                ctx.drawImage(qrImg, 0, 0, downloadSize, downloadSize);
+                resolve();
+              };
+              qrImg.src = dataUrl;
+            });
+            
+            const logoImg = new window.Image();
+            logoImg.crossOrigin = 'anonymous';
+            await new Promise<void>((resolve) => {
+              logoImg.onload = () => {
+                const logoWidth = downloadSize * logoSize;
+                const logoHeight = downloadSize * logoSize;
+                const x = (downloadSize - logoWidth) / 2;
+                const y = (downloadSize - logoHeight) / 2;
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(x - 5, y - 5, logoWidth + 10, logoHeight + 10);
+                ctx.drawImage(logoImg, x, y, logoWidth, logoHeight);
+                resolve();
+              };
+              logoImg.src = logoImage;
+            });
+            
+            dataUrl = canvas.toDataURL(fmt === 'jpeg' ? 'image/jpeg' : 'image/png', 0.95);
+          }
+        }
+        
+        const link = document.createElement('a');
+        link.download = `qrcode-${Date.now()}.${fmt}`;
+        link.href = dataUrl;
+        link.click();
       }
       
       toast({ title: "Downloaded!", description: `QR code saved as ${fmt.toUpperCase()}` });
@@ -295,27 +337,17 @@ END:VCARD`;
 
   // Copy QR code to clipboard
   const copyToClipboard = async () => {
-    if (!qrCode.current) return;
+    if (!qrDataUrl) return;
     
     try {
-      const rawData = await qrCode.current.getRawData('png');
-      if (rawData) {
-        // Handle both Blob and Buffer types
-        let blob: Blob;
-        if (rawData instanceof Blob) {
-          blob = rawData;
-        } else {
-          // For Buffer type, convert using Uint8Array
-          const uint8Array = new Uint8Array(rawData);
-          blob = new Blob([uint8Array], { type: 'image/png' });
-        }
-        await navigator.clipboard.write([
-          new ClipboardItem({ 'image/png': blob })
-        ]);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-        toast({ title: "Copied!", description: "QR code copied to clipboard" });
-      }
+      const response = await fetch(qrDataUrl);
+      const blob = await response.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': blob })
+      ]);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+      toast({ title: "Copied!", description: "QR code copied to clipboard" });
     } catch (error) {
       toast({ 
         title: "Copy failed", 
@@ -355,43 +387,21 @@ END:VCARD`;
     
     for (let i = 0; i < batchItems.length; i++) {
       const item = batchItems[i];
-      const tempQR = new QRCodeStyling({
-        width: exportSize,
-        height: exportSize,
-        type: 'svg',
-        data: item.content,
-        dotsOptions: {
-          color: useGradient ? undefined : fgColor,
-          type: dotType,
-          gradient: useGradient ? {
-            type: gradientType,
-            colorStops: [
-              { offset: 0, color: gradientColor1 },
-              { offset: 1, color: gradientColor2 }
-            ]
-          } : undefined
-        },
-        backgroundOptions: {
-          color: transparentBg ? 'transparent' : bgColor,
-        },
-        cornersSquareOptions: {
-          color: useGradient ? gradientColor1 : fgColor,
-          type: cornerSquareType,
-        },
-        cornersDotOptions: {
-          color: useGradient ? gradientColor2 : fgColor,
-          type: cornerDotType,
-        },
-        qrOptions: {
-          errorCorrectionLevel: errorCorrection,
-        },
-      });
-
       try {
-        const blob = await tempQR.getRawData(exportFormat === 'svg' ? 'svg' : 'png');
-        if (blob) {
-          const fileName = `qr-${i + 1}-${item.content.slice(0, 20).replace(/[^a-zA-Z0-9]/g, '_')}.${exportFormat}`;
-          zip.file(fileName, blob);
+        const options = {
+          errorCorrectionLevel: errorCorrection,
+          margin: margin,
+          width: exportSize,
+          color: { dark: fgColor, light: transparentBg ? '#00000000' : bgColor }
+        };
+        
+        if (exportFormat === 'svg') {
+          const svg = await QRCode.toString(item.content, { ...options, type: 'svg' });
+          zip.file(`qr-${i + 1}.svg`, svg);
+        } else {
+          const dataUrl = await QRCode.toDataURL(item.content, options);
+          const base64Data = dataUrl.split(',')[1];
+          zip.file(`qr-${i + 1}.png`, base64Data, { base64: true });
         }
       } catch (error) {
         console.error('Error generating QR for batch:', error);
@@ -418,11 +428,8 @@ END:VCARD`;
     setFgColor('#000000');
     setBgColor('#FFFFFF');
     setTransparentBg(false);
-    setDotType('rounded');
-    setCornerSquareType('extra-rounded');
-    setCornerDotType('dot');
     setErrorCorrection('M');
-    setUseGradient(false);
+    setMargin(4);
     setLogoImage(null);
     setShowFrame(false);
     setBatchItems([]);
@@ -721,7 +728,7 @@ END:VCARD`;
                         type="color"
                         value={fgColor}
                         onChange={(e) => setFgColor(e.target.value)}
-                        className="w-10 h-10 rounded cursor-pointer"
+                        className="w-10 h-10 rounded cursor-pointer border-0"
                       />
                       <Input
                         value={fgColor}
@@ -737,7 +744,7 @@ END:VCARD`;
                         type="color"
                         value={bgColor}
                         onChange={(e) => setBgColor(e.target.value)}
-                        className="w-10 h-10 rounded cursor-pointer"
+                        className="w-10 h-10 rounded cursor-pointer border-0"
                         disabled={transparentBg}
                       />
                       <Input
@@ -757,65 +764,6 @@ END:VCARD`;
                   />
                   <Label>Transparent Background</Label>
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <Switch
-                    checked={useGradient}
-                    onCheckedChange={setUseGradient}
-                  />
-                  <Label>Use Gradient</Label>
-                </div>
-
-                {useGradient && (
-                  <div className="space-y-3 pl-4 border-l-2 border-primary/20">
-                    <div>
-                      <Label>Gradient Type</Label>
-                      <Select value={gradientType} onValueChange={(v) => setGradientType(v as 'linear' | 'radial')}>
-                        <SelectTrigger>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="linear">Linear</SelectItem>
-                          <SelectItem value="radial">Radial</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>Color 1</Label>
-                        <div className="flex gap-2 mt-1">
-                          <input
-                            type="color"
-                            value={gradientColor1}
-                            onChange={(e) => setGradientColor1(e.target.value)}
-                            className="w-10 h-10 rounded cursor-pointer"
-                          />
-                          <Input
-                            value={gradientColor1}
-                            onChange={(e) => setGradientColor1(e.target.value)}
-                            className="flex-1"
-                          />
-                        </div>
-                      </div>
-                      <div>
-                        <Label>Color 2</Label>
-                        <div className="flex gap-2 mt-1">
-                          <input
-                            type="color"
-                            value={gradientColor2}
-                            onChange={(e) => setGradientColor2(e.target.value)}
-                            className="w-10 h-10 rounded cursor-pointer"
-                          />
-                          <Input
-                            value={gradientColor2}
-                            onChange={(e) => setGradientColor2(e.target.value)}
-                            className="flex-1"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </AccordionContent>
             </AccordionItem>
 
@@ -824,52 +772,20 @@ END:VCARD`;
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-2">
                   <Square className="h-4 w-4" />
-                  Style & Shape
+                  Style & Quality
                 </div>
               </AccordionTrigger>
               <AccordionContent className="space-y-4 pt-2">
                 <div>
-                  <Label>Dot Style</Label>
-                  <Select value={dotType} onValueChange={(v) => setDotType(v as DotType)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="square">Square</SelectItem>
-                      <SelectItem value="dots">Dots</SelectItem>
-                      <SelectItem value="rounded">Rounded</SelectItem>
-                      <SelectItem value="extra-rounded">Extra Rounded</SelectItem>
-                      <SelectItem value="classy">Classy</SelectItem>
-                      <SelectItem value="classy-rounded">Classy Rounded</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Corner Square Style</Label>
-                  <Select value={cornerSquareType} onValueChange={(v) => setCornerSquareType(v as CornerSquareType)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="square">Square</SelectItem>
-                      <SelectItem value="dot">Dot</SelectItem>
-                      <SelectItem value="extra-rounded">Extra Rounded</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div>
-                  <Label>Corner Dot Style</Label>
-                  <Select value={cornerDotType} onValueChange={(v) => setCornerDotType(v as CornerDotType)}>
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="square">Square</SelectItem>
-                      <SelectItem value="dot">Dot</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Label>Margin: {margin}</Label>
+                  <Slider
+                    value={[margin]}
+                    onValueChange={([v]) => setMargin(v)}
+                    min={0}
+                    max={10}
+                    step={1}
+                    className="mt-2"
+                  />
                 </div>
 
                 <div>
@@ -937,20 +853,8 @@ END:VCARD`;
                         value={[logoSize]}
                         onValueChange={([v]) => setLogoSize(v)}
                         min={0.1}
-                        max={0.5}
+                        max={0.4}
                         step={0.05}
-                        className="mt-2"
-                      />
-                    </div>
-
-                    <div>
-                      <Label>Logo Margin: {logoMargin}px</Label>
-                      <Slider
-                        value={[logoMargin]}
-                        onValueChange={([v]) => setLogoMargin(v)}
-                        min={0}
-                        max={20}
-                        step={1}
                         className="mt-2"
                       />
                     </div>
@@ -966,6 +870,10 @@ END:VCARD`;
                     </Button>
                   </>
                 )}
+                
+                <p className="text-xs text-muted-foreground">
+                  Use "High" error correction when adding a logo for better scannability.
+                </p>
               </AccordionContent>
             </AccordionItem>
 
@@ -1003,22 +911,6 @@ END:VCARD`;
                     className="mt-2"
                   />
                 </div>
-
-                <div>
-                  <Label>Quality</Label>
-                  <Select 
-                    value={exportQuality.toString()} 
-                    onValueChange={(v) => setExportQuality(parseFloat(v))}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">Standard (72 DPI)</SelectItem>
-                      <SelectItem value="3">Print Ready (300 DPI)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
               </AccordionContent>
             </AccordionItem>
 
@@ -1053,7 +945,7 @@ END:VCARD`;
                       <p className="text-sm font-medium mb-2">
                         {batchItems.length} items in batch
                       </p>
-                      {batchItems.map((item, i) => (
+                      {batchItems.map((item) => (
                         <div key={item.id} className="flex items-center justify-between text-sm py-1">
                           <span className="truncate flex-1">{item.content}</span>
                           <Button
@@ -1110,7 +1002,14 @@ END:VCARD`;
                     className="p-4 rounded-lg text-center"
                     style={{ backgroundColor: frameColor }}
                   >
-                    <div ref={qrRef} className="bg-white rounded" />
+                    {qrDataUrl && (
+                      <img 
+                        src={qrDataUrl} 
+                        alt="QR Code Preview" 
+                        className="rounded"
+                        style={{ width: size, height: size }}
+                      />
+                    )}
                     <p 
                       className="mt-2 font-bold text-sm"
                       style={{ color: frameTextColor }}
@@ -1119,7 +1018,14 @@ END:VCARD`;
                     </p>
                   </div>
                 ) : (
-                  <div ref={qrRef} />
+                  qrDataUrl && (
+                    <img 
+                      src={qrDataUrl} 
+                      alt="QR Code Preview" 
+                      className="rounded"
+                      style={{ width: size, height: size }}
+                    />
+                  )
                 )}
               </div>
 
@@ -1183,7 +1089,7 @@ END:VCARD`;
                       type="color"
                       value={frameColor}
                       onChange={(e) => setFrameColor(e.target.value)}
-                      className="w-8 h-8 rounded cursor-pointer"
+                      className="w-8 h-8 rounded cursor-pointer border-0"
                     />
                     <Input
                       value={frameText}
@@ -1221,7 +1127,7 @@ END:VCARD`;
             <AccordionItem value="faq-3">
               <AccordionTrigger>What format should I download for printing?</AccordionTrigger>
               <AccordionContent>
-                For printing, we recommend SVG format as it's a vector format that scales to any size without losing quality. Alternatively, use PNG with 300 DPI export setting for high-quality raster prints.
+                For printing, we recommend SVG format as it's a vector format that scales to any size without losing quality. Alternatively, use PNG with a larger export size (1024px or higher) for high-quality raster prints.
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="faq-4">
