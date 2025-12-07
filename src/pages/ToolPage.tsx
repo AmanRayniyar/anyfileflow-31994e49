@@ -14,6 +14,7 @@ import AudioVideoTool from "@/components/tools/AudioVideoTool";
 import TypingTestTool from "@/components/tools/TypingTestTool";
 import ImageCropperTool from "@/components/tools/ImageCropperTool";
 import AdvancedQRGenerator from "@/components/tools/AdvancedQRGenerator";
+import PomodoroTimerTool from "@/components/tools/PomodoroTimerTool";
 import ToolComments from "@/components/ToolComments";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
@@ -66,6 +67,11 @@ const ToolPage = () => {
     // Special case for QR generator - use advanced version
     if (tool.id === 'qr-generator') {
       return <AdvancedQRGenerator />;
+    }
+    
+    // Special case for Pomodoro timer
+    if (tool.id === 'pomodoro-timer') {
+      return <PomodoroTimerTool />;
     }
     
     switch (tool.toolType) {
