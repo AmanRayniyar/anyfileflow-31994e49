@@ -83,6 +83,42 @@ export type Database = {
         }
         Relationships: []
       }
+      tool_comments: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          tool_id: string
+          updated_at: string
+          user_avatar: string | null
+          user_email: string
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          tool_id: string
+          updated_at?: string
+          user_avatar?: string | null
+          user_email: string
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          tool_id?: string
+          updated_at?: string
+          user_avatar?: string | null
+          user_email?: string
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: []
+      }
       tools: {
         Row: {
           category: string
