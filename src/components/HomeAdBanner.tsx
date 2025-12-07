@@ -24,6 +24,9 @@ const HomeAdBanner = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <p className="text-xs text-muted-foreground text-center mb-3">
+        To keep this site 100% free, a small ad is shown below
+      </p>
       <div 
         ref={containerRef}
         className="flex items-center justify-center"

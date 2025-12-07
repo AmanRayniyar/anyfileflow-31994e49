@@ -47,11 +47,14 @@ const AdBanner = ({
   }, [adKey, width, height, delay, isLoaded]);
 
   return (
-    <div className="bg-card border border-border rounded-2xl p-4 flex items-center justify-center overflow-hidden">
+    <div className="bg-card border border-border rounded-2xl p-4 overflow-hidden">
+      <p className="text-xs text-muted-foreground text-center mb-3">
+        To keep this site 100% free, a small ad is shown below
+      </p>
       <div 
         ref={adContainerRef}
         style={{ minHeight: height, width, maxWidth: '100%' }} 
-        className="flex items-center justify-center"
+        className="flex items-center justify-center mx-auto"
       >
         {!isLoaded && (
           <span className="text-xs text-muted-foreground">Advertisement</span>
