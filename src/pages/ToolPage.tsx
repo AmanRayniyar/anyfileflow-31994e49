@@ -18,6 +18,7 @@ import PomodoroTimerTool from "@/components/tools/PomodoroTimerTool";
 import PDFProtectTool from "@/components/tools/PDFProtectTool";
 import PDFUnlockTool from "@/components/tools/PDFUnlockTool";
 import StopwatchTool from "@/components/tools/StopwatchTool";
+import CountdownTimerTool from "@/components/tools/CountdownTimerTool";
 import ToolComments from "@/components/ToolComments";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
@@ -90,6 +91,11 @@ const ToolPage = () => {
     // Special case for Stopwatch
     if (tool.id === 'stopwatch') {
       return <StopwatchTool />;
+    }
+    
+    // Special case for Countdown Timer
+    if (tool.id === 'countdown-timer') {
+      return <CountdownTimerTool />;
     }
     
     switch (tool.toolType) {
