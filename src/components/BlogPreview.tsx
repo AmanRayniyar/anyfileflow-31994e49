@@ -57,6 +57,7 @@ const BlogPreview = () => {
                 <Link 
                   to={`/blog/${post.slug}`} 
                   className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                  aria-label={`Read more about ${post.title}`}
                 >
                   Read more
                   <ArrowRight className="h-3 w-3" />
