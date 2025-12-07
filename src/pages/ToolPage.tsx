@@ -13,6 +13,7 @@ import GeneratorTool from "@/components/tools/GeneratorTool";
 import AudioVideoTool from "@/components/tools/AudioVideoTool";
 import TypingTestTool from "@/components/tools/TypingTestTool";
 import ImageCropperTool from "@/components/tools/ImageCropperTool";
+import AdvancedQRGenerator from "@/components/tools/AdvancedQRGenerator";
 import ToolComments from "@/components/ToolComments";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
@@ -60,6 +61,11 @@ const ToolPage = () => {
     // Special case for image cropper tool
     if (tool.id === 'image-cropper') {
       return <ImageCropperTool tool={tool} />;
+    }
+    
+    // Special case for QR generator - use advanced version
+    if (tool.id === 'qr-generator') {
+      return <AdvancedQRGenerator />;
     }
     
     switch (tool.toolType) {
