@@ -82,7 +82,8 @@ const Header = () => {
                 className="w-full pl-9 pr-8 py-2 rounded-lg bg-secondary/50 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
                 aria-label="Search tools"
                 aria-autocomplete="list"
-                aria-controls="search-results"
+                aria-controls={showResults && searchResults.length > 0 ? "search-results" : undefined}
+                aria-expanded={showResults && searchResults.length > 0}
               />
               {searchQuery && (
                 <button
