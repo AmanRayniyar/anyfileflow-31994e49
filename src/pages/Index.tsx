@@ -17,12 +17,18 @@ const Index = () => {
         <meta property="og:title" content="AnyFile Flow - 200+ Free Online File Conversion Tools" />
         <meta property="og:description" content="Convert, edit, and transform your files with our 200+ free online tools. No upload limits, no registration required." />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://anyfileflow.com" />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="AnyFile Flow - 200+ Free Online Tools" />
+        <meta name="twitter:description" content="Convert, edit, and transform your files with our 200+ free online tools." />
       </Helmet>
       
       <div className="min-h-screen bg-background">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-md z-[100] focus:outline-none focus:ring-2 focus:ring-ring">
+          Skip to main content
+        </a>
         <Header />
-        <main>
+        <main id="main-content" role="main">
           <Hero />
 
           {/* All Categories with All Tools */}
