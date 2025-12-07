@@ -81,8 +81,8 @@ const ShareButton = ({ title, description, url }: ShareButtonProps) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2">
-          <Share2 className="h-4 w-4" />
+        <Button variant="outline" size="sm" className="gap-2" aria-label="Share this tool">
+          <Share2 className="h-4 w-4" aria-hidden="true" />
           <span className="hidden sm:inline">Share</span>
         </Button>
       </PopoverTrigger>
@@ -96,39 +96,44 @@ const ShareButton = ({ title, description, url }: ShareButtonProps) => {
               variant="outline" 
               className="w-full justify-start gap-2" 
               onClick={handleNativeShare}
+              aria-label="Share via native sharing"
             >
-              <Share2 className="h-4 w-4" />
+              <Share2 className="h-4 w-4" aria-hidden="true" />
               Share via...
             </Button>
           )}
           
           {/* Social Links */}
-          <div className="grid grid-cols-5 gap-2">
-            {shareLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`flex items-center justify-center p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors ${link.color}`}
-                title={`Share on ${link.name}`}
-              >
-                <link.icon className="h-4 w-4" />
-              </a>
-            ))}
-          </div>
+          <nav aria-label="Share on social media">
+            <ul className="grid grid-cols-5 gap-2 list-none p-0 m-0">
+              {shareLinks.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`flex items-center justify-center p-2 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors ${link.color}`}
+                    aria-label={`Share on ${link.name}`}
+                  >
+                    <link.icon className="h-4 w-4" aria-hidden="true" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
           
           {/* Copy Link */}
           <Button 
             variant="secondary" 
             className="w-full justify-between gap-2" 
             onClick={copyToClipboard}
+            aria-label={copied ? "Link copied" : "Copy link to clipboard"}
           >
             <span className="truncate text-xs">{shareUrl}</span>
             {copied ? (
-              <Check className="h-4 w-4 text-green-500 shrink-0" />
+              <Check className="h-4 w-4 text-green-500 shrink-0" aria-hidden="true" />
             ) : (
-              <Copy className="h-4 w-4 shrink-0" />
+              <Copy className="h-4 w-4 shrink-0" aria-hidden="true" />
             )}
           </Button>
         </div>

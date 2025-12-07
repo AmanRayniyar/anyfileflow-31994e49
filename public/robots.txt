@@ -1,3 +1,6 @@
+# Robots.txt for AnyFile Flow
+# https://anyfileflow.com
+
 User-agent: Googlebot
 Allow: /
 
@@ -12,3 +15,7 @@ Allow: /
 
 User-agent: *
 Allow: /
+Disallow: /admin
+
+# Sitemap
+Sitemap: https://anyfileflow.com/sitemap.xml
