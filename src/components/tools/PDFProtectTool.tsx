@@ -1,9 +1,8 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { PDFDocument } from '@pdfme/pdf-lib';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import {
   Upload, Lock, Download, FileText, X, 
   Eye, EyeOff, Shield, CheckCircle, Copy, RefreshCw,
-  Settings, Info, ChevronDown, ChevronUp
+  Settings, Info, ChevronDown, ChevronUp, AlertTriangle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -17,19 +16,31 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface ProtectionSettings {
   userPassword: string;
   ownerPassword: string;
+  keyLength: '128' | '256';
   allowPrinting: boolean;
   allowModifying: boolean;
   allowCopying: boolean;
   allowAnnotations: boolean;
 }
 
+// QPDF module interface - using any to avoid complex Emscripten types
+type QpdfModule = any;
+
 const PDFProtectTool: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
   const [protectedPdf, setProtectedPdf] = useState<Blob | null>(null);
   const [showUserPassword, setShowUserPassword] = useState(false);
@@ -38,6 +49,7 @@ const PDFProtectTool: React.FC = () => {
   const [settings, setSettings] = useState<ProtectionSettings>({
     userPassword: '',
     ownerPassword: '',
+    keyLength: '256',
     allowPrinting: true,
     allowModifying: false,
     allowCopying: false,
@@ -47,6 +59,29 @@ const PDFProtectTool: React.FC = () => {
   const [pdfInfo, setPdfInfo] = useState<{ pageCount: number; title?: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
+  const qpdfRef = useRef<QpdfModule | null>(null);
+
+  // Load QPDF WASM module
+  useEffect(() => {
+    const loadQpdf = async () => {
+      try {
+        const createModule = (await import('@neslinesli93/qpdf-wasm')).default;
+        const qpdf = await createModule({
+          locateFile: () => `https://unpkg.com/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.wasm`,
+          noInitialRun: true,
+          print: () => {},
+          printErr: () => {},
+        });
+        qpdfRef.current = qpdf;
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Failed to load QPDF:', error);
+        setIsLoading(false);
+        toast.error('Failed to load PDF encryption engine');
+      }
+    };
+    loadQpdf();
+  }, []);
 
   const calculatePasswordStrength = (password: string): number => {
     let strength = 0;
@@ -110,19 +145,14 @@ const PDFProtectTool: React.FC = () => {
   const handleFileLoad = async (selectedFile: File) => {
     setFile(selectedFile);
     setProtectedPdf(null);
-
-    try {
-      const arrayBuffer = await selectedFile.arrayBuffer();
-      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-      setPdfInfo({
-        pageCount: pdfDoc.getPageCount(),
-        title: pdfDoc.getTitle() || undefined
-      });
-      toast.success('PDF loaded successfully!');
-    } catch (error) {
-      console.error('Error loading PDF:', error);
-      toast.error('Failed to load PDF. File may be corrupted.');
-    }
+    
+    // Estimate page count from file size (rough approximation)
+    const estimatedPages = Math.max(1, Math.ceil(selectedFile.size / 50000));
+    setPdfInfo({
+      pageCount: estimatedPages,
+      title: selectedFile.name.replace('.pdf', '')
+    });
+    toast.success('PDF loaded successfully!');
   };
 
   const protectPdf = async () => {
@@ -136,40 +166,90 @@ const PDFProtectTool: React.FC = () => {
       return;
     }
 
+    if (!qpdfRef.current) {
+      toast.error('PDF engine not loaded. Please wait or refresh the page.');
+      return;
+    }
+
     setIsProcessing(true);
     setProgress(0);
 
     try {
+      const qpdf = qpdfRef.current;
+      
       setProgress(10);
       const arrayBuffer = await file.arrayBuffer();
+      const inputData = new Uint8Array(arrayBuffer);
       
-      setProgress(30);
-      const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      setProgress(20);
       
-      setProgress(50);
+      // Write input file to virtual filesystem
+      const inputPath = '/input.pdf';
+      const outputPath = '/output.pdf';
+      qpdf.FS.writeFile(inputPath, inputData);
       
-      // Set metadata
-      pdfDoc.setTitle(pdfDoc.getTitle() || file.name.replace('.pdf', ''));
-      pdfDoc.setCreator('AnyFile Flow PDF Protect');
-      pdfDoc.setProducer('AnyFile Flow - anyfileflow.com');
+      setProgress(40);
       
-      setProgress(70);
+      // Build QPDF encryption command
+      const ownerPass = settings.ownerPassword || settings.userPassword;
+      const args: string[] = [
+        inputPath,
+        '--encrypt',
+        settings.userPassword,
+        ownerPass,
+        settings.keyLength,
+        '--'
+      ];
       
-      // Save PDF with metadata (note: full encryption requires server-side processing)
-      // This adds metadata marking and prepares PDF structure
-      const pdfBytes = await pdfDoc.save({ useObjectStreams: false });
+      // Add permission restrictions
+      if (!settings.allowPrinting) {
+        args.push('--print=none');
+      }
+      if (!settings.allowModifying) {
+        args.push('--modify=none');
+      }
+      if (!settings.allowCopying) {
+        args.push('--extract=n');
+      }
+      if (!settings.allowAnnotations) {
+        args.push('--annotate=n');
+      }
+      
+      args.push(outputPath);
+      
+      setProgress(60);
+      
+      // Execute QPDF
+      const result = qpdf.callMain(args);
+      
+      if (result !== 0) {
+        throw new Error('QPDF encryption failed');
+      }
+      
+      setProgress(80);
+      
+      // Read encrypted file
+      const outputData = qpdf.FS.readFile(outputPath);
+      
+      // Cleanup virtual filesystem
+      try {
+        qpdf.FS.unlink(inputPath);
+        qpdf.FS.unlink(outputPath);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
       
       setProgress(90);
       
-      const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' });
+      const blob = new Blob([outputData], { type: 'application/pdf' });
       
       setProgress(100);
       setProtectedPdf(blob);
-      toast.success('PDF processed successfully! Note: Full AES encryption requires desktop software like Adobe Acrobat for complete protection.');
+      toast.success(`PDF encrypted with ${settings.keyLength}-bit AES encryption!`);
       
     } catch (error) {
-      console.error('Error processing PDF:', error);
-      toast.error('Failed to process PDF. Please try again.');
+      console.error('Error encrypting PDF:', error);
+      toast.error('Failed to encrypt PDF. Please try again.');
     } finally {
       setIsProcessing(false);
     }
@@ -196,6 +276,7 @@ const PDFProtectTool: React.FC = () => {
     setSettings({
       userPassword: '',
       ownerPassword: '',
+      keyLength: '256',
       allowPrinting: true,
       allowModifying: false,
       allowCopying: false,
@@ -221,6 +302,15 @@ const PDFProtectTool: React.FC = () => {
     if (passwordStrength < 80) return 'Good';
     return 'Strong';
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 space-y-4">
+        <RefreshCw className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">Loading PDF encryption engine...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -253,7 +343,6 @@ const PDFProtectTool: React.FC = () => {
               <p className="font-semibold text-foreground">{file.name}</p>
               <p className="text-sm text-muted-foreground">
                 {(file.size / 1024 / 1024).toFixed(2)} MB
-                {pdfInfo && ` • ${pdfInfo.pageCount} pages`}
               </p>
             </div>
             <Button
@@ -349,6 +438,28 @@ const PDFProtectTool: React.FC = () => {
                 </p>
               </div>
             )}
+          </div>
+
+          {/* Encryption Level */}
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2">
+              <Shield className="h-4 w-4" />
+              Encryption Level
+            </Label>
+            <Select
+              value={settings.keyLength}
+              onValueChange={(value: '128' | '256') => 
+                setSettings(prev => ({ ...prev, keyLength: value }))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select encryption level" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="128">128-bit AES (Compatible)</SelectItem>
+                <SelectItem value="256">256-bit AES (Maximum Security)</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {/* Advanced Options Toggle */}
@@ -448,7 +559,7 @@ const PDFProtectTool: React.FC = () => {
             <div className="space-y-2">
               <Progress value={progress} className="h-2" />
               <p className="text-sm text-center text-muted-foreground">
-                Encrypting PDF with AES-256... {progress}%
+                Encrypting PDF with {settings.keyLength}-bit AES... {progress}%
               </p>
             </div>
           )}
@@ -491,10 +602,10 @@ const PDFProtectTool: React.FC = () => {
               <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
               <div>
                 <p className="font-medium text-green-700 dark:text-green-400">
-                  PDF Encrypted Successfully!
+                  PDF Protected Successfully!
                 </p>
                 <p className="text-sm text-green-600 dark:text-green-500">
-                  Your PDF is now password protected with AES-256 encryption. Save your password!
+                  Your PDF is now encrypted with {settings.keyLength}-bit AES encryption.
                 </p>
               </div>
             </div>
@@ -502,7 +613,7 @@ const PDFProtectTool: React.FC = () => {
         </div>
       )}
 
-      {/* Security Notice */}
+      {/* Privacy Notice */}
       <div className="flex items-start gap-3 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl">
         <Info className="h-5 w-5 text-blue-500 flex-shrink-0 mt-0.5" />
         <div className="text-sm text-muted-foreground">
@@ -510,158 +621,162 @@ const PDFProtectTool: React.FC = () => {
             Privacy & Security
           </p>
           <p>
-            All processing happens locally in your browser using AES-256 encryption. 
-            Your files are never uploaded to any server, ensuring complete privacy.
+            All processing happens locally in your browser using WebAssembly technology. 
+            Your files and passwords are never uploaded to any server, ensuring complete privacy.
           </p>
         </div>
       </div>
 
-      {/* FAQ Section */}
+      {/* FAQ Section with Schema */}
       <div className="mt-8">
         <h2 className="text-xl font-bold text-foreground mb-4">
           Frequently Asked Questions
         </h2>
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
-            <AccordionTrigger>How secure is PDF password protection?</AccordionTrigger>
+            <AccordionTrigger>How does PDF encryption work?</AccordionTrigger>
             <AccordionContent>
-              PDF password protection using AES-256 encryption is highly secure and 
-              industry-standard. It would take billions of years to crack with current technology. 
-              However, the security depends on using a strong, unique password.
+              PDF encryption uses AES (Advanced Encryption Standard) to scramble the content of 
+              your PDF file. We use QPDF, a trusted open-source tool, compiled to run directly in 
+              your browser using WebAssembly. This means your files never leave your computer - 
+              all encryption happens locally for maximum privacy.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
-            <AccordionTrigger>What is the difference between user and owner password?</AccordionTrigger>
+            <AccordionTrigger>What's the difference between 128-bit and 256-bit encryption?</AccordionTrigger>
             <AccordionContent>
-              The user password is required to open and view the PDF. The owner password 
-              controls permissions like printing, copying, and editing. With the owner password, 
-              you can change these restrictions even if a user password is set.
+              256-bit AES encryption is more secure than 128-bit and is considered virtually 
+              unbreakable with current technology. However, 128-bit offers better compatibility 
+              with older PDF readers. For maximum security, choose 256-bit encryption.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger>What happens if I forget my password?</AccordionTrigger>
+            <AccordionTrigger>What's the difference between user and owner passwords?</AccordionTrigger>
             <AccordionContent>
-              We strongly recommend saving your password in a secure location. If you forget 
-              the password, recovery is extremely difficult due to the strong encryption used. 
-              Consider using a password manager to store your passwords securely.
+              The user password is required to open and view the PDF. The owner password allows 
+              changing the document's security settings and permissions. If you only set a user 
+              password, anyone with that password can open the document.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-4">
-            <AccordionTrigger>Is my PDF uploaded to any server?</AccordionTrigger>
+            <AccordionTrigger>Can I control what users can do with the protected PDF?</AccordionTrigger>
             <AccordionContent>
-              No! All processing happens entirely in your browser using JavaScript. Your PDF 
-              files never leave your device, ensuring complete privacy and security.
+              Yes! You can restrict printing, copying text, modifying content, and adding 
+              annotations. These restrictions are enforced by PDF readers that respect the 
+              document's security settings.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
-            <AccordionTrigger>What encryption standard is used?</AccordionTrigger>
+            <AccordionTrigger>Is my data safe? Do you store my files?</AccordionTrigger>
             <AccordionContent>
-              We use AES-256 (Advanced Encryption Standard with 256-bit keys), the same 
-              encryption used by governments and financial institutions worldwide. This is 
-              the strongest encryption available for PDF files.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-6">
-            <AccordionTrigger>Can I protect already protected PDFs?</AccordionTrigger>
-            <AccordionContent>
-              Yes, you can add new password protection to PDFs that already have passwords. 
-              The tool will attempt to load the file and apply new encryption settings.
+              Your data is completely safe. All PDF processing happens entirely in your browser 
+              using client-side WebAssembly technology. Your files, passwords, and encrypted 
+              PDFs never touch our servers. Everything stays on your device.
             </AccordionContent>
           </AccordionItem>
         </Accordion>
       </div>
 
-      {/* Schema Markup */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "PDF Protect Tool",
-          "description": "Free online tool to add password protection to PDF files with AES-256 encryption",
-          "url": "https://anyfileflow.com/tool/pdf-protect",
-          "applicationCategory": "UtilityApplication",
-          "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
-          "featureList": [
-            "AES-256 encryption",
-            "Password strength indicator",
-            "Permission controls",
-            "Client-side processing",
-            "No file upload required"
-          ]
-        })
-      }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "HowTo",
-          "name": "How to Password Protect a PDF",
-          "description": "Step-by-step guide to add password protection to PDF files",
-          "step": [
-            {
-              "@type": "HowToStep",
-              "position": 1,
-              "name": "Upload PDF",
-              "text": "Drag and drop your PDF file or click to browse and select the file you want to protect."
-            },
-            {
-              "@type": "HowToStep",
-              "position": 2,
-              "name": "Set Password",
-              "text": "Enter a strong password that will be required to open the PDF. Use the password generator for maximum security."
-            },
-            {
-              "@type": "HowToStep",
-              "position": 3,
-              "name": "Configure Permissions",
-              "text": "Optionally configure advanced options like printing, copying, and modification permissions."
-            },
-            {
-              "@type": "HowToStep",
-              "position": 4,
-              "name": "Protect and Download",
-              "text": "Click Protect PDF and download your password-protected file with AES-256 encryption."
-            }
-          ]
-        })
-      }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "How secure is PDF password protection?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "PDF password protection using AES-256 encryption is highly secure and industry-standard. It would take billions of years to crack with current technology."
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How does PDF encryption work?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "PDF encryption uses AES (Advanced Encryption Standard) to scramble the content of your PDF file. We use QPDF, a trusted open-source tool, compiled to run directly in your browser using WebAssembly. Your files never leave your computer."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What's the difference between 128-bit and 256-bit encryption?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "256-bit AES encryption is more secure than 128-bit and is considered virtually unbreakable with current technology. 128-bit offers better compatibility with older PDF readers."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is my data safe? Do you store my files?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Your data is completely safe. All PDF processing happens entirely in your browser using client-side WebAssembly technology. Your files never touch our servers."
+                }
               }
-            },
-            {
-              "@type": "Question",
-              "name": "What is the difference between user and owner password?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "The user password is required to open and view the PDF. The owner password controls permissions like printing, copying, and editing."
+            ]
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            "name": "How to Password Protect a PDF",
+            "description": "Learn how to add password protection to your PDF files using AES encryption",
+            "step": [
+              {
+                "@type": "HowToStep",
+                "name": "Upload your PDF",
+                "text": "Drag and drop your PDF file or click to browse and select it"
+              },
+              {
+                "@type": "HowToStep",
+                "name": "Set a password",
+                "text": "Enter a strong password to protect your PDF. Use the generator for a secure random password."
+              },
+              {
+                "@type": "HowToStep",
+                "name": "Choose encryption level",
+                "text": "Select 128-bit or 256-bit AES encryption based on your security needs"
+              },
+              {
+                "@type": "HowToStep",
+                "name": "Set permissions",
+                "text": "Optionally configure what users can do with the PDF (print, copy, modify)"
+              },
+              {
+                "@type": "HowToStep",
+                "name": "Download protected PDF",
+                "text": "Click 'Protect PDF' and download your encrypted file"
               }
+            ]
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "PDF Protect Tool - AnyFile Flow",
+            "applicationCategory": "SecurityApplication",
+            "operatingSystem": "Any (Web-based)",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
             },
-            {
-              "@type": "Question",
-              "name": "Is my PDF uploaded to any server?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No! All processing happens entirely in your browser using JavaScript. Your PDF files never leave your device."
-              }
-            }
-          ]
-        })
-      }} />
+            "description": "Free online tool to password protect and encrypt PDF files with 128-bit or 256-bit AES encryption. All processing happens in your browser.",
+            "featureList": [
+              "256-bit AES encryption",
+              "128-bit AES encryption",
+              "User and owner passwords",
+              "Permission controls",
+              "Client-side processing",
+              "No file uploads required"
+            ]
+          })
+        }}
+      />
     </div>
   );
 };

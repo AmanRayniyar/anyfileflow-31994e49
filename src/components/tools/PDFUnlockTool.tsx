@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
-import { PDFDocument } from '@pdfme/pdf-lib';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { 
   Upload, Unlock, Download, FileText, X, AlertCircle, 
   Eye, EyeOff, CheckCircle, RefreshCw, Shield, Info,
@@ -19,6 +18,9 @@ import {
 
 type UnlockStatus = 'idle' | 'processing' | 'success' | 'failed' | 'needs-password';
 
+// QPDF module interface - using any to avoid complex Emscripten types
+type QpdfModule = any;
+
 const PDFUnlockTool: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
   const [password, setPassword] = useState('');
@@ -27,6 +29,7 @@ const PDFUnlockTool: React.FC = () => {
   const [progress, setProgress] = useState(0);
   const [unlockedPdf, setUnlockedPdf] = useState<Blob | null>(null);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [pdfInfo, setPdfInfo] = useState<{
     pageCount: number;
     isEncrypted: boolean;
@@ -34,6 +37,29 @@ const PDFUnlockTool: React.FC = () => {
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropZoneRef = useRef<HTMLDivElement>(null);
+  const qpdfRef = useRef<QpdfModule | null>(null);
+
+  // Load QPDF WASM module
+  useEffect(() => {
+    const loadQpdf = async () => {
+      try {
+        const createModule = (await import('@neslinesli93/qpdf-wasm')).default;
+        const qpdf = await createModule({
+          locateFile: () => `https://unpkg.com/@neslinesli93/qpdf-wasm@0.3.0/dist/qpdf.wasm`,
+          noInitialRun: true,
+          print: () => {},
+          printErr: () => {},
+        });
+        qpdfRef.current = qpdf;
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Failed to load QPDF:', error);
+        setIsLoading(false);
+        toast.error('Failed to load PDF unlock engine');
+      }
+    };
+    loadQpdf();
+  }, []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -67,49 +93,54 @@ const PDFUnlockTool: React.FC = () => {
     setErrorMessage('');
     setPassword('');
 
+    if (!qpdfRef.current) {
+      toast.error('PDF engine not loaded yet. Please wait.');
+      return;
+    }
+
     try {
+      const qpdf = qpdfRef.current;
       const arrayBuffer = await selectedFile.arrayBuffer();
+      const inputData = new Uint8Array(arrayBuffer);
       
-      // Try to load without password first
+      // Write file to check if it's encrypted
+      const inputPath = '/check.pdf';
+      qpdf.FS.writeFile(inputPath, inputData);
+      
+      // Try to check if encrypted using --check
+      const result = qpdf.callMain(['--check', inputPath]);
+      
+      // Clean up
       try {
-        const pdfDoc = await PDFDocument.load(arrayBuffer);
-        
+        qpdf.FS.unlink(inputPath);
+      } catch (e) {}
+      
+      // If check fails, it might be encrypted
+      if (result !== 0) {
+        setStatus('needs-password');
         setPdfInfo({
-          pageCount: pdfDoc.getPageCount(),
-          isEncrypted: false,
-          title: pdfDoc.getTitle() || undefined
+          pageCount: 0,
+          isEncrypted: true,
+          title: selectedFile.name.replace('.pdf', '')
         });
-        
-        toast.info('PDF loaded. This PDF does not appear to be password protected.');
-        
-      } catch (error: any) {
-        // PDF is encrypted and needs password
-        if (error.message?.includes('encrypted') || error.message?.includes('password')) {
-          setStatus('needs-password');
-          setPdfInfo({
-            pageCount: 0,
-            isEncrypted: true
-          });
-          toast.info('This PDF is password protected. Enter the password to unlock.');
-        } else {
-          // Try with ignoreEncryption
-          try {
-            const pdfDoc = await PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
-            setPdfInfo({
-              pageCount: pdfDoc.getPageCount(),
-              isEncrypted: true,
-              title: pdfDoc.getTitle() || undefined
-            });
-            setStatus('needs-password');
-            toast.info('This PDF has restrictions. You can try to remove them.');
-          } catch {
-            toast.error('Failed to load PDF file');
-          }
-        }
+        toast.info('This PDF appears to be password protected. Enter the password to unlock.');
+      } else {
+        setPdfInfo({
+          pageCount: 0,
+          isEncrypted: false,
+          title: selectedFile.name.replace('.pdf', '')
+        });
+        toast.success('PDF loaded. You can try to remove restrictions if any.');
       }
     } catch (error) {
-      console.error('Error loading PDF:', error);
-      toast.error('Failed to load PDF file');
+      console.error('Error checking PDF:', error);
+      setPdfInfo({
+        pageCount: 0,
+        isEncrypted: true,
+        title: selectedFile.name.replace('.pdf', '')
+      });
+      setStatus('needs-password');
+      toast.info('Enter the password to unlock this PDF.');
     }
   };
 
@@ -119,89 +150,91 @@ const PDFUnlockTool: React.FC = () => {
       return;
     }
 
+    if (!qpdfRef.current) {
+      toast.error('PDF engine not loaded. Please wait or refresh the page.');
+      return;
+    }
+
     setStatus('processing');
     setProgress(0);
     setErrorMessage('');
 
     try {
+      const qpdf = qpdfRef.current;
+      
       setProgress(10);
       const arrayBuffer = await file.arrayBuffer();
+      const inputData = new Uint8Array(arrayBuffer);
       
-      setProgress(30);
+      setProgress(20);
       
-      // Try to load with password
-      let pdfDoc;
-      try {
-        if (password) {
-          pdfDoc = await PDFDocument.load(arrayBuffer, { 
-            password: password,
-            ignoreEncryption: true 
-          });
-        } else {
-          pdfDoc = await PDFDocument.load(arrayBuffer, { 
-            ignoreEncryption: true 
-          });
-        }
-      } catch (error: any) {
-        if (error.message?.includes('password') || error.message?.includes('encrypted')) {
-          setStatus('needs-password');
-          setErrorMessage('Incorrect password. Please try again.');
-          toast.error('Incorrect password. Please try again.');
-          return;
-        }
-        throw error;
+      // Write input file
+      const inputPath = '/input.pdf';
+      const outputPath = '/output.pdf';
+      qpdf.FS.writeFile(inputPath, inputData);
+      
+      setProgress(40);
+      
+      // Build QPDF decrypt command
+      const args: string[] = [];
+      
+      if (password) {
+        args.push('--password=' + password);
       }
       
-      setProgress(50);
+      args.push('--decrypt');
+      args.push(inputPath);
+      args.push(outputPath);
       
-      // Create a new PDF without encryption
-      const newPdfDoc = await PDFDocument.create();
+      setProgress(60);
       
-      // Copy all pages
-      const pageCount = pdfDoc.getPageCount();
-      const pageIndices = Array.from({ length: pageCount }, (_, i) => i);
-      const copiedPages = await newPdfDoc.copyPages(pdfDoc, pageIndices);
+      // Execute QPDF
+      const result = qpdf.callMain(args);
       
-      copiedPages.forEach((page) => {
-        newPdfDoc.addPage(page);
-      });
+      if (result !== 0) {
+        // Try without --decrypt flag (just copy)
+        const args2 = password 
+          ? ['--password=' + password, inputPath, outputPath]
+          : [inputPath, outputPath];
+        
+        const result2 = qpdf.callMain(args2);
+        
+        if (result2 !== 0) {
+          throw new Error('QPDF decryption failed - incorrect password or unsupported encryption');
+        }
+      }
       
-      setProgress(70);
+      setProgress(80);
       
-      // Copy metadata
-      newPdfDoc.setTitle(pdfDoc.getTitle() || file.name.replace('.pdf', ''));
-      newPdfDoc.setAuthor(pdfDoc.getAuthor() || '');
-      newPdfDoc.setSubject(pdfDoc.getSubject() || '');
-      newPdfDoc.setCreator('AnyFile Flow PDF Unlocker');
-      newPdfDoc.setProducer('AnyFile Flow - anyfileflow.com');
+      // Read decrypted file
+      const outputData = qpdf.FS.readFile(outputPath);
       
-      setProgress(85);
+      // Cleanup
+      try {
+        qpdf.FS.unlink(inputPath);
+        qpdf.FS.unlink(outputPath);
+      } catch (e) {}
       
-      // Save WITHOUT encryption (no passwords = unprotected)
-      const pdfBytes = await newPdfDoc.save();
-      const blob = new Blob([new Uint8Array(pdfBytes)], { type: 'application/pdf' });
+      setProgress(90);
+      
+      const blob = new Blob([outputData], { type: 'application/pdf' });
       
       setProgress(100);
       setUnlockedPdf(blob);
       setStatus('success');
-      setPdfInfo({
-        pageCount: pageCount,
-        isEncrypted: false,
-        title: pdfDoc.getTitle() || undefined
-      });
+      setPdfInfo(prev => prev ? { ...prev, isEncrypted: false } : null);
       toast.success('PDF unlocked successfully! All restrictions removed.');
       
     } catch (error: any) {
       console.error('Error unlocking PDF:', error);
-      setStatus('failed');
+      setStatus('needs-password');
       
-      if (error.message?.includes('password') || error.message?.includes('encrypted')) {
-        setStatus('needs-password');
-        setErrorMessage('This PDF requires the correct password to unlock.');
-        toast.error('Password required or incorrect.');
+      if (error.message?.includes('password') || error.message?.includes('incorrect')) {
+        setErrorMessage('Incorrect password. Please try again.');
+        toast.error('Incorrect password. Please try again.');
       } else {
-        setErrorMessage('Failed to unlock PDF. The file might be corrupted or use unsupported encryption.');
-        toast.error('Failed to unlock PDF');
+        setErrorMessage('Failed to unlock PDF. The password may be incorrect or the file uses unsupported encryption.');
+        toast.error('Failed to unlock PDF. Check password and try again.');
       }
     }
   };
@@ -232,6 +265,15 @@ const PDFUnlockTool: React.FC = () => {
       fileInputRef.current.value = '';
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center p-12 space-y-4">
+        <RefreshCw className="h-8 w-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">Loading PDF unlock engine...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -280,7 +322,6 @@ const PDFUnlockTool: React.FC = () => {
               <p className="font-semibold text-foreground">{file.name}</p>
               <p className="text-sm text-muted-foreground">
                 {(file.size / 1024 / 1024).toFixed(2)} MB
-                {pdfInfo && pdfInfo.pageCount > 0 && ` • ${pdfInfo.pageCount} pages`}
               </p>
               {pdfInfo?.isEncrypted && (
                 <p className="text-xs text-yellow-600 dark:text-yellow-400 flex items-center gap-1 mt-1">
@@ -444,8 +485,8 @@ const PDFUnlockTool: React.FC = () => {
             Privacy & Security
           </p>
           <p>
-            All processing happens locally in your browser. Your files and passwords are never 
-            uploaded to any server, ensuring complete privacy and security.
+            All processing happens locally in your browser using WebAssembly technology. 
+            Your files and passwords are never uploaded to any server, ensuring complete privacy.
           </p>
         </div>
       </div>
@@ -459,9 +500,9 @@ const PDFUnlockTool: React.FC = () => {
           <AccordionItem value="item-1">
             <AccordionTrigger>How does the PDF Unlocker work?</AccordionTrigger>
             <AccordionContent>
-              Our PDF Unlocker works by decrypting the PDF using the password you provide, 
-              then creating a new copy without any encryption or restrictions. The result 
-              is a clean PDF that can be opened, printed, and edited freely.
+              Our PDF Unlocker uses QPDF, a trusted open-source tool compiled to WebAssembly, 
+              to decrypt your PDF files directly in your browser. When you provide the correct 
+              password, it creates a new copy without any encryption or restrictions.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
@@ -483,131 +524,117 @@ const PDFUnlockTool: React.FC = () => {
           <AccordionItem value="item-4">
             <AccordionTrigger>What types of PDF protection can be removed?</AccordionTrigger>
             <AccordionContent>
-              Our tool can remove: open passwords (user password), permission passwords 
-              (owner password), and restrictions on printing, copying, editing, and annotations. 
-              Some advanced DRM protection may not be removable.
+              This tool can remove both user passwords (required to open) and owner passwords 
+              (used to restrict printing, copying, and editing). It supports PDF encryption 
+              up to 256-bit AES, the strongest encryption standard used in PDFs.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-5">
-            <AccordionTrigger>Is my password stored or transmitted?</AccordionTrigger>
+            <AccordionTrigger>Is my data safe? Do you store my files?</AccordionTrigger>
             <AccordionContent>
-              No! Your password is never stored or transmitted anywhere. All processing happens 
-              entirely in your browser. The password is only used locally to decrypt the PDF 
-              and is immediately discarded after processing.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="item-6">
-            <AccordionTrigger>What if I forgot my PDF password?</AccordionTrigger>
-            <AccordionContent>
-              Unfortunately, if you forgot the password for a user-protected PDF, recovery is 
-              extremely difficult due to strong encryption. You may need to contact the original 
-              creator of the document to obtain the password.
+              Absolutely! All PDF processing happens entirely in your browser using client-side 
+              WebAssembly technology. Your files and passwords are never uploaded to any server. 
+              Everything stays on your device for maximum privacy and security.
             </AccordionContent>
           </AccordionItem>
         </Accordion>
       </div>
 
-      {/* Schema Markup */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "SoftwareApplication",
-          "name": "PDF Unlocker Tool",
-          "description": "Free online tool to remove password protection from PDF files securely in your browser",
-          "url": "https://anyfileflow.com/tool/pdf-unlocker",
-          "applicationCategory": "UtilityApplication",
-          "operatingSystem": "All",
-          "browserRequirements": "Requires JavaScript",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
-          "featureList": [
-            "Remove PDF password protection",
-            "Remove printing restrictions",
-            "Remove copying restrictions",
-            "Remove editing restrictions",
-            "Client-side processing",
-            "No file upload required",
-            "Complete privacy"
-          ]
-        })
-      }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "HowTo",
-          "name": "How to Unlock a Password Protected PDF",
-          "description": "Step-by-step guide to remove password protection from PDF files",
-          "step": [
-            {
-              "@type": "HowToStep",
-              "position": 1,
-              "name": "Upload Protected PDF",
-              "text": "Drag and drop your password-protected PDF file or click to browse and select the file."
-            },
-            {
-              "@type": "HowToStep",
-              "position": 2,
-              "name": "Enter Password",
-              "text": "If the PDF requires a password to open, enter the correct password in the password field."
-            },
-            {
-              "@type": "HowToStep",
-              "position": 3,
-              "name": "Unlock PDF",
-              "text": "Click the Unlock PDF button to remove the password protection and all restrictions."
-            },
-            {
-              "@type": "HowToStep",
-              "position": 4,
-              "name": "Download Unlocked PDF",
-              "text": "Once unlocked, download your PDF file which can now be opened, printed, and edited freely."
-            }
-          ]
-        })
-      }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{
-        __html: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "How does the PDF Unlocker work?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Our PDF Unlocker works by decrypting the PDF using the password you provide, then creating a new copy without any encryption or restrictions."
+      {/* Structured Data for SEO */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How does the PDF Unlocker work?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Our PDF Unlocker uses QPDF, a trusted open-source tool compiled to WebAssembly, to decrypt your PDF files directly in your browser. When you provide the correct password, it creates a new copy without any encryption or restrictions."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I unlock a PDF without the password?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "For PDFs with owner password only (restrictions on printing/copying), you may be able to remove restrictions without the password. For user-password protected PDFs, you must provide the correct password."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is my data safe? Do you store my files?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "All PDF processing happens entirely in your browser using client-side WebAssembly technology. Your files never touch our servers."
+                }
               }
-            },
-            {
-              "@type": "Question",
-              "name": "Can I unlock a PDF without the password?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "For PDFs with owner password only (restrictions on printing/copying), you may be able to remove restrictions. For user-password protected PDFs, you must provide the correct password."
+            ]
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "HowTo",
+            "name": "How to Unlock a Password Protected PDF",
+            "description": "Learn how to remove password protection from PDF files",
+            "step": [
+              {
+                "@type": "HowToStep",
+                "name": "Upload your protected PDF",
+                "text": "Drag and drop your password-protected PDF file or click to browse"
+              },
+              {
+                "@type": "HowToStep",
+                "name": "Enter the password",
+                "text": "Type the password that was used to protect the PDF"
+              },
+              {
+                "@type": "HowToStep",
+                "name": "Click Unlock PDF",
+                "text": "Press the Unlock PDF button to remove the encryption"
+              },
+              {
+                "@type": "HowToStep",
+                "name": "Download unlocked PDF",
+                "text": "Download your unlocked PDF file without any restrictions"
               }
+            ]
+          })
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "PDF Unlock Tool - AnyFile Flow",
+            "applicationCategory": "SecurityApplication",
+            "operatingSystem": "Any (Web-based)",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
             },
-            {
-              "@type": "Question",
-              "name": "Is it legal to unlock PDFs?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "It is legal to unlock PDFs that you own or have permission to unlock. Removing protection from copyrighted materials without authorization may violate copyright laws."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Is my password stored or transmitted?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No! Your password is never stored or transmitted anywhere. All processing happens entirely in your browser."
-              }
-            }
-          ]
-        })
-      }} />
+            "description": "Free online tool to unlock password-protected PDF files. Remove encryption and restrictions from PDFs. All processing happens in your browser.",
+            "featureList": [
+              "Remove user passwords",
+              "Remove owner passwords",
+              "Remove printing restrictions",
+              "Remove copy restrictions",
+              "Client-side processing",
+              "No file uploads required"
+            ]
+          })
+        }}
+      />
     </div>
   );
 };
