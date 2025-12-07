@@ -14,7 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { toast } from "@/hooks/use-toast";
-import QRCode from "qrcode";
+import * as QRCodeLib from "qrcode";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 
@@ -163,7 +163,7 @@ END:VCARD`;
       };
 
       // Generate as data URL for preview
-      const dataUrl = await QRCode.toDataURL(data, options);
+      const dataUrl = await QRCodeLib.toDataURL(data, options);
       
       // If logo is present, overlay it
       if (logoImage) {
@@ -210,7 +210,7 @@ END:VCARD`;
       }
 
       // Generate SVG for vector export
-      const svg = await QRCode.toString(data, { ...options, type: 'svg' });
+      const svg = await QRCodeLib.toString(data, { ...options, type: 'svg' });
       setQrSvg(svg);
       
     } catch (error) {
@@ -263,7 +263,7 @@ END:VCARD`;
     
     try {
       if (fmt === 'svg') {
-        const svg = await QRCode.toString(data, {
+        const svg = await QRCodeLib.toString(data, {
           errorCorrectionLevel: errorCorrection,
           margin: margin,
           width: downloadSize,
@@ -280,7 +280,7 @@ END:VCARD`;
           color: { dark: fgColor, light: transparentBg ? '#00000000' : bgColor }
         };
         
-        let dataUrl = await QRCode.toDataURL(data, options);
+        let dataUrl = await QRCodeLib.toDataURL(data, options);
         
         // Add logo if present
         if (logoImage) {
@@ -396,10 +396,10 @@ END:VCARD`;
         };
         
         if (exportFormat === 'svg') {
-          const svg = await QRCode.toString(item.content, { ...options, type: 'svg' });
+          const svg = await QRCodeLib.toString(item.content, { ...options, type: 'svg' });
           zip.file(`qr-${i + 1}.svg`, svg);
         } else {
-          const dataUrl = await QRCode.toDataURL(item.content, options);
+          const dataUrl = await QRCodeLib.toDataURL(item.content, options);
           const base64Data = dataUrl.split(',')[1];
           zip.file(`qr-${i + 1}.png`, base64Data, { base64: true });
         }
