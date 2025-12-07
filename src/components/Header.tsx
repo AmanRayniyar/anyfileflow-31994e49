@@ -61,7 +61,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between gap-3">
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img src={logo} alt="AnyFile Flow Logo" className="h-8 w-8 rounded-lg" loading="eager" />
+            <img src={logo} alt="AnyFile Flow Logo" className="h-8 w-8 rounded-lg" width="32" height="32" loading="eager" fetchPriority="high" decoding="async" />
             <span className="text-lg font-bold hidden sm:block">
               <span className="flow-text">AnyFile</span>
               <span className="text-foreground"> Flow</span>
