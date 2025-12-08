@@ -1,0 +1,20 @@
+{
+  "name": "AnyFile Flow",
+  "short_name": "AnyFile Flow",
+  "description": "200+ free online file conversion tools for images, documents, audio, and video",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#0284c7",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "https://storage.googleapis.com/gpt-engineer-file-uploads/nFHi4tXsNpTAZh1K4XzsCObEP113/uploads/1765189107647-cropped_circle_image.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["utilities", "productivity"],
+  "lang": "en"
+}

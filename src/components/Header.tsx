@@ -52,12 +52,12 @@ const Header = () => {
       setShowResults(false);
     }
   };
-  return <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+  return <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border optimize-paint" role="banner">
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between gap-3">
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img src={logo} alt="AnyFile Flow Logo" width="32" height="32" loading="eager" fetchPriority="high" decoding="async" className="h-8 w-8 border-8 border-double rounded-xl shadow-sm" />
-            <span className="text-lg font-bold hidden sm:block">
+          <Link to="/" className="flex items-center gap-2 shrink-0 min-h-0" aria-label="AnyFile Flow - Home">
+            <img src={logo} alt="" width="32" height="32" loading="eager" fetchPriority="high" decoding="async" className="h-8 w-8 border-8 border-double rounded-xl shadow-sm" aria-hidden="true" />
+            <span className="text-lg font-bold hidden sm:block" aria-hidden="true">
               <span className="flow-text">AnyFile</span>
               <span className="text-foreground"> Flow</span>
             </span>
@@ -94,7 +94,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+          <nav className="hidden lg:flex items-center gap-1" role="navigation" aria-label="Main navigation">
             <Link to="/" className="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-md hover:bg-secondary/50">
               Home
             </Link>
