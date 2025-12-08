@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { tools } from "@/data/tools";
 import { useAnyFlowAI } from "@/hooks/useAnyFlowAI";
-const Hero = () => {
+import { memo } from "react";
+
+const Hero = memo(() => {
   const { open } = useAnyFlowAI();
 
   return (
@@ -89,6 +91,8 @@ const Hero = () => {
       </div>
     </section>
   );
-};
+});
+
+Hero.displayName = "Hero";
 
 export default Hero;

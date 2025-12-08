@@ -21,12 +21,23 @@ const TermsPage = lazy(() => import("./pages/TermsPage"));
 const DisclaimerPage = lazy(() => import("./pages/DisclaimerPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      gcTime: 1000 * 60 * 30, // 30 minutes cache
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
-// Simple loading fallback
+// Optimized loading fallback with accessibility
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+  <div className="min-h-screen flex items-center justify-center" role="status" aria-live="polite" aria-label="Loading page">
+    <div className="flex flex-col items-center gap-4">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" aria-hidden="true" />
+      <span className="sr-only">Loading...</span>
+    </div>
   </div>
 );
 
