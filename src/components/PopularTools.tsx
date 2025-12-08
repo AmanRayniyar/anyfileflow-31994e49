@@ -1,30 +1,35 @@
 import { Sparkles } from "lucide-react";
 import { getPopularTools } from "@/data/tools";
 import ToolCard from "./ToolCard";
+import { memo, useMemo } from "react";
 
-const PopularTools = () => {
-  const popularTools = getPopularTools();
+const PopularTools = memo(() => {
+  const popularTools = useMemo(() => getPopularTools().slice(0, 8), []);
 
   return (
-    <section className="py-12 bg-secondary/30">
+    <section className="py-12 bg-secondary/30" aria-labelledby="popular-tools-heading">
       <div className="container mx-auto px-4">
         <div className="flex items-center gap-3 mb-8">
-          <div className="p-2.5 rounded-lg bg-tool-data/10">
-            <Sparkles className="h-5 w-5 text-tool-data" />
+          <div className="p-2.5 rounded-lg bg-tool-data/10" aria-hidden="true">
+            <Sparkles className="h-5 w-5 text-tool-data" aria-hidden="true" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Popular Tools</h2>
+            <h2 id="popular-tools-heading" className="text-2xl font-bold text-foreground">Popular Tools</h2>
             <p className="text-sm text-muted-foreground">Most used conversion tools by our users</p>
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {popularTools.slice(0, 8).map((tool) => (
-            <ToolCard key={tool.id} tool={tool} />
+        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 list-none p-0" role="list" aria-label="Popular tools list">
+          {popularTools.map((tool) => (
+            <li key={tool.id}>
+              <ToolCard tool={tool} />
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
-};
+});
+
+PopularTools.displayName = "PopularTools";
 
 export default PopularTools;
