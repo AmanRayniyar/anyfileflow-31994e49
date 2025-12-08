@@ -6,7 +6,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { categories, searchTools, Tool } from "@/data/tools";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import logo from "@/assets/logo-optimized.webp";
+import logo from "@/assets/logo-small.png";
 import AnyFlowAI from "@/components/AnyFlowAI";
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -56,7 +56,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between gap-3">
           <Link to="/" className="flex items-center gap-2 shrink-0 min-h-0" aria-label="AnyFile Flow - Home">
-            <img src={logo} alt="" width="32" height="32" loading="eager" fetchPriority="high" decoding="async" className="h-8 w-8 border-8 border-double rounded-xl shadow-sm" aria-hidden="true" />
+            <img src={logo} alt="AnyFile Flow" width="32" height="32" loading="eager" fetchPriority="high" decoding="async" className="h-8 w-8 rounded-lg" />
             <span className="text-lg font-bold hidden sm:block" aria-hidden="true">
               <span className="flow-text">AnyFile</span>
               <span className="text-foreground"> Flow</span>
