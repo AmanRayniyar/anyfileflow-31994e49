@@ -8,7 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useBlogPosts, BlogPost } from "@/hooks/useBlog";
 import { useToolsAdmin, DbTool } from "@/hooks/useTools";
-import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText, Code, ChevronDown, ChevronUp, ExternalLink, Monitor } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText, Code, ChevronDown, ChevronUp, ExternalLink, Monitor, Sparkles, Play, RefreshCw } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
@@ -53,6 +54,13 @@ const AdminPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [secretCode, setSecretCode] = useState("");
+  
+  // Blog generator state
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generationProgress, setGenerationProgress] = useState(0);
+  const [generationLogs, setGenerationLogs] = useState<string[]>([]);
+  const [currentBatch, setCurrentBatch] = useState(0);
+  const [totalTools, setTotalTools] = useState(200);
   const [isVerifying, setIsVerifying] = useState(false);
   const [adminType, setAdminType] = useState<AdminType | null>(null);
 
@@ -279,6 +287,54 @@ const AdminPage = () => {
       toast.success(`Tool ${!tool.popular ? 'marked as popular' : 'unmarked as popular'}`);
     } else {
       toast.error(result.error || "Failed to update tool");
+    }
+  };
+
+  // Blog generator function
+  const startBlogGeneration = async () => {
+    setIsGenerating(true);
+    setGenerationLogs([]);
+    setGenerationProgress(0);
+    let currentIndex = 0;
+    const batchSize = 5;
+    
+    try {
+      while (currentIndex < totalTools) {
+        setGenerationLogs(prev => [...prev, `Processing batch ${currentIndex}-${Math.min(currentIndex + batchSize - 1, totalTools - 1)}...`]);
+        
+        const { data, error } = await supabase.functions.invoke('generate-blog-posts', {
+          body: { startIndex: currentIndex, batchSize }
+        });
+        
+        if (error) {
+          setGenerationLogs(prev => [...prev, `Error: ${error.message}`]);
+          break;
+        }
+        
+        if (data?.processed) {
+          data.processed.forEach((result: any) => {
+            setGenerationLogs(prev => [...prev, `${result.id}: ${result.status}`]);
+          });
+        }
+        
+        currentIndex = data?.nextIndex || currentIndex + batchSize;
+        setCurrentBatch(currentIndex);
+        setGenerationProgress((currentIndex / totalTools) * 100);
+        
+        if (!data?.hasMore) break;
+        
+        // Wait between batches to avoid rate limits
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+      
+      setGenerationLogs(prev => [...prev, "✅ Blog generation complete!"]);
+      toast.success("Blog posts generated successfully!");
+    } catch (error) {
+      const errMsg = error instanceof Error ? error.message : "Unknown error";
+      setGenerationLogs(prev => [...prev, `Error: ${errMsg}`]);
+      toast.error("Blog generation failed");
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -834,7 +890,7 @@ const AdminPage = () => {
 
             {adminType === 'master' ? (
               <Tabs defaultValue="blog" className="space-y-6">
-                <TabsList className="grid w-full grid-cols-2">
+                <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="blog" className="flex items-center gap-2">
                     <FileText className="h-4 w-4" />
                     Blog
@@ -843,12 +899,55 @@ const AdminPage = () => {
                     <Settings className="h-4 w-4" />
                     Tools
                   </TabsTrigger>
+                  <TabsTrigger value="generator" className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4" />
+                    AI Generator
+                  </TabsTrigger>
                 </TabsList>
                 <TabsContent value="blog">
                   <BlogPanel />
                 </TabsContent>
                 <TabsContent value="tools">
                   <ToolsPanel />
+                </TabsContent>
+                <TabsContent value="generator">
+                  <div className="bg-card border border-border rounded-xl p-6 space-y-6">
+                    <div>
+                      <h2 className="text-xl font-semibold text-foreground mb-2">AI Blog Generator</h2>
+                      <p className="text-muted-foreground text-sm">Generate SEO-optimized 1500+ word blog posts for all 200 tools using AI.</p>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <Button 
+                        onClick={startBlogGeneration} 
+                        disabled={isGenerating}
+                        size="lg"
+                        className="w-full"
+                      >
+                        {isGenerating ? (
+                          <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generating... {currentBatch}/{totalTools}</>
+                        ) : (
+                          <><Play className="h-4 w-4 mr-2" /> Start Generating 200 Blog Posts</>
+                        )}
+                      </Button>
+                      
+                      {isGenerating && (
+                        <Progress value={generationProgress} className="h-3" />
+                      )}
+                      
+                      {generationLogs.length > 0 && (
+                        <div className="bg-muted rounded-lg p-4 max-h-[400px] overflow-y-auto">
+                          <div className="font-mono text-xs space-y-1">
+                            {generationLogs.map((log, i) => (
+                              <div key={i} className={log.includes("Error") ? "text-destructive" : log.includes("✅") ? "text-green-500" : "text-muted-foreground"}>
+                                {log}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </TabsContent>
               </Tabs>
             ) : canAccessBlog ? (

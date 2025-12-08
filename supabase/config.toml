@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.anyflow-ai]
 verify_jwt = false
+
+[functions.generate-blog-posts]
+verify_jwt = false
