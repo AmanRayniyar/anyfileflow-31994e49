@@ -25,6 +25,7 @@ const PDFProtectTool = lazy(() => import("@/components/tools/PDFProtectTool"));
 const PDFUnlockTool = lazy(() => import("@/components/tools/PDFUnlockTool"));
 const StopwatchTool = lazy(() => import("@/components/tools/StopwatchTool"));
 const CountdownTimerTool = lazy(() => import("@/components/tools/CountdownTimerTool"));
+const ImageCompressorTool = lazy(() => import("@/components/tools/ImageCompressorTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 
 // Tool loading skeleton
@@ -107,6 +108,11 @@ const ToolPage = () => {
     // Special case for Countdown Timer
     if (tool.id === 'countdown-timer') {
       return <CountdownTimerTool />;
+    }
+    
+    // Special case for Image Compressor
+    if (tool.id === 'image-compressor') {
+      return <ImageCompressorTool />;
     }
     
     switch (tool.toolType) {
