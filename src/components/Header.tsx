@@ -56,7 +56,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between gap-3">
           <Link to="/" className="flex items-center gap-2 shrink-0 min-h-0" aria-label="AnyFile Flow - Home">
-            <img src={logo} alt="AnyFile Flow" width="32" height="32" loading="eager" fetchPriority="high" decoding="async" className="h-8 w-8 rounded-lg" />
+            <img alt="AnyFile Flow" width="32" height="32" loading="eager" fetchPriority="high" decoding="async" className="h-8 w-8 rounded-lg" src="/lovable-uploads/44ccb356-ba48-40bf-aa6e-8019ed659ca4.png" />
             <span className="text-lg font-bold hidden sm:block" aria-hidden="true">
               <span className="flow-text">AnyFile</span>
               <span className="text-foreground"> Flow</span>
