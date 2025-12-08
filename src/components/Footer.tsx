@@ -2,18 +2,15 @@ import { Link } from "react-router-dom";
 import { Mail, MessageSquare, Facebook, Github, Instagram } from "lucide-react";
 import logo from "@/assets/logo-small.png";
 import founderImg from "@/assets/founder.png";
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-
-  return (
-    <footer className="bg-card border-t border-border" role="contentinfo">
+  return <footer className="bg-card border-t border-border" role="contentinfo">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-3 min-h-0 inline-touch-target" aria-label="AnyFile Flow - Home">
-              <img src={logo} alt="" className="h-10 w-10 rounded-lg" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true" />
+              <img alt="" className="h-10 w-10 rounded-lg" width="40" height="40" loading="lazy" decoding="async" aria-hidden="true" src="/lovable-uploads/33a729e8-7326-4a49-8542-853fcab5bea3.png" />
               <span className="text-lg font-bold" aria-hidden="true">
                 <span className="flow-text">AnyFile</span>
                 <span className="text-foreground"> Flow</span>
@@ -91,8 +88,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
