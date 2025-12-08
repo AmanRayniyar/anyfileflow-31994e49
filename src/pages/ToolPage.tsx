@@ -26,6 +26,7 @@ const PDFUnlockTool = lazy(() => import("@/components/tools/PDFUnlockTool"));
 const StopwatchTool = lazy(() => import("@/components/tools/StopwatchTool"));
 const CountdownTimerTool = lazy(() => import("@/components/tools/CountdownTimerTool"));
 const ImageCompressorTool = lazy(() => import("@/components/tools/ImageCompressorTool"));
+const MemeGeneratorTool = lazy(() => import("@/components/tools/MemeGeneratorTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 
 // Tool loading skeleton
@@ -113,6 +114,11 @@ const ToolPage = () => {
     // Special case for Image Compressor
     if (tool.id === 'image-compressor') {
       return <ImageCompressorTool />;
+    }
+    
+    // Special case for Meme Generator
+    if (tool.id === 'meme-generator') {
+      return <MemeGeneratorTool />;
     }
     
     switch (tool.toolType) {
