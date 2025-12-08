@@ -8,12 +8,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useBlogPosts, BlogPost } from "@/hooks/useBlog";
 import { useToolsAdmin, DbTool } from "@/hooks/useTools";
-import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText, Code, ChevronDown, ChevronUp, ExternalLink, Monitor, Sparkles, Play, RefreshCw } from "lucide-react";
+import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText, Code, ChevronDown, ChevronUp, ExternalLink, Monitor, Sparkles, Play, RefreshCw, Layout, ToggleLeft, ToggleRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BlogImageUpload } from "@/components/admin/BlogImageUpload";
+import { BlogLayoutTemplates } from "@/components/admin/BlogLayoutTemplates";
 
 const SESSION_TOKEN_KEY = "anyfileflow_admin_session";
 const SESSION_TYPE_KEY = "anyfileflow_admin_type";
@@ -422,134 +424,177 @@ const AdminPage = () => {
     );
   }
 
+  // Handle template selection
+  const handleTemplateSelect = (template: { title: string; excerpt: string; content: string; category: string; tags: string }) => {
+    setFormData({
+      ...formData,
+      title: template.title,
+      slug: generateSlug(template.title),
+      excerpt: template.excerpt,
+      content: template.content,
+      category: template.category,
+      tags: template.tags
+    });
+    setIsCreating(true);
+    toast.success("Template loaded! Customize and save.");
+  };
+
+  // Toggle blog published status
+  const handleTogglePublished = async (post: BlogPost) => {
+    try {
+      await updatePost(post.id, { published: !post.published });
+      toast.success(`Blog ${!post.published ? 'enabled' : 'disabled'}`);
+    } catch (error) {
+      toast.error("Failed to update blog status");
+    }
+  };
+
   // Blog Panel Component
   const BlogPanel = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold text-foreground">Blog Posts</h2>
-        {!isCreating && (
-          <Button onClick={() => setIsCreating(true)}>
-            <Plus className="h-4 w-4 mr-2" /> New Post
-          </Button>
-        )}
+        <h2 className="text-xl font-semibold text-foreground">Blog Posts ({allPosts.length})</h2>
+        <div className="flex items-center gap-2">
+          {!isCreating && (
+            <Button onClick={() => setIsCreating(true)}>
+              <Plus className="h-4 w-4 mr-2" /> New Post
+            </Button>
+          )}
+        </div>
       </div>
 
       {isCreating ? (
-        <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 space-y-6">
-          <h3 className="text-lg font-semibold">
-            {editingPost ? "Edit Post" : "Create New Post"}
-          </h3>
-
-          <div className="grid gap-4">
-            <div>
-              <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => {
-                  setFormData({ 
-                    ...formData, 
-                    title: e.target.value,
-                    slug: editingPost ? formData.slug : generateSlug(e.target.value)
-                  });
-                }}
-                required
-              />
+        <div className="space-y-6">
+          {/* Template Selector */}
+          <div className="bg-card border border-border rounded-xl p-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Layout className="h-5 w-5 text-primary" />
+              <h3 className="text-lg font-semibold">Choose a Template (200 Available)</h3>
             </div>
+            <BlogLayoutTemplates onSelect={handleTemplateSelect} />
+          </div>
 
-            <div>
-              <label htmlFor="slug" className="block text-sm font-medium mb-1">Slug</label>
-              <Input
-                id="slug"
-                value={formData.slug}
-                onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                required
-              />
-            </div>
+          {/* Blog Form */}
+          <form onSubmit={handleSubmit} className="bg-card border border-border rounded-xl p-6 space-y-6">
+            <h3 className="text-lg font-semibold">
+              {editingPost ? "Edit Post" : "Create New Post"}
+            </h3>
 
-            <div>
-              <label htmlFor="excerpt" className="block text-sm font-medium mb-1">Excerpt</label>
-              <Textarea
-                id="excerpt"
-                value={formData.excerpt}
-                onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
-                rows={2}
-                required
-              />
-            </div>
+            <div className="grid gap-4">
+              <div>
+                <label htmlFor="title" className="block text-sm font-medium mb-1">Title</label>
+                <Input
+                  id="title"
+                  value={formData.title}
+                  onChange={(e) => {
+                    setFormData({ 
+                      ...formData, 
+                      title: e.target.value,
+                      slug: editingPost ? formData.slug : generateSlug(e.target.value)
+                    });
+                  }}
+                  required
+                />
+              </div>
 
-            <div>
-              <label htmlFor="content" className="block text-sm font-medium mb-1">Content (HTML)</label>
-              <Textarea
-                id="content"
-                value={formData.content}
-                onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                rows={10}
-                required
-              />
-            </div>
+              <div>
+                <label htmlFor="slug" className="block text-sm font-medium mb-1">Slug</label>
+                <Input
+                  id="slug"
+                  value={formData.slug}
+                  onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                  required
+                />
+              </div>
 
-            <div>
-              <label htmlFor="image" className="block text-sm font-medium mb-1">Featured Image URL</label>
-              <Input
-                id="image"
-                type="url"
+              <div>
+                <label htmlFor="excerpt" className="block text-sm font-medium mb-1">Excerpt</label>
+                <Textarea
+                  id="excerpt"
+                  value={formData.excerpt}
+                  onChange={(e) => setFormData({ ...formData, excerpt: e.target.value })}
+                  rows={2}
+                  required
+                />
+              </div>
+
+              <div>
+                <label htmlFor="content" className="block text-sm font-medium mb-1">Content (HTML)</label>
+                <Textarea
+                  id="content"
+                  value={formData.content}
+                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                  rows={10}
+                  required
+                />
+              </div>
+
+              {/* Image Upload Component */}
+              <BlogImageUpload
                 value={formData.image}
-                onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                onChange={(url) => setFormData({ ...formData, image: url })}
               />
-            </div>
 
-            <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="author" className="block text-sm font-medium mb-1">Author</label>
+                  <Input
+                    id="author"
+                    value={formData.author}
+                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor="category" className="block text-sm font-medium mb-1">Category</label>
+                  <Input
+                    id="category"
+                    value={formData.category}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
+
               <div>
-                <label htmlFor="author" className="block text-sm font-medium mb-1">Author</label>
+                <label htmlFor="tags" className="block text-sm font-medium mb-1">Tags (comma-separated)</label>
                 <Input
-                  id="author"
-                  value={formData.author}
-                  onChange={(e) => setFormData({ ...formData, author: e.target.value })}
-                  required
+                  id="tags"
+                  value={formData.tags}
+                  onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
                 />
               </div>
-              <div>
-                <label htmlFor="category" className="block text-sm font-medium mb-1">Category</label>
-                <Input
-                  id="category"
-                  value={formData.category}
-                  onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  required
+
+              <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg">
+                <Switch
+                  id="published"
+                  checked={formData.published}
+                  onCheckedChange={(checked) => setFormData({ ...formData, published: checked })}
                 />
+                <label htmlFor="published" className="text-sm font-medium cursor-pointer">
+                  {formData.published ? (
+                    <span className="flex items-center gap-2 text-green-600">
+                      <Eye className="h-4 w-4" /> Published (Visible to public)
+                    </span>
+                  ) : (
+                    <span className="flex items-center gap-2 text-muted-foreground">
+                      <EyeOff className="h-4 w-4" /> Draft (Hidden from public)
+                    </span>
+                  )}
+                </label>
               </div>
             </div>
 
-            <div>
-              <label htmlFor="tags" className="block text-sm font-medium mb-1">Tags (comma-separated)</label>
-              <Input
-                id="tags"
-                value={formData.tags}
-                onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-              />
+            <div className="flex gap-3">
+              <Button type="submit">
+                <Save className="h-4 w-4 mr-2" /> {editingPost ? "Update" : "Create"}
+              </Button>
+              <Button type="button" variant="outline" onClick={resetForm}>
+                Cancel
+              </Button>
             </div>
-
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="published"
-                checked={formData.published}
-                onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-                className="rounded"
-              />
-              <label htmlFor="published" className="text-sm">Published</label>
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <Button type="submit">
-              <Save className="h-4 w-4 mr-2" /> {editingPost ? "Update" : "Create"}
-            </Button>
-            <Button type="button" variant="outline" onClick={resetForm}>
-              Cancel
-            </Button>
-          </div>
-        </form>
+          </form>
+        </div>
       ) : (
         <div className="space-y-4">
           {allPosts.length === 0 ? (
@@ -558,27 +603,44 @@ const AdminPage = () => {
             </div>
           ) : (
             allPosts.map((post) => (
-              <div key={post.id} className="bg-card border border-border rounded-xl p-4 flex items-center justify-between">
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-medium text-foreground truncate">{post.title}</h3>
-                    {post.published ? (
-                      <Eye className="h-4 w-4 text-green-500" />
-                    ) : (
-                      <EyeOff className="h-4 w-4 text-muted-foreground" />
+              <div key={post.id} className="bg-card border border-border rounded-xl p-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4 flex-1 min-w-0">
+                    {/* Thumbnail */}
+                    {post.image && (
+                      <img
+                        src={post.image}
+                        alt={post.title}
+                        className="w-16 h-16 object-cover rounded-lg shrink-0"
+                      />
                     )}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-medium text-foreground truncate">{post.title}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        {new Date(post.createdAt).toLocaleDateString()} • {post.category}
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {new Date(post.createdAt).toLocaleDateString()} • {post.category}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon" onClick={() => handleEdit(post)} aria-label="Edit post">
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" onClick={() => handleDelete(post.id)} aria-label="Delete post">
-                    <Trash2 className="h-4 w-4 text-destructive" />
-                  </Button>
+                  <div className="flex items-center gap-3">
+                    {/* Enable/Disable Toggle */}
+                    <div className="flex items-center gap-2 border-r border-border pr-3">
+                      <span className="text-xs text-muted-foreground">
+                        {post.published ? "Enabled" : "Disabled"}
+                      </span>
+                      <Switch
+                        checked={post.published}
+                        onCheckedChange={() => handleTogglePublished(post)}
+                      />
+                    </div>
+                    <Button variant="ghost" size="icon" onClick={() => handleEdit(post)} aria-label="Edit post">
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={() => handleDelete(post.id)} aria-label="Delete post">
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))
