@@ -18,28 +18,28 @@ const Hero = memo(() => {
 
       <div className="container mx-auto px-4 relative">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6 animate-fade-in">
+          {/* Badge - no animation delay */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
             <Zap className="h-4 w-4 text-primary" aria-hidden="true" />
             <span className="text-sm font-medium text-primary">
               {tools.length}+ Free Tools Available
             </span>
           </div>
 
-          {/* Heading */}
-          <h1 id="hero-heading" className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 animate-fade-in" style={{ animationDelay: "0.1s" }}>
+          {/* Heading - removed animation delay for faster LCP */}
+          <h1 id="hero-heading" className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
             Convert Any File with{" "}
             <span className="flow-text">AnyFile Flow</span>
           </h1>
 
-          {/* Description */}
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto animate-fade-in" style={{ animationDelay: "0.2s" }}>
+          {/* Description - LCP element, no delay */}
+          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
             The ultimate toolkit for all your file conversions. Fast, free, and secure. 
             No registration required – just drag, drop, and convert.
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <Button variant="hero" size="xl" asChild>
               <Link to="/tools">
                 Explore All Tools
@@ -58,7 +58,7 @@ const Hero = memo(() => {
           </div>
 
           {/* Features */}
-          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto animate-fade-in list-none p-0" style={{ animationDelay: "0.5s" }} role="list" aria-label="Key features">
+          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto list-none p-0" role="list" aria-label="Key features">
             <li className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card border border-border">
               <div className="p-2 rounded-lg bg-tool-archive/10" aria-hidden="true">
                 <Zap className="h-5 w-5 text-tool-archive" aria-hidden="true" />
