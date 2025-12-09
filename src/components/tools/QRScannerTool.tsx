@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Html5Qrcode } from 'html5-qrcode';
+import { Html5Qrcode, Html5QrcodeScanner } from 'html5-qrcode';
 import { 
   Camera, 
   Upload, 
@@ -18,11 +18,10 @@ import {
   History,
   Trash2,
   X,
-  Check,
   SwitchCamera,
-  Globe,
   Shield,
-  Smartphone
+  Smartphone,
+  Loader2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -45,35 +44,27 @@ type QRType = 'url' | 'text' | 'email' | 'phone' | 'vcard' | 'wifi' | 'event' | 
 interface ParsedQRData {
   type: QRType;
   raw: string;
-  // URL
   url?: string;
-  // Email
   email?: string;
   subject?: string;
   body?: string;
-  // Phone
   phoneNumber?: string;
-  // WiFi
   ssid?: string;
   password?: string;
   security?: string;
-  // vCard
   name?: string;
   organization?: string;
   title?: string;
   phone?: string;
   emailAddress?: string;
   address?: string;
-  // Event
   eventTitle?: string;
   eventStart?: string;
   eventEnd?: string;
   eventLocation?: string;
   eventDescription?: string;
-  // Geo
   latitude?: string;
   longitude?: string;
-  // SMS
   smsNumber?: string;
   smsBody?: string;
 }
@@ -85,8 +76,8 @@ const translations: Record<string, Record<string, string>> = {
     camera: 'Camera',
     upload: 'Upload',
     history: 'History',
-    startScanning: 'Start Scanning',
-    stopScanning: 'Stop Scanning',
+    startScanning: 'Start Camera',
+    stopScanning: 'Stop Camera',
     switchCamera: 'Switch Camera',
     flashlight: 'Flashlight',
     uploadImage: 'Upload QR Image',
@@ -106,15 +97,17 @@ const translations: Record<string, Record<string, string>> = {
     copied: 'Copied to clipboard!',
     secureProcessing: 'Secure On-Device Processing',
     noDataStored: 'No data is sent to servers - all processing happens locally',
-    selectLanguage: 'Language'
+    selectLanguage: 'Language',
+    initializing: 'Initializing camera...',
+    scanning: 'Point camera at QR code'
   },
   es: {
     title: 'Escáner de Código QR',
     camera: 'Cámara',
     upload: 'Subir',
     history: 'Historial',
-    startScanning: 'Iniciar Escaneo',
-    stopScanning: 'Detener Escaneo',
+    startScanning: 'Iniciar Cámara',
+    stopScanning: 'Detener Cámara',
     switchCamera: 'Cambiar Cámara',
     flashlight: 'Linterna',
     uploadImage: 'Subir Imagen QR',
@@ -134,15 +127,17 @@ const translations: Record<string, Record<string, string>> = {
     copied: '¡Copiado al portapapeles!',
     secureProcessing: 'Procesamiento Seguro en Dispositivo',
     noDataStored: 'No se envían datos a servidores - todo se procesa localmente',
-    selectLanguage: 'Idioma'
+    selectLanguage: 'Idioma',
+    initializing: 'Inicializando cámara...',
+    scanning: 'Apunta la cámara al código QR'
   },
   fr: {
     title: 'Scanner de Code QR',
     camera: 'Caméra',
     upload: 'Télécharger',
     history: 'Historique',
-    startScanning: 'Commencer le Scan',
-    stopScanning: 'Arrêter le Scan',
+    startScanning: 'Démarrer Caméra',
+    stopScanning: 'Arrêter Caméra',
     switchCamera: 'Changer de Caméra',
     flashlight: 'Lampe Torche',
     uploadImage: 'Télécharger Image QR',
@@ -162,15 +157,17 @@ const translations: Record<string, Record<string, string>> = {
     copied: 'Copié dans le presse-papiers!',
     secureProcessing: 'Traitement Sécurisé sur Appareil',
     noDataStored: 'Aucune donnée envoyée aux serveurs - tout est traité localement',
-    selectLanguage: 'Langue'
+    selectLanguage: 'Langue',
+    initializing: 'Initialisation de la caméra...',
+    scanning: 'Pointez la caméra vers le code QR'
   },
   hi: {
     title: 'QR कोड स्कैनर',
     camera: 'कैमरा',
     upload: 'अपलोड',
     history: 'इतिहास',
-    startScanning: 'स्कैनिंग शुरू करें',
-    stopScanning: 'स्कैनिंग बंद करें',
+    startScanning: 'कैमरा शुरू करें',
+    stopScanning: 'कैमरा बंद करें',
     switchCamera: 'कैमरा बदलें',
     flashlight: 'फ्लैशलाइट',
     uploadImage: 'QR इमेज अपलोड करें',
@@ -190,15 +187,17 @@ const translations: Record<string, Record<string, string>> = {
     copied: 'क्लिपबोर्ड पर कॉपी किया गया!',
     secureProcessing: 'डिवाइस पर सुरक्षित प्रोसेसिंग',
     noDataStored: 'सर्वर पर कोई डेटा नहीं भेजा जाता - सब कुछ स्थानीय रूप से प्रोसेस होता है',
-    selectLanguage: 'भाषा'
+    selectLanguage: 'भाषा',
+    initializing: 'कैमरा प्रारंभ हो रहा है...',
+    scanning: 'कैमरे को QR कोड की ओर इंगित करें'
   },
   ar: {
     title: 'ماسح رمز QR',
     camera: 'الكاميرا',
     upload: 'رفع',
     history: 'السجل',
-    startScanning: 'بدء المسح',
-    stopScanning: 'إيقاف المسح',
+    startScanning: 'بدء الكاميرا',
+    stopScanning: 'إيقاف الكاميرا',
     switchCamera: 'تبديل الكاميرا',
     flashlight: 'الفلاش',
     uploadImage: 'رفع صورة QR',
@@ -218,21 +217,28 @@ const translations: Record<string, Record<string, string>> = {
     copied: 'تم النسخ!',
     secureProcessing: 'معالجة آمنة على الجهاز',
     noDataStored: 'لا يتم إرسال بيانات للخوادم - كل المعالجة تتم محليًا',
-    selectLanguage: 'اللغة'
+    selectLanguage: 'اللغة',
+    initializing: 'جاري تهيئة الكاميرا...',
+    scanning: 'وجه الكاميرا نحو رمز QR'
   }
 };
 
 const QRScannerTool: React.FC = () => {
   const [isScanning, setIsScanning] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(false);
   const [scanResult, setScanResult] = useState<ScanResult | null>(null);
   const [scanHistory, setScanHistory] = useState<ScanResult[]>([]);
   const [flashlightOn, setFlashlightOn] = useState(false);
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
   const [language, setLanguage] = useState('en');
   const [activeTab, setActiveTab] = useState('camera');
+  const [cameraId, setCameraId] = useState<string | null>(null);
+  const [availableCameras, setAvailableCameras] = useState<{id: string, label: string}[]>([]);
   
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMountedRef = useRef(true);
+  const scannerContainerId = 'qr-reader-container';
   
   const t = translations[language] || translations.en;
 
@@ -240,18 +246,37 @@ const QRScannerTool: React.FC = () => {
   useEffect(() => {
     const savedHistory = localStorage.getItem('qr-scan-history');
     if (savedHistory) {
-      const parsed = JSON.parse(savedHistory);
-      setScanHistory(parsed.map((item: ScanResult) => ({
-        ...item,
-        timestamp: new Date(item.timestamp)
-      })));
+      try {
+        const parsed = JSON.parse(savedHistory);
+        setScanHistory(parsed.map((item: ScanResult) => ({
+          ...item,
+          timestamp: new Date(item.timestamp)
+        })));
+      } catch (e) {
+        console.error('Failed to parse history:', e);
+      }
     }
     
-    // Load language preference
     const savedLang = localStorage.getItem('qr-scanner-language');
     if (savedLang && translations[savedLang]) {
       setLanguage(savedLang);
     }
+
+    // Get available cameras
+    Html5Qrcode.getCameras().then(devices => {
+      if (devices && devices.length) {
+        setAvailableCameras(devices);
+        // Prefer back camera
+        const backCamera = devices.find(d => d.label.toLowerCase().includes('back') || d.label.toLowerCase().includes('rear'));
+        setCameraId(backCamera?.id || devices[0].id);
+      }
+    }).catch(err => {
+      console.log('Camera enumeration failed:', err);
+    });
+
+    return () => {
+      isMountedRef.current = false;
+    };
   }, []);
 
   // Save history to localStorage
@@ -261,18 +286,16 @@ const QRScannerTool: React.FC = () => {
     }
   }, [scanHistory]);
 
-  // Parse QR content to determine type and extract data
-  const parseQRContent = (content: string): ParsedQRData => {
+  // Parse QR content
+  const parseQRContent = useCallback((content: string): ParsedQRData => {
     const data: ParsedQRData = { type: 'text', raw: content };
 
-    // URL detection
     if (/^https?:\/\//i.test(content)) {
       data.type = 'url';
       data.url = content;
       return data;
     }
 
-    // Email (mailto:)
     if (/^mailto:/i.test(content)) {
       data.type = 'email';
       const emailMatch = content.match(/^mailto:([^?]+)(\?(.*))?$/i);
@@ -287,14 +310,12 @@ const QRScannerTool: React.FC = () => {
       return data;
     }
 
-    // Phone (tel:)
     if (/^tel:/i.test(content)) {
       data.type = 'phone';
       data.phoneNumber = content.replace(/^tel:/i, '');
       return data;
     }
 
-    // SMS
     if (/^sms:/i.test(content) || /^smsto:/i.test(content)) {
       data.type = 'sms';
       const smsMatch = content.match(/^(?:sms|smsto):([^?:]+)(?:[?:](.*))?$/i);
@@ -308,7 +329,6 @@ const QRScannerTool: React.FC = () => {
       return data;
     }
 
-    // WiFi
     if (/^WIFI:/i.test(content)) {
       data.type = 'wifi';
       const ssidMatch = content.match(/S:([^;]*)/);
@@ -320,7 +340,6 @@ const QRScannerTool: React.FC = () => {
       return data;
     }
 
-    // vCard
     if (/^BEGIN:VCARD/i.test(content)) {
       data.type = 'vcard';
       const nameMatch = content.match(/FN:(.+)/i);
@@ -339,7 +358,6 @@ const QRScannerTool: React.FC = () => {
       return data;
     }
 
-    // Calendar Event (VEVENT)
     if (/BEGIN:VEVENT/i.test(content) || /BEGIN:VCALENDAR/i.test(content)) {
       data.type = 'event';
       const summaryMatch = content.match(/SUMMARY:(.+)/i);
@@ -356,7 +374,6 @@ const QRScannerTool: React.FC = () => {
       return data;
     }
 
-    // Geo location
     if (/^geo:/i.test(content)) {
       data.type = 'geo';
       const geoMatch = content.match(/^geo:(-?\d+\.?\d*),(-?\d+\.?\d*)/i);
@@ -367,12 +384,10 @@ const QRScannerTool: React.FC = () => {
       return data;
     }
 
-    // Plain text
     data.type = 'text';
     return data;
-  };
+  }, []);
 
-  // Get type icon
   const getTypeIcon = (type: QRType) => {
     switch (type) {
       case 'url': return ExternalLink;
@@ -387,7 +402,6 @@ const QRScannerTool: React.FC = () => {
     }
   };
 
-  // Handle successful scan
   const handleScanSuccess = useCallback((decodedText: string) => {
     const parsedData = parseQRContent(decodedText);
     const result: ScanResult = {
@@ -399,79 +413,124 @@ const QRScannerTool: React.FC = () => {
     };
     
     setScanResult(result);
-    setScanHistory(prev => [result, ...prev.slice(0, 49)]); // Keep last 50
+    setScanHistory(prev => [result, ...prev.slice(0, 49)]);
     
-    // Vibrate on success (if supported)
     if (navigator.vibrate) {
       navigator.vibrate(200);
     }
     
     toast.success('QR Code Scanned!');
+  }, [parseQRContent]);
+
+  // Stop scanning safely
+  const stopScanning = useCallback(async () => {
+    if (scannerRef.current) {
+      try {
+        const state = scannerRef.current.getState();
+        if (state === 2) { // SCANNING state
+          await scannerRef.current.stop();
+        }
+        scannerRef.current.clear();
+      } catch (error) {
+        console.log('Scanner cleanup:', error);
+      }
+      scannerRef.current = null;
+    }
+    setIsScanning(false);
+    setIsInitializing(false);
+    setFlashlightOn(false);
   }, []);
 
   // Start camera scanning
-  const startScanning = async () => {
+  const startScanning = useCallback(async () => {
+    // Ensure previous instance is cleaned up
+    await stopScanning();
+    
+    setIsInitializing(true);
+    
+    // Small delay to ensure DOM is ready
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    const container = document.getElementById(scannerContainerId);
+    if (!container) {
+      toast.error('Scanner container not found');
+      setIsInitializing(false);
+      return;
+    }
+
     try {
-      const scanner = new Html5Qrcode('qr-reader');
+      const scanner = new Html5Qrcode(scannerContainerId);
       scannerRef.current = scanner;
       
+      const config = {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1,
+        disableFlip: false
+      };
+
+      // Use camera ID if available, otherwise use facing mode
+      const cameraConfig = cameraId 
+        ? cameraId 
+        : { facingMode: facingMode };
+
       await scanner.start(
-        { facingMode },
-        {
-          fps: 10,
-          qrbox: { width: 250, height: 250 },
-          aspectRatio: 1
-        },
+        cameraConfig,
+        config,
         handleScanSuccess,
-        () => {} // Ignore errors during scanning
+        () => {} // Ignore scan errors
       );
       
-      setIsScanning(true);
-    } catch (error) {
+      if (isMountedRef.current) {
+        setIsScanning(true);
+        setIsInitializing(false);
+      }
+    } catch (error: any) {
       console.error('Failed to start scanner:', error);
-      toast.error('Failed to access camera. Please ensure camera permissions are granted.');
-    }
-  };
-
-  // Stop camera scanning
-  const stopScanning = async () => {
-    if (scannerRef.current && isScanning) {
-      try {
-        await scannerRef.current.stop();
-        scannerRef.current = null;
-        setIsScanning(false);
-        setFlashlightOn(false);
-      } catch (error) {
-        console.error('Failed to stop scanner:', error);
+      if (isMountedRef.current) {
+        setIsInitializing(false);
+        if (error?.name === 'NotAllowedError') {
+          toast.error('Camera access denied. Please allow camera permissions.');
+        } else if (error?.name === 'NotFoundError') {
+          toast.error('No camera found on this device.');
+        } else {
+          toast.error('Failed to access camera. Please try again.');
+        }
       }
     }
-  };
+  }, [stopScanning, cameraId, facingMode, handleScanSuccess]);
 
   // Toggle flashlight
   const toggleFlashlight = async () => {
-    if (scannerRef.current && isScanning) {
-      try {
-        const track = await scannerRef.current.getRunningTrackSettings();
-        if (track) {
-          const newState = !flashlightOn;
-          await scannerRef.current.applyVideoConstraints({
-            // @ts-ignore - torch is a valid constraint
-            advanced: [{ torch: newState }]
-          });
-          setFlashlightOn(newState);
-        }
-      } catch (error) {
-        toast.error('Flashlight not supported on this device');
-      }
+    if (!scannerRef.current || !isScanning) return;
+    
+    try {
+      const newState = !flashlightOn;
+      await scannerRef.current.applyVideoConstraints({
+        // @ts-ignore
+        advanced: [{ torch: newState }]
+      });
+      setFlashlightOn(newState);
+    } catch (error) {
+      toast.error('Flashlight not supported on this device');
     }
   };
 
   // Switch camera
   const switchCamera = async () => {
-    if (isScanning) {
+    if (!isScanning) return;
+    
+    const currentIndex = availableCameras.findIndex(c => c.id === cameraId);
+    const nextIndex = (currentIndex + 1) % availableCameras.length;
+    const nextCamera = availableCameras[nextIndex];
+    
+    if (nextCamera) {
+      setCameraId(nextCamera.id);
       await stopScanning();
-      setFacingMode(prev => prev === 'environment' ? 'user' : 'environment');
-      setTimeout(startScanning, 100);
+      // Delay to let state update
+      setTimeout(() => {
+        startScanning();
+      }, 200);
     }
   };
 
@@ -487,7 +546,6 @@ const QRScannerTool: React.FC = () => {
     }
   };
 
-  // Handle drag and drop
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     const file = e.dataTransfer.files[0];
@@ -496,7 +554,6 @@ const QRScannerTool: React.FC = () => {
     }
   };
 
-  // Copy to clipboard
   const copyToClipboard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -506,7 +563,6 @@ const QRScannerTool: React.FC = () => {
     }
   };
 
-  // Download vCard
   const downloadVCard = (data: ParsedQRData) => {
     const vcard = `BEGIN:VCARD
 VERSION:3.0
@@ -527,29 +583,39 @@ END:VCARD`;
     URL.revokeObjectURL(url);
   };
 
-  // Clear history
   const clearHistory = () => {
     setScanHistory([]);
     localStorage.removeItem('qr-scan-history');
     toast.success('History cleared');
   };
 
-  // Change language
   const changeLanguage = (lang: string) => {
     setLanguage(lang);
     localStorage.setItem('qr-scanner-language', lang);
   };
 
+  // Stop scanning when switching tabs
+  useEffect(() => {
+    if (activeTab !== 'camera' && isScanning) {
+      stopScanning();
+    }
+  }, [activeTab, isScanning, stopScanning]);
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
+      isMountedRef.current = false;
       if (scannerRef.current) {
         scannerRef.current.stop().catch(() => {});
+        try {
+          scannerRef.current.clear();
+        } catch (e) {
+          // Ignore cleanup errors
+        }
       }
     };
   }, []);
 
-  // Render action buttons based on QR type
   const renderActionButtons = (result: ScanResult) => {
     const { parsedData } = result;
     if (!parsedData) return null;
@@ -670,7 +736,6 @@ END:VCARD`;
     );
   };
 
-  // Render parsed data details
   const renderParsedDetails = (data: ParsedQRData) => {
     switch (data.type) {
       case 'wifi':
@@ -766,40 +831,55 @@ END:VCARD`;
             <CardContent className="p-4">
               {/* Scanner Container */}
               <div 
-                id="qr-reader" 
+                id={scannerContainerId}
                 className={cn(
-                  "w-full max-w-md mx-auto aspect-square rounded-lg overflow-hidden bg-muted",
-                  !isScanning && "flex items-center justify-center"
+                  "w-full max-w-md mx-auto aspect-square rounded-lg overflow-hidden bg-muted relative",
+                  !isScanning && !isInitializing && "flex items-center justify-center"
                 )}
               >
-                {!isScanning && (
+                {!isScanning && !isInitializing && (
                   <div className="text-center text-muted-foreground">
                     <Camera className="h-12 w-12 mx-auto mb-2 opacity-50" />
                     <p className="text-sm">Click start to scan</p>
                   </div>
                 )}
+                {isInitializing && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-muted z-10">
+                    <div className="text-center text-muted-foreground">
+                      <Loader2 className="h-12 w-12 mx-auto mb-2 animate-spin" />
+                      <p className="text-sm">{t.initializing}</p>
+                    </div>
+                  </div>
+                )}
               </div>
+
+              {isScanning && (
+                <p className="text-center text-sm text-muted-foreground mt-2">{t.scanning}</p>
+              )}
 
               {/* Controls */}
               <div className="flex flex-wrap justify-center gap-2 mt-4">
-                {!isScanning ? (
+                {!isScanning && !isInitializing ? (
                   <Button onClick={startScanning} size="lg">
                     <Camera className="h-5 w-5 mr-2" />
                     {t.startScanning}
                   </Button>
                 ) : (
                   <>
-                    <Button onClick={stopScanning} variant="destructive">
+                    <Button onClick={stopScanning} variant="destructive" disabled={isInitializing}>
                       <X className="h-4 w-4 mr-2" />
                       {t.stopScanning}
                     </Button>
-                    <Button onClick={switchCamera} variant="outline">
-                      <SwitchCamera className="h-4 w-4 mr-2" />
-                      {t.switchCamera}
-                    </Button>
+                    {availableCameras.length > 1 && (
+                      <Button onClick={switchCamera} variant="outline" disabled={isInitializing}>
+                        <SwitchCamera className="h-4 w-4 mr-2" />
+                        {t.switchCamera}
+                      </Button>
+                    )}
                     <Button 
                       onClick={toggleFlashlight} 
                       variant={flashlightOn ? "default" : "outline"}
+                      disabled={isInitializing}
                     >
                       {flashlightOn ? (
                         <FlashlightOff className="h-4 w-4 mr-2" />
@@ -836,6 +916,7 @@ END:VCARD`;
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) handleFileUpload(file);
+                    e.target.value = '';
                   }}
                 />
               </div>
@@ -961,8 +1042,8 @@ END:VCARD`;
           <div>
             <h4 className="font-medium text-foreground">Why isn't the flashlight working?</h4>
             <p className="text-sm text-muted-foreground">
-              Flashlight control depends on your device and browser support. Not all devices expose flashlight 
-              controls to web apps. Try using a native camera app if you need the flashlight.
+              Flashlight (torch) functionality depends on your device and browser. It works best on mobile devices 
+              with compatible browsers like Chrome. Some devices may not support this feature.
             </p>
           </div>
         </CardContent>
