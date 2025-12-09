@@ -35,18 +35,19 @@ const ToolsPage = () => {
     : null;
 
   const pageTitle = selectedCategoryInfo 
-    ? `${selectedCategoryInfo.name} - Free Online Tools | AnyFile Flow`
-    : "All Tools - 200+ Free Online Tools | AnyFile Flow";
+    ? `${selectedCategoryInfo.name} - Free Online Tools | AnyFile Flow (AnyFileFlow)`
+    : "All Tools - 200+ Free Online Tools | AnyFile Flow | AnyFileFlow | Any File Flow";
 
   const pageDescription = selectedCategoryInfo
-    ? `Free ${selectedCategoryInfo.name.toLowerCase()} for ${selectedCategoryInfo.description.toLowerCase()}. No registration required.`
-    : "Browse our collection of 200+ free online tools for file conversion, image editing, audio processing, and more.";
+    ? `Free ${selectedCategoryInfo.name.toLowerCase()} by AnyFile Flow (also known as AnyFileFlow, Any File Flow). ${selectedCategoryInfo.description}. No registration required.`
+    : "Browse AnyFile Flow's collection of 200+ free online tools. AnyFileFlow (Any File Flow) offers file conversion, image editing, audio processing, and more.";
 
   return (
     <>
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
+        <meta name="keywords" content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, free online tools, file converter, image tools, audio tools" />
         <link rel="canonical" href={`https://anyfileflow.com/tools${selectedCategory ? `?category=${selectedCategory}` : ''}`} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
@@ -70,10 +71,11 @@ const ToolsPage = () => {
               </Link>
             </nav>
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-              {selectedCategoryInfo ? selectedCategoryInfo.name : "All Tools"}
+              {selectedCategoryInfo ? selectedCategoryInfo.name : "All AnyFile Flow Tools"}
             </h1>
             <p className="text-muted-foreground">
-              Browse our collection of {filteredTools.length}+ free online tools
+              Browse <strong>AnyFile Flow's</strong> collection of {filteredTools.length}+ free online tools. 
+              Whether you call us AnyFileFlow or Any File Flow, we've got you covered.
             </p>
           </div>
 

@@ -34,6 +34,7 @@ const Hero = memo(() => {
 
           {/* Description - LCP element, no delay */}
           <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Welcome to <strong>AnyFile Flow</strong> — also called <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
             The ultimate toolkit for all your file conversions. Fast, free, and secure. 
             No registration required – just drag, drop, and convert.
           </p>
