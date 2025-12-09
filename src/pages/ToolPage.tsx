@@ -150,10 +150,11 @@ const ToolPage = () => {
   return (
     <>
       <Helmet>
-        <title>{tool.name} - Free Online Tool | AnyFile Flow</title>
-        <meta name="description" content={`${tool.description}. Free, fast, and secure. No registration required.`} />
-        <meta property="og:title" content={`${tool.name} - AnyFile Flow`} />
-        <meta property="og:description" content={tool.description} />
+        <title>{tool.name} - Free Online Tool | AnyFile Flow (AnyFileFlow)</title>
+        <meta name="description" content={`${tool.description}. Free ${tool.name} by AnyFile Flow (also known as AnyFileFlow, Any File Flow). Fast, secure, no registration required.`} />
+        <meta name="keywords" content={`${tool.name}, ${tool.from} to ${tool.to}, AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, free online tool`} />
+        <meta property="og:title" content={`${tool.name} - AnyFile Flow | AnyFileFlow`} />
+        <meta property="og:description" content={`${tool.description}. Free tool by AnyFile Flow (AnyFileFlow).`} />
         <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
       </Helmet>
       
@@ -242,6 +243,30 @@ const ToolPage = () => {
               <Suspense fallback={<div className="h-32 bg-muted rounded-xl animate-pulse mt-6" />}>
                 <ToolComments toolId={tool.id} />
               </Suspense>
+
+              {/* Brand Links Section */}
+              <section className="bg-secondary/30 rounded-2xl p-4 sm:p-6 mt-6" aria-labelledby="brand-section">
+                <h3 id="brand-section" className="font-semibold text-foreground mb-3">
+                  More from AnyFile Flow
+                </h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  This tool is part of <strong>AnyFile Flow</strong> — also known as <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
+                  We offer 200+ free online tools to help you convert, edit, and transform your files.
+                </p>
+                <nav className="flex flex-wrap gap-2" aria-label="Brand navigation">
+                  <Link to="/brand" className="text-xs text-primary hover:underline">
+                    Learn about AnyFile Flow →
+                  </Link>
+                  <span className="text-muted-foreground">|</span>
+                  <Link to="/tools" className="text-xs text-primary hover:underline">
+                    Browse AnyFileFlow Tools →
+                  </Link>
+                  <span className="text-muted-foreground">|</span>
+                  <Link to="/about" className="text-xs text-primary hover:underline">
+                    About Any File Flow →
+                  </Link>
+                </nav>
+              </section>
             </article>
 
             {/* Sidebar */}

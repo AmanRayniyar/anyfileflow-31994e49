@@ -33,20 +33,36 @@ const Index = memo(() => {
   // Memoize categories to prevent re-renders
   const categoryList = useMemo(() => categories, []);
 
+  // Brand schema for homepage
+  const brandSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "AnyFile Flow - Free Online File Conversion Tools",
+    "description": "Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. 200+ free online tools for file conversion.",
+    "url": "https://anyfileflow.com/",
+    "mainEntity": {
+      "@type": "Brand",
+      "name": "AnyFile Flow",
+      "alternateName": ["AnyFileFlow", "Any File Flow", "anyfileflow", "anyfile", "any file flow"],
+      "description": "AnyFile Flow is a free online file conversion platform with 200+ tools."
+    }
+  };
+
   return (
     <>
       <Helmet>
-        <title>AnyFile Flow - 200+ Free Online File Conversion Tools | Fast & Secure</title>
-        <meta name="description" content="Convert any file format free with AnyFile Flow. 200+ tools for image, document, audio, video conversion. Fast, secure, no registration required." />
-        <meta name="keywords" content="file converter, image converter, pdf tools, audio converter, video editor, online tools, free tools, jpg to png, webp converter" />
+        <title>AnyFile Flow | AnyFileFlow | Any File Flow - 200+ Free Online File Conversion Tools</title>
+        <meta name="description" content="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. 200+ free online tools for image, document, audio, video conversion. Fast, secure, no registration required." />
+        <meta name="keywords" content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, any file flow, file converter, image converter, pdf tools, audio converter, video editor, online tools, free tools, jpg to png, webp converter" />
         <link rel="canonical" href="https://anyfileflow.com/" />
-        <meta property="og:title" content="AnyFile Flow - 200+ Free Online File Conversion Tools" />
-        <meta property="og:description" content="Convert, edit, and transform your files with 200+ free online tools. No limits, no registration." />
+        <meta property="og:title" content="AnyFile Flow | AnyFileFlow | Any File Flow - 200+ Free Online Tools" />
+        <meta property="og:description" content="Welcome to AnyFile Flow (AnyFileFlow / Any File Flow). Convert, edit, and transform your files with 200+ free online tools. No limits, no registration." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://anyfileflow.com/" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="AnyFile Flow - 200+ Free Online Tools" />
-        <meta name="twitter:description" content="Convert, edit, and transform files with 200+ free online tools." />
+        <meta name="twitter:title" content="AnyFile Flow | AnyFileFlow - 200+ Free Online Tools" />
+        <meta name="twitter:description" content="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. Convert, edit, and transform files with 200+ free online tools." />
+        <script type="application/ld+json">{JSON.stringify(brandSchema)}</script>
       </Helmet>
       
       <div className="min-h-screen bg-background">
@@ -54,6 +70,16 @@ const Index = memo(() => {
         <Header />
         <main id="main-content" role="main" aria-label="Main content">
           <Hero />
+          
+          {/* Brand Welcome Section */}
+          <section className="container mx-auto px-4 py-6 text-center" aria-label="Brand introduction">
+            <p className="text-muted-foreground max-w-3xl mx-auto">
+              <strong>Welcome to AnyFile Flow</strong> — also called <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
+              Whether you know us as <em>anyfileflow</em> or <em>any file flow</em>, you've found the right place for all your file conversion needs. 
+              AnyFile Flow offers 200+ free tools trusted by users worldwide.
+            </p>
+          </section>
+
           <section className="container mx-auto px-4 py-8" aria-label="File conversion tools by category">
             {categoryList.map((category) => (
               <CategorySection key={category.id} category={category} limit={100} />
