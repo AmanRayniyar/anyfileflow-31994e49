@@ -27,6 +27,7 @@ const StopwatchTool = lazy(() => import("@/components/tools/StopwatchTool"));
 const CountdownTimerTool = lazy(() => import("@/components/tools/CountdownTimerTool"));
 const ImageCompressorTool = lazy(() => import("@/components/tools/ImageCompressorTool"));
 const MemeGeneratorTool = lazy(() => import("@/components/tools/MemeGeneratorTool"));
+const QRScannerTool = lazy(() => import("@/components/tools/QRScannerTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 
 // Tool loading skeleton
@@ -119,6 +120,11 @@ const ToolPage = () => {
     // Special case for Meme Generator
     if (tool.id === 'meme-generator') {
       return <MemeGeneratorTool />;
+    }
+    
+    // Special case for QR Scanner
+    if (tool.id === 'qr-scanner') {
+      return <QRScannerTool />;
     }
     
     switch (tool.toolType) {
