@@ -4,9 +4,31 @@ import Footer from "@/components/Footer";
 import { Link } from "react-router-dom";
 import { Calendar, User, Tag, ArrowRight } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const BlogPostSkeleton = () => (
+  <article className="bg-card border border-border rounded-xl overflow-hidden">
+    <div className="md:flex">
+      <div className="md:w-1/3">
+        <Skeleton className="w-full h-48 md:h-full" />
+      </div>
+      <div className="p-6 md:w-2/3">
+        <div className="flex flex-wrap items-center gap-4 mb-3">
+          <Skeleton className="h-3 w-32" />
+          <Skeleton className="h-3 w-20" />
+          <Skeleton className="h-3 w-16" />
+        </div>
+        <Skeleton className="h-6 w-3/4 mb-3" />
+        <Skeleton className="h-4 w-full mb-2" />
+        <Skeleton className="h-4 w-2/3 mb-4" />
+        <Skeleton className="h-4 w-24" />
+      </div>
+    </div>
+  </article>
+);
 
 const BlogPage = () => {
-  const { posts } = useBlogPosts();
+  const { posts, loading } = useBlogPosts();
 
   return (
     <>
@@ -27,7 +49,13 @@ const BlogPage = () => {
               </p>
             </header>
 
-            {posts.length === 0 ? (
+            {loading ? (
+              <div className="space-y-8">
+                <BlogPostSkeleton />
+                <BlogPostSkeleton />
+                <BlogPostSkeleton />
+              </div>
+            ) : posts.length === 0 ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">No blog posts yet. Check back soon!</p>
               </div>
