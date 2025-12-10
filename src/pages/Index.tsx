@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import CategorySection from "@/components/CategorySection";
+import SearchBar from "@/components/SearchBar";
 import { categories, ToolCategory } from "@/data/tools";
 import { cn } from "@/lib/utils";
 
@@ -66,6 +67,17 @@ const Index = memo(() => {
         <Header />
         <main id="main-content" role="main" aria-label="Main content">
           <Hero />
+          
+          {/* Advanced Search Bar Section */}
+          <section className="container mx-auto px-4 py-8" aria-label="Search tools">
+            <div className="max-w-2xl mx-auto">
+              <div className="text-center mb-4">
+                <h2 className="text-lg font-semibold text-foreground mb-1">Find Your Tool Instantly</h2>
+                <p className="text-sm text-muted-foreground">Search 200+ free tools by name or function</p>
+              </div>
+              <SearchBar large />
+            </div>
+          </section>
           
           {/* Brand Welcome Section */}
           <section className="container mx-auto px-4 py-6 text-center" aria-label="Brand introduction">
