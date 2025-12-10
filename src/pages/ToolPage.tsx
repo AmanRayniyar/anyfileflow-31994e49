@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { useEffect, lazy, Suspense } from "react";
 import ShareButton from "@/components/ShareButton";
+import LanguageSelector from "@/components/LanguageSelector";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -228,11 +229,14 @@ const ToolPage = () => {
                         </h1>
                         <p className="text-sm sm:text-base text-muted-foreground">{tool.description}</p>
                       </div>
-                      <ShareButton 
-                        title={`${tool.name} - AnyFile Flow`}
-                        description={tool.description}
-                        url={`https://anyfileflow.com/tool/${tool.id}`}
-                      />
+                      <div className="flex items-center gap-2 shrink-0">
+                        <LanguageSelector />
+                        <ShareButton 
+                          title={`${tool.name} - AnyFile Flow`}
+                          description={tool.description}
+                          url={`https://anyfileflow.com/tool/${tool.id}`}
+                        />
+                      </div>
                     </div>
                   </div>
                 </header>
