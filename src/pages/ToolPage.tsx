@@ -31,6 +31,7 @@ const QRScannerTool = lazy(() => import("@/components/tools/QRScannerTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const SidebarAd = lazy(() => import("@/components/SidebarAd"));
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
+const JpgToPngSeoContent = lazy(() => import("@/components/tools/JpgToPngSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -154,19 +155,29 @@ const ToolPage = () => {
       <Helmet>
         <title>{tool.id === 'png-to-jpg' 
           ? 'PNG to JPG Converter – Free, Fast & High-Quality Image Conversion | AnyFile Flow' 
+          : tool.id === 'jpg-to-png'
+          ? 'JPG to PNG Converter – Free, Lossless Quality with Transparency | AnyFile Flow'
           : `${tool.name} - Free Online Tool | AnyFile Flow (AnyFileFlow)`}
         </title>
         <meta name="description" content={tool.id === 'png-to-jpg' 
           ? 'Convert PNG images to JPG format instantly with AnyFile Flow PNG to JPG Converter. Free, fast, bulk conversion up to 20 images. No registration, no watermarks, 100% secure.' 
+          : tool.id === 'jpg-to-png'
+          ? 'Convert JPG/JPEG images to PNG format with AnyFile Flow. Free, lossless quality, transparency support. Bulk conversion up to 20 images. No registration required.'
           : `${tool.description}. Free ${tool.name} by AnyFile Flow (also known as AnyFileFlow, Any File Flow). Fast, secure, no registration required.`} />
         <meta name="keywords" content={tool.id === 'png-to-jpg' 
           ? 'png to jpg, png to jpg converter, convert png to jpg, free png to jpg online, high quality png to jpg, bulk image converter, image compression, online image converter, jpg converter, fast png to jpg, anyfile flow converter, image tools online, convert png to jpeg, png to jpeg, batch png to jpg, png to jpg without losing quality' 
+          : tool.id === 'jpg-to-png'
+          ? 'jpg to png, jpg to png converter, convert jpg to png, free jpg to png online, jpg to png with transparency, bulk image converter, lossless converter, jpeg to png, convert jpeg to png, jpg to png free, batch jpg to png, jpg to png transparent background'
           : `${tool.name}, ${tool.from} to ${tool.to}, AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, free online tool`} />
         <meta property="og:title" content={tool.id === 'png-to-jpg' 
           ? 'PNG to JPG Converter – Free, Fast & High-Quality | AnyFile Flow' 
+          : tool.id === 'jpg-to-png'
+          ? 'JPG to PNG Converter – Free, Lossless & Transparent | AnyFile Flow'
           : `${tool.name} - AnyFile Flow | AnyFileFlow`} />
         <meta property="og:description" content={tool.id === 'png-to-jpg' 
           ? 'Convert PNG images to JPG format instantly. Free bulk conversion, no watermarks, 100% secure. Try AnyFile Flow now!' 
+          : tool.id === 'jpg-to-png'
+          ? 'Convert JPG to PNG with transparency support. Free, lossless quality, bulk conversion. Try AnyFile Flow now!'
           : `${tool.description}. Free tool by AnyFile Flow (AnyFileFlow).`} />
         <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
       </Helmet>
@@ -261,6 +272,13 @@ const ToolPage = () => {
               {tool.id === 'png-to-jpg' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <PngToJpgSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for JPG to PNG Tool */}
+              {tool.id === 'jpg-to-png' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <JpgToPngSeoContent />
                 </Suspense>
               )}
 
