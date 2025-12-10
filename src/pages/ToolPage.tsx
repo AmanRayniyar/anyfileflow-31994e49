@@ -35,6 +35,7 @@ const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoCont
 const JpgToPngSeoContent = lazy(() => import("@/components/tools/JpgToPngSeoContent"));
 const TypingTestSeoContent = lazy(() => import("@/components/tools/TypingTestSeoContent"));
 const QRCodeGeneratorSeoContent = lazy(() => import("@/components/tools/QRCodeGeneratorSeoContent"));
+const ImageCropperSeoContent = lazy(() => import("@/components/tools/ImageCropperSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -311,7 +312,13 @@ const ToolPage = () => {
                 </Suspense>
               )}
 
-              {/* Brand Links Section */}
+              {/* SEO Content for Image Cropper Tool */}
+              {tool.id === 'image-cropper' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <ImageCropperSeoContent />
+                </Suspense>
+              )}
+
               <section className="bg-secondary/30 rounded-2xl p-4 sm:p-6 mt-6" aria-labelledby="brand-section">
                 <h3 id="brand-section" className="font-semibold text-foreground mb-3">
                   More from AnyFile Flow
