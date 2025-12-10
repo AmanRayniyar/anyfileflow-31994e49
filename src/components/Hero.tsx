@@ -1,14 +1,15 @@
 import { Zap, Shield, Clock } from "lucide-react";
 import { tools } from "@/data/tools";
 import { memo } from "react";
+
 const Hero = memo(() => {
-  return <section className="relative overflow-hidden py-16 md:py-24" aria-labelledby="hero-heading">
+
+  return (
+    <section className="relative overflow-hidden py-16 md:py-24" aria-labelledby="hero-heading">
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
         <div className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl animate-float" />
-        <div className="absolute -bottom-1/2 -left-1/4 w-[500px] h-[500px] rounded-full bg-accent/5 blur-3xl animate-float" style={{
-        animationDelay: "-3s"
-      }} />
+        <div className="absolute -bottom-1/2 -left-1/4 w-[500px] h-[500px] rounded-full bg-accent/5 blur-3xl animate-float" style={{ animationDelay: "-3s" }} />
       </div>
 
       <div className="container mx-auto px-4 relative">
@@ -28,13 +29,48 @@ const Hero = memo(() => {
           </h1>
 
           {/* Description - LCP element, no delay */}
-          
+          <p className="text-lg md:text-xl text-muted-foreground/70 mb-12 max-w-2xl mx-auto">
+            Welcome to <strong className="text-muted-foreground">AnyFile Flow</strong> — also called <strong className="text-muted-foreground">AnyFileFlow</strong> or <strong className="text-muted-foreground">Any File Flow</strong>. 
+            The ultimate toolkit for all your file conversions. Fast, free, and secure. 
+            No registration required – just drag, drop, and convert.
+          </p>
 
           {/* Features */}
-          
+          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto list-none p-0" role="list" aria-label="Key features">
+            <li className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card border border-border">
+              <div className="p-2 rounded-lg bg-tool-archive/10" aria-hidden="true">
+                <Zap className="h-5 w-5 text-tool-archive" aria-hidden="true" />
+              </div>
+              <div className="text-left">
+                <p className="font-semibold text-foreground">Lightning Fast</p>
+                <p className="text-sm text-muted-foreground">Instant conversions</p>
+              </div>
+            </li>
+            <li className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card border border-border">
+              <div className="p-2 rounded-lg bg-tool-audio/10" aria-hidden="true">
+                <Shield className="h-5 w-5 text-tool-audio" aria-hidden="true" />
+              </div>
+              <div className="text-left">
+                <p className="font-semibold text-foreground">100% Secure</p>
+                <p className="text-sm text-muted-foreground">Files stay private</p>
+              </div>
+            </li>
+            <li className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card border border-border">
+              <div className="p-2 rounded-lg bg-tool-code/10" aria-hidden="true">
+                <Clock className="h-5 w-5 text-tool-code" aria-hidden="true" />
+              </div>
+              <div className="text-left">
+                <p className="font-semibold text-foreground">No Limits</p>
+                <p className="text-sm text-muted-foreground">Free unlimited use</p>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 });
+
 Hero.displayName = "Hero";
+
 export default Hero;
