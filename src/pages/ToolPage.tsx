@@ -29,6 +29,7 @@ const ImageCompressorTool = lazy(() => import("@/components/tools/ImageCompresso
 const MemeGeneratorTool = lazy(() => import("@/components/tools/MemeGeneratorTool"));
 const QRScannerTool = lazy(() => import("@/components/tools/QRScannerTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
+const SidebarAd = lazy(() => import("@/components/SidebarAd"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -272,6 +273,12 @@ const ToolPage = () => {
             {/* Sidebar */}
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
+                {/* Ad Section - Loads First */}
+                <Suspense fallback={<div className="h-[290px] bg-muted rounded-2xl animate-pulse" />}>
+                  <SidebarAd />
+                </Suspense>
+
+                {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
                   <h3 id="related-tools" className="font-bold text-foreground mb-4">Related Tools</h3>
                   <div className="space-y-3">
