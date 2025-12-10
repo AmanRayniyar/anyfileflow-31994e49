@@ -34,6 +34,7 @@ const SidebarAd = lazy(() => import("@/components/SidebarAd"));
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
 const JpgToPngSeoContent = lazy(() => import("@/components/tools/JpgToPngSeoContent"));
 const TypingTestSeoContent = lazy(() => import("@/components/tools/TypingTestSeoContent"));
+const QRCodeGeneratorSeoContent = lazy(() => import("@/components/tools/QRCodeGeneratorSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -300,6 +301,13 @@ const ToolPage = () => {
               {tool.id === 'typing-test' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <TypingTestSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for QR Code Generator Tool */}
+              {tool.id === 'qr-code-generator' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <QRCodeGeneratorSeoContent />
                 </Suspense>
               )}
 
