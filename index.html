@@ -199,37 +199,8 @@
       </div>
     </noscript>
     
-    <!-- Google Translate Element (Hidden) -->
-    <div id="google_translate_element" style="display:none;"></div>
-    
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Google Translate Script - Load after app -->
-    <script>
-      window.addEventListener('load', function() {
-        var script = document.createElement('script');
-        script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
-        script.async = true;
-        document.body.appendChild(script);
-      });
-      
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          includedLanguages: 'ar,bn,cs,da,de,el,en,es,fa,fi,fr,gu,he,hi,hu,id,it,ja,kn,ko,ml,mr,ms,ne,nl,no,pa,pl,pt,ro,ru,sv,ta,te,th,tr,uk,ur,vi,zh-CN',
-          layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-          autoDisplay: false
-        }, 'google_translate_element');
-      }
-    </script>
-    
-    <!-- Hide Google Translate Bar -->
-    <style>
-      .goog-te-banner-frame, .skiptranslate { display: none !important; }
-      body { top: 0 !important; }
-      .goog-te-gadget { font-size: 0 !important; }
-      .goog-te-gadget .goog-te-combo { display: none !important; }
-    </style>
+  
   </body>
 </html>
