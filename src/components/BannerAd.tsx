@@ -1,29 +1,11 @@
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef } from "react";
 
 const BannerAd = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const scriptLoadedRef = useRef(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !isVisible) {
-          setIsVisible(true);
-        }
-      },
-      { rootMargin: "200px", threshold: 0 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [isVisible]);
-
-  useEffect(() => {
-    if (!isVisible || scriptLoadedRef.current || !containerRef.current) return;
+    if (scriptLoadedRef.current || !containerRef.current) return;
     
     scriptLoadedRef.current = true;
 
@@ -40,7 +22,6 @@ const BannerAd = memo(() => {
     document.body.appendChild(script);
 
     return () => {
-      // Cleanup on unmount - remove script only
       try {
         if (script.parentNode) {
           script.parentNode.removeChild(script);
@@ -49,7 +30,7 @@ const BannerAd = memo(() => {
         // Ignore cleanup errors
       }
     };
-  }, [isVisible]);
+  }, []);
 
   return (
     <section 
@@ -61,11 +42,7 @@ const BannerAd = memo(() => {
           <div 
             ref={containerRef}
             className="w-full max-w-[728px] min-h-[90px] sm:min-h-[100px] flex items-center justify-center bg-muted/30 rounded-lg overflow-hidden"
-          >
-            {!isVisible && (
-              <span className="text-xs text-muted-foreground">Advertisement</span>
-            )}
-          </div>
+          />
         </div>
       </div>
     </section>
