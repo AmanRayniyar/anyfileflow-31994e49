@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 
 // Lazy load below-fold components
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
+const BannerAd = lazy(() => import("@/components/BannerAd"));
 
 // Optimized skeleton
 const BlogPreviewSkeleton = memo(() => (
@@ -124,6 +125,10 @@ const Index = memo(() => {
           
           <Suspense fallback={<BlogPreviewSkeleton />}>
             <BlogPreview />
+          </Suspense>
+          
+          <Suspense fallback={null}>
+            <BannerAd />
           </Suspense>
         </main>
         <Footer />
