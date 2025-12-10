@@ -305,7 +305,7 @@ const ToolPage = () => {
               )}
 
               {/* SEO Content for QR Code Generator Tool */}
-              {tool.id === 'qr-code-generator' && (
+              {tool.id === 'qr-generator' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <QRCodeGeneratorSeoContent />
                 </Suspense>
