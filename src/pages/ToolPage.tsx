@@ -30,6 +30,7 @@ const MemeGeneratorTool = lazy(() => import("@/components/tools/MemeGeneratorToo
 const QRScannerTool = lazy(() => import("@/components/tools/QRScannerTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const SidebarAd = lazy(() => import("@/components/SidebarAd"));
+const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -151,11 +152,22 @@ const ToolPage = () => {
   return (
     <>
       <Helmet>
-        <title>{tool.name} - Free Online Tool | AnyFile Flow (AnyFileFlow)</title>
-        <meta name="description" content={`${tool.description}. Free ${tool.name} by AnyFile Flow (also known as AnyFileFlow, Any File Flow). Fast, secure, no registration required.`} />
-        <meta name="keywords" content={`${tool.name}, ${tool.from} to ${tool.to}, AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, free online tool`} />
-        <meta property="og:title" content={`${tool.name} - AnyFile Flow | AnyFileFlow`} />
-        <meta property="og:description" content={`${tool.description}. Free tool by AnyFile Flow (AnyFileFlow).`} />
+        <title>{tool.id === 'png-to-jpg' 
+          ? 'PNG to JPG Converter – Free, Fast & High-Quality Image Conversion | AnyFile Flow' 
+          : `${tool.name} - Free Online Tool | AnyFile Flow (AnyFileFlow)`}
+        </title>
+        <meta name="description" content={tool.id === 'png-to-jpg' 
+          ? 'Convert PNG images to JPG format instantly with AnyFile Flow PNG to JPG Converter. Free, fast, bulk conversion up to 20 images. No registration, no watermarks, 100% secure.' 
+          : `${tool.description}. Free ${tool.name} by AnyFile Flow (also known as AnyFileFlow, Any File Flow). Fast, secure, no registration required.`} />
+        <meta name="keywords" content={tool.id === 'png-to-jpg' 
+          ? 'png to jpg, png to jpg converter, convert png to jpg, free png to jpg online, high quality png to jpg, bulk image converter, image compression, online image converter, jpg converter, fast png to jpg, anyfile flow converter, image tools online, convert png to jpeg, png to jpeg, batch png to jpg, png to jpg without losing quality' 
+          : `${tool.name}, ${tool.from} to ${tool.to}, AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, free online tool`} />
+        <meta property="og:title" content={tool.id === 'png-to-jpg' 
+          ? 'PNG to JPG Converter – Free, Fast & High-Quality | AnyFile Flow' 
+          : `${tool.name} - AnyFile Flow | AnyFileFlow`} />
+        <meta property="og:description" content={tool.id === 'png-to-jpg' 
+          ? 'Convert PNG images to JPG format instantly. Free bulk conversion, no watermarks, 100% secure. Try AnyFile Flow now!' 
+          : `${tool.description}. Free tool by AnyFile Flow (AnyFileFlow).`} />
         <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
       </Helmet>
       
@@ -244,6 +256,13 @@ const ToolPage = () => {
               <Suspense fallback={<div className="h-32 bg-muted rounded-xl animate-pulse mt-6" />}>
                 <ToolComments toolId={tool.id} />
               </Suspense>
+
+              {/* SEO Content for PNG to JPG Tool */}
+              {tool.id === 'png-to-jpg' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <PngToJpgSeoContent />
+                </Suspense>
+              )}
 
               {/* Brand Links Section */}
               <section className="bg-secondary/30 rounded-2xl p-4 sm:p-6 mt-6" aria-labelledby="brand-section">
