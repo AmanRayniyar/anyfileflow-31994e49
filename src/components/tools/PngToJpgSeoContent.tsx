@@ -406,35 +406,291 @@ const PngToJpgSeoContent = () => {
         </div>
       </section>
 
-      {/* Long-Tail Keywords Section */}
-      <section className="mb-8 sm:mb-12 bg-secondary/30 rounded-2xl p-6 sm:p-8" id="seo-keywords">
+      {/* 100 Trending Keywords Section - Organized by Categories */}
+      <section className="mb-8 sm:mb-12 bg-secondary/30 rounded-2xl p-6 sm:p-8" id="seo-keywords-png-jpg">
         <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-6 flex items-center gap-2 not-prose">
-          <span className="text-2xl">🔥</span> Popular Search Terms for PNG to JPG Conversion
+          <span className="text-2xl">🔥</span> 100 Trending Search Terms for PNG to JPG Converter (2025 SEO)
         </h2>
         
-        <div className="flex flex-wrap gap-2 not-prose">
-          {[
-            "free png to jpg converter online without watermark",
-            "convert png to jpg in high quality for printing",
-            "bulk png to jpg converter up to 20 images",
-            "png to jpg converter for bloggers",
-            "convert transparent png to jpg without background issues",
-            "fast png to jpg converter for mobile and pc",
-            "online png to jpg conversion tool 2025",
-            "best png to jpg converter for high resolution images",
-            "secure image converter with auto-delete",
-            "how to convert png to jpg without losing quality",
-            "png to jpeg converter free online",
-            "batch png to jpg converter",
-            "png to jpg online free unlimited"
-          ].map((keyword, index) => (
-            <span 
-              key={index} 
-              className="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium"
-            >
-              {keyword}
-            </span>
-          ))}
+        {/* Primary High-Volume Keywords */}
+        <div className="mb-6 not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-primary text-primary-foreground px-2 py-0.5 rounded text-xs">PRIMARY</span>
+            High-Volume Keywords
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "png to jpg",
+              "png to jpg converter",
+              "convert png to jpg",
+              "png to jpg online",
+              "online png to jpg converter",
+              "free png to jpg converter",
+              "high quality png to jpg",
+              "png to jpg convert tool",
+              "best png to jpg converter",
+              "fast png to jpg converter"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-primary/10 text-primary px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-primary/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Long-Tail Search Keywords */}
+        <div className="mb-6 not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-blue-500 text-white px-2 py-0.5 rounded text-xs">LONG-TAIL</span>
+            Extended Search Terms
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "convert png to jpg without losing quality",
+              "png to jpg converter online free",
+              "how to convert png to jpg",
+              "change png to jpg quickly",
+              "png to jpg conversion tool free",
+              "convert transparent png to jpg",
+              "batch convert png to jpg",
+              "png to jpg converter no watermark",
+              "png to jpg for website optimization",
+              "convert png to jpg for uploading"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-blue-500/10 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-blue-500/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Trending Search Terms */}
+        <div className="mb-6 not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-green-500 text-white px-2 py-0.5 rounded text-xs">TRENDING</span>
+            Popular Search Terms
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "png image to jpg converter",
+              "convert png file to jpg format",
+              "png to jpg high resolution converter",
+              "compress and convert png to jpg",
+              "png to jpg converter for mobile",
+              "convert png to jpg instantly",
+              "image converter png to jpg",
+              "free online png to jpeg converter",
+              "convert png files into jpg images",
+              "convert png into jpg without software"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-green-500/10 text-green-600 dark:text-green-400 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-green-500/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Commercial + Intent Keywords */}
+        <div className="mb-6 not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-purple-500 text-white px-2 py-0.5 rounded text-xs">COMMERCIAL</span>
+            Intent Keywords
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "download png to jpg converter",
+              "best free png image converter",
+              "convert png to jpg for printing",
+              "bulk png to jpg converter online",
+              "png to jpg converter for blogger",
+              "png to jpg for eCommerce product images",
+              "convert png to jpg for SEO optimization",
+              "png to jpg converter with fast processing",
+              "convert large png files to jpg",
+              "convert transparent images to jpg"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-purple-500/10 text-purple-600 dark:text-purple-400 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-purple-500/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Problem-Solution Keywords */}
+        <div className="mb-6 not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-orange-500 text-white px-2 py-0.5 rounded text-xs">SOLUTIONS</span>
+            Problem-Solution Keywords
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "why convert png to jpg",
+              "convert png to jpg for smaller size",
+              "png too large convert to jpg",
+              "fix upload png not supported by converting",
+              "convert png to jpg to reduce image size",
+              "png to jpg converter easy steps",
+              "convert png to jpg without quality drop",
+              "how to change image format online",
+              "convert pictures from png to jpg",
+              "convert logo png to jpg"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-orange-500/10 text-orange-600 dark:text-orange-400 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-orange-500/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* AnyFile Flow Branding Keywords */}
+        <div className="mb-6 not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-cyan-500 text-white px-2 py-0.5 rounded text-xs">BRAND</span>
+            AnyFile Flow Keywords
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "AnyFile Flow png to jpg converter",
+              "png to jpg converter by AnyFile Flow",
+              "convert png to jpg using AnyFile Flow",
+              "fast png to jpg AnyFile Flow tool",
+              "AnyFile Flow free image converter",
+              "simple png to jpg tool AnyFile Flow",
+              "high speed png to jpg by AnyFile Flow",
+              "AnyFile Flow image conversion services",
+              "AnyFile Flow file converter png to jpg",
+              "png converter AnyFile Flow"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-cyan-500/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Search Terms With Intent */}
+        <div className="mb-6 not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-pink-500 text-white px-2 py-0.5 rounded text-xs">INTENT</span>
+            Search Terms With Intent
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "convert png to jpg for social media",
+              "convert png to jpg for Instagram",
+              "convert png to jpg without tools",
+              "convert png to jpg in browser",
+              "png to jpg without installing apps",
+              "convert hd png to jpg",
+              "online converter for png images",
+              "convert png icons to jpg",
+              "automatic png to jpg converter",
+              "advanced png to jpg conversion tool"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-pink-500/10 text-pink-600 dark:text-pink-400 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-pink-500/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Image-Specific SEO Keywords */}
+        <div className="mb-6 not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-red-500 text-white px-2 py-0.5 rounded text-xs">IMAGE-SPECIFIC</span>
+            Image SEO Keywords
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "transparent png to jpg converter",
+              "convert png screenshot to jpg",
+              "convert png artwork to jpg format",
+              "convert png to jpg for email upload",
+              "convert png signature to jpg",
+              "change image extension png to jpg",
+              "convert png thumbnails to jpg",
+              "convert png graphics to jpg",
+              "convert png logo background to jpg",
+              "remove transparency convert png to jpg"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-red-500/10 text-red-600 dark:text-red-400 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-red-500/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Micro-Intent Keywords */}
+        <div className="mb-6 not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-indigo-500 text-white px-2 py-0.5 rounded text-xs">MICRO-INTENT</span>
+            Quick Search Keywords
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "convert png to jpeg",
+              "png to jpeg converter",
+              "online png to jpeg",
+              "png converter jpeg",
+              "convert png to jpg instantly free",
+              "best website to convert png to jpg",
+              "convert png to jpg with one click",
+              "convert png to jpg automatically",
+              "convert png to jpg for free download",
+              "convert png to jpg for better compatibility"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-indigo-500/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Ultra-Long Tail Keywords */}
+        <div className="not-prose">
+          <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+            <span className="bg-yellow-500 text-black px-2 py-0.5 rounded text-xs">ULTRA LONG-TAIL</span>
+            Quick Ranking Keywords
+          </h3>
+          <div className="flex flex-wrap gap-2">
+            {[
+              "which tool is best for png to jpg conversion",
+              "how to convert multiple png images to jpg",
+              "png to jpg converter for Windows online",
+              "pdf online png to jpg converter",
+              "convert png to jpg for Photoshop",
+              "convert png with alpha to jpg",
+              "quick png to jpg web tool",
+              "convert png to jpg using browser tool",
+              "convert png to jpg for WordPress",
+              "convert png to jpg with full quality online"
+            ].map((keyword, index) => (
+              <span key={index} className="bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium hover:bg-yellow-500/20 transition-colors cursor-default">
+                {keyword}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Summary Stats */}
+        <div className="mt-6 pt-6 border-t border-border/50 not-prose">
+          <div className="flex flex-wrap items-center justify-center gap-4 text-center">
+            <div className="bg-card border border-border rounded-xl px-4 py-3">
+              <div className="text-2xl font-bold text-primary">100</div>
+              <div className="text-xs text-muted-foreground">Trending Keywords</div>
+            </div>
+            <div className="bg-card border border-border rounded-xl px-4 py-3">
+              <div className="text-2xl font-bold text-green-500">10</div>
+              <div className="text-xs text-muted-foreground">Categories</div>
+            </div>
+            <div className="bg-card border border-border rounded-xl px-4 py-3">
+              <div className="text-2xl font-bold text-blue-500">2025</div>
+              <div className="text-xs text-muted-foreground">SEO Optimized</div>
+            </div>
+          </div>
+          <p className="text-center text-xs text-muted-foreground mt-4">
+            These keywords are optimized for <strong className="text-foreground">Google Discover</strong>, <strong className="text-foreground">Image Search</strong>, and <strong className="text-foreground">Featured Snippets</strong> ranking in 2025.
+          </p>
         </div>
       </section>
 
