@@ -32,6 +32,7 @@ const ToolComments = lazy(() => import("@/components/ToolComments"));
 const SidebarAd = lazy(() => import("@/components/SidebarAd"));
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
 const JpgToPngSeoContent = lazy(() => import("@/components/tools/JpgToPngSeoContent"));
+const TypingTestSeoContent = lazy(() => import("@/components/tools/TypingTestSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -157,27 +158,37 @@ const ToolPage = () => {
           ? 'PNG to JPG Converter – Free, Fast & High-Quality Image Conversion | AnyFile Flow' 
           : tool.id === 'jpg-to-png'
           ? 'JPG to PNG Converter – Free, Lossless Quality with Transparency | AnyFile Flow'
+          : tool.id === 'typing-test'
+          ? 'Typing Speed Test – Free Online WPM Test & Accuracy Checker | AnyFile Flow'
           : `${tool.name} - Free Online Tool | AnyFile Flow (AnyFileFlow)`}
         </title>
         <meta name="description" content={tool.id === 'png-to-jpg' 
           ? 'Convert PNG images to JPG format instantly with AnyFile Flow PNG to JPG Converter. Free, fast, bulk conversion up to 20 images. No registration, no watermarks, 100% secure.' 
           : tool.id === 'jpg-to-png'
           ? 'Convert JPG/JPEG images to PNG format with AnyFile Flow. Free, lossless quality, transparency support. Bulk conversion up to 20 images. No registration required.'
+          : tool.id === 'typing-test'
+          ? 'Take a free typing speed test online. Check your WPM, CPM, and accuracy instantly. Multiple difficulty levels, custom time limits. No registration required. Practice typing and improve your speed.'
           : `${tool.description}. Free ${tool.name} by AnyFile Flow (also known as AnyFileFlow, Any File Flow). Fast, secure, no registration required.`} />
         <meta name="keywords" content={tool.id === 'png-to-jpg' 
           ? 'png to jpg, png to jpg converter, convert png to jpg, free png to jpg online, high quality png to jpg, bulk image converter, image compression, online image converter, jpg converter, fast png to jpg, anyfile flow converter, image tools online, convert png to jpeg, png to jpeg, batch png to jpg, png to jpg without losing quality' 
           : tool.id === 'jpg-to-png'
           ? 'jpg to png, jpg to png converter, convert jpg to png, free jpg to png online, jpg to png with transparency, bulk image converter, lossless converter, jpeg to png, convert jpeg to png, jpg to png free, batch jpg to png, jpg to png transparent background'
+          : tool.id === 'typing-test'
+          ? 'typing test, typing speed test, wpm test, typing test online, free typing test, keyboard typing test, typing practice, typing test for jobs, typing accuracy test, fast typing test, online typing test free, how to improve typing speed, typing test 1 minute, typing speed checker, typing test for data entry, typing test for students'
           : `${tool.name}, ${tool.from} to ${tool.to}, AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, free online tool`} />
         <meta property="og:title" content={tool.id === 'png-to-jpg' 
           ? 'PNG to JPG Converter – Free, Fast & High-Quality | AnyFile Flow' 
           : tool.id === 'jpg-to-png'
           ? 'JPG to PNG Converter – Free, Lossless & Transparent | AnyFile Flow'
+          : tool.id === 'typing-test'
+          ? 'Typing Speed Test – Free WPM & Accuracy Test | AnyFile Flow'
           : `${tool.name} - AnyFile Flow | AnyFileFlow`} />
         <meta property="og:description" content={tool.id === 'png-to-jpg' 
           ? 'Convert PNG images to JPG format instantly. Free bulk conversion, no watermarks, 100% secure. Try AnyFile Flow now!' 
           : tool.id === 'jpg-to-png'
           ? 'Convert JPG to PNG with transparency support. Free, lossless quality, bulk conversion. Try AnyFile Flow now!'
+          : tool.id === 'typing-test'
+          ? 'Free online typing speed test. Check WPM, CPM & accuracy instantly. Multiple difficulty levels. No registration required!'
           : `${tool.description}. Free tool by AnyFile Flow (AnyFileFlow).`} />
         <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
       </Helmet>
@@ -279,6 +290,13 @@ const ToolPage = () => {
               {tool.id === 'jpg-to-png' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <JpgToPngSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Typing Test Tool */}
+              {tool.id === 'typing-test' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <TypingTestSeoContent />
                 </Suspense>
               )}
 
