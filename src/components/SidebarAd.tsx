@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 const SidebarAd = () => {
-  const adRef = useRef<HTMLDivElement>(null);
+  const adContainerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [adLoaded, setAdLoaded] = useState(false);
 
@@ -13,59 +13,84 @@ const SidebarAd = () => {
           setIsVisible(true);
         }
       },
-      { rootMargin: "200px" } // Start loading 200px before visible
+      { 
+        rootMargin: "100px",
+        threshold: 0.1
+      }
     );
 
-    if (adRef.current) {
-      observer.observe(adRef.current);
+    if (adContainerRef.current) {
+      observer.observe(adContainerRef.current);
     }
 
     return () => observer.disconnect();
   }, [isVisible]);
 
   useEffect(() => {
-    if (!isVisible || adLoaded || !adRef.current) return;
+    if (!isVisible || adLoaded) return;
 
-    // Create ad container
-    const container = adRef.current;
-    
-    // Set atOptions on window
-    (window as any).atOptions = {
-      key: "204ac3e1d66348d2a6d3c4f02054516d",
-      format: "iframe",
-      height: 250,
-      width: 300,
-      params: {},
+    const loadAd = () => {
+      const adContainer = adContainerRef.current?.querySelector("#ad-content");
+      if (!adContainer) return;
+
+      // Clear any existing content
+      adContainer.innerHTML = "";
+
+      // Set atOptions on window before script loads
+      (window as any).atOptions = {
+        key: "204ac3e1d66348d2a6d3c4f02054516d",
+        format: "iframe",
+        height: 250,
+        width: 300,
+        params: {},
+      };
+
+      // Create and append the invoke script
+      const script = document.createElement("script");
+      script.type = "text/javascript";
+      script.src = "//www.highperformanceformat.com/204ac3e1d66348d2a6d3c4f02054516d/invoke.js";
+      script.async = true;
+      
+      script.onload = () => {
+        setAdLoaded(true);
+      };
+      
+      script.onerror = () => {
+        setAdLoaded(true);
+        // Show fallback message on error
+        if (adContainer) {
+          adContainer.innerHTML = '<div class="text-muted-foreground text-sm text-center p-4">Ad space</div>';
+        }
+      };
+
+      adContainer.appendChild(script);
     };
 
-    // Load the ad script
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = "//www.highperformanceformat.com/204ac3e1d66348d2a6d3c4f02054516d/invoke.js";
-    script.async = true;
-    script.onload = () => setAdLoaded(true);
-    script.onerror = () => setAdLoaded(true); // Mark as loaded even on error to prevent retries
+    // Small delay to ensure DOM is ready
+    const timer = setTimeout(loadAd, 100);
     
-    container.appendChild(script);
-
-    return () => {
-      // Cleanup script on unmount
-      if (container.contains(script)) {
-        container.removeChild(script);
-      }
-    };
+    return () => clearTimeout(timer);
   }, [isVisible, adLoaded]);
 
   return (
     <div 
-      ref={adRef}
-      className="bg-card border border-border rounded-2xl p-4 overflow-hidden"
+      ref={adContainerRef}
+      className="bg-card border border-border rounded-2xl p-3 sm:p-4 overflow-hidden"
       aria-label="Advertisement"
     >
       <p className="text-xs text-muted-foreground mb-2 text-center">Sponsored</p>
-      <div className="flex items-center justify-center min-h-[250px] w-full">
+      <div 
+        id="ad-content"
+        className="flex items-center justify-center w-full mx-auto"
+        style={{ minHeight: "250px", maxWidth: "300px" }}
+      >
         {!isVisible && (
-          <div className="w-[300px] h-[250px] bg-muted/50 rounded animate-pulse" />
+          <div 
+            className="bg-muted/30 rounded animate-pulse flex items-center justify-center"
+            style={{ width: "300px", height: "250px", maxWidth: "100%" }}
+          >
+            <span className="text-muted-foreground text-xs">Loading ad...</span>
+          </div>
         )}
       </div>
     </div>
