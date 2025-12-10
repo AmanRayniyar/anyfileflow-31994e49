@@ -81,8 +81,8 @@ const Index = memo(() => {
           </section>
 
           <section className="container mx-auto px-4 py-8" aria-label="File conversion tools by category">
-            {categoryList.map((category) => (
-              <CategorySection key={category.id} category={category} limit={100} />
+          {categoryList.map((category) => (
+              <CategorySection key={category.id} category={category} />
             ))}
           </section>
           <Suspense fallback={<BlogPreviewSkeleton />}>
