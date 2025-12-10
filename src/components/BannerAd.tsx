@@ -1,9 +1,9 @@
 import { memo, useEffect, useRef, useState } from "react";
 
 const BannerAd = memo(() => {
-  const adRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [adLoaded, setAdLoaded] = useState(false);
+  const scriptLoadedRef = useRef(false);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -15,57 +15,56 @@ const BannerAd = memo(() => {
       { rootMargin: "200px", threshold: 0 }
     );
 
-    if (adRef.current) {
-      observer.observe(adRef.current);
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
     }
 
     return () => observer.disconnect();
   }, [isVisible]);
 
   useEffect(() => {
-    if (!isVisible || adLoaded) return;
+    if (!isVisible || scriptLoadedRef.current || !containerRef.current) return;
+    
+    scriptLoadedRef.current = true;
 
-    const loadAd = () => {
-      const container = document.getElementById("container-c716bd39c57b2028b56b7a3d6f29c01c");
-      if (!container) return;
+    // Create isolated container for ad script
+    const adContainer = document.createElement("div");
+    adContainer.id = "container-c716bd39c57b2028b56b7a3d6f29c01c";
+    containerRef.current.appendChild(adContainer);
 
-      // Clear existing content
-      container.innerHTML = "";
+    const script = document.createElement("script");
+    script.async = true;
+    script.setAttribute("data-cfasync", "false");
+    script.src = "//pl28208125.effectivegatecpm.com/c716bd39c57b2028b56b7a3d6f29c01c/invoke.js";
+    
+    document.body.appendChild(script);
 
-      const script = document.createElement("script");
-      script.async = true;
-      script.setAttribute("data-cfasync", "false");
-      script.src = "//pl28208125.effectivegatecpm.com/c716bd39c57b2028b56b7a3d6f29c01c/invoke.js";
-      
-      script.onload = () => setAdLoaded(true);
-      script.onerror = () => setAdLoaded(true);
-      
-      document.body.appendChild(script);
+    return () => {
+      // Cleanup on unmount - remove script only
+      try {
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
+      } catch (e) {
+        // Ignore cleanup errors
+      }
     };
-
-    const timer = setTimeout(loadAd, 100);
-    return () => clearTimeout(timer);
-  }, [isVisible, adLoaded]);
+  }, [isVisible]);
 
   return (
     <section 
-      ref={adRef}
       className="py-8 bg-secondary/20"
       aria-label="Advertisement"
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-center">
           <div 
-            className="w-full max-w-[728px] min-h-[90px] sm:min-h-[90px] flex items-center justify-center bg-muted/30 rounded-lg overflow-hidden"
+            ref={containerRef}
+            className="w-full max-w-[728px] min-h-[90px] sm:min-h-[100px] flex items-center justify-center bg-muted/30 rounded-lg overflow-hidden"
           >
-            <div 
-              id="container-c716bd39c57b2028b56b7a3d6f29c01c"
-              className="w-full flex items-center justify-center"
-            >
-              {!adLoaded && (
-                <span className="text-xs text-muted-foreground">Advertisement</span>
-              )}
-            </div>
+            {!isVisible && (
+              <span className="text-xs text-muted-foreground">Advertisement</span>
+            )}
           </div>
         </div>
       </div>
