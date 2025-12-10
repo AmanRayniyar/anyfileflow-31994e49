@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface BlogPost {
@@ -46,36 +46,29 @@ const mapDbToPost = (db: DbBlogPost): BlogPost => ({
   published: db.published
 });
 
+const fetchBlogPosts = async (): Promise<BlogPost[]> => {
+  const { data, error } = await supabase
+    .from("blog_posts")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (error) throw error;
+  return (data || []).map(mapDbToPost);
+};
+
 export function useBlogPosts() {
-  const [posts, setPosts] = useState<BlogPost[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-  const fetchPosts = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const { data, error: fetchError } = await supabase
-        .from("blog_posts")
-        .select("*")
-        .order("created_at", { ascending: false });
+  const { data: posts = [], isLoading: loading, error } = useQuery({
+    queryKey: ["blog-posts"],
+    queryFn: fetchBlogPosts,
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
+  });
 
-      if (fetchError) throw fetchError;
-      setPosts((data || []).map(mapDbToPost));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to fetch posts");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const addPost = async (post: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => {
-    try {
-      const { data, error: insertError } = await supabase
+  const addMutation = useMutation({
+    mutationFn: async (post: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => {
+      const { data, error } = await supabase
         .from("blog_posts")
         .insert({
           title: post.title,
@@ -91,18 +84,16 @@ export function useBlogPosts() {
         .select()
         .single();
 
-      if (insertError) throw insertError;
-      
-      const newPost = mapDbToPost(data);
-      setPosts(prev => [newPost, ...prev]);
-      return newPost;
-    } catch (err) {
-      throw new Error(err instanceof Error ? err.message : "Failed to add post");
-    }
-  };
+      if (error) throw error;
+      return mapDbToPost(data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["blog-posts"] });
+    },
+  });
 
-  const updatePost = async (id: string, updates: Partial<BlogPost>) => {
-    try {
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, updates }: { id: string; updates: Partial<BlogPost> }) => {
       const dbUpdates: Record<string, unknown> = {};
       if (updates.title !== undefined) dbUpdates.title = updates.title;
       if (updates.slug !== undefined) dbUpdates.slug = updates.slug;
@@ -114,38 +105,42 @@ export function useBlogPosts() {
       if (updates.tags !== undefined) dbUpdates.tags = updates.tags;
       if (updates.published !== undefined) dbUpdates.published = updates.published;
 
-      const { error: updateError } = await supabase
+      const { error } = await supabase
         .from("blog_posts")
         .update(dbUpdates)
         .eq("id", id);
 
-      if (updateError) throw updateError;
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["blog-posts"] });
+    },
+  });
 
-      setPosts(prev =>
-        prev.map(post =>
-          post.id === id
-            ? { ...post, ...updates, updatedAt: new Date().toISOString() }
-            : post
-        )
-      );
-    } catch (err) {
-      throw new Error(err instanceof Error ? err.message : "Failed to update post");
-    }
-  };
-
-  const deletePost = async (id: string) => {
-    try {
-      const { error: deleteError } = await supabase
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase
         .from("blog_posts")
         .delete()
         .eq("id", id);
 
-      if (deleteError) throw deleteError;
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["blog-posts"] });
+    },
+  });
 
-      setPosts(prev => prev.filter(post => post.id !== id));
-    } catch (err) {
-      throw new Error(err instanceof Error ? err.message : "Failed to delete post");
-    }
+  const addPost = async (post: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => {
+    return addMutation.mutateAsync(post);
+  };
+
+  const updatePost = async (id: string, updates: Partial<BlogPost>) => {
+    return updateMutation.mutateAsync({ id, updates });
+  };
+
+  const deletePost = async (id: string) => {
+    return deleteMutation.mutateAsync(id);
   };
 
   const getPostBySlug = (slug: string) => {
@@ -158,11 +153,11 @@ export function useBlogPosts() {
     posts: publishedPosts,
     allPosts: posts,
     loading,
-    error,
+    error: error ? (error instanceof Error ? error.message : "Failed to fetch posts") : null,
     addPost,
     updatePost,
     deletePost,
     getPostBySlug,
-    refetch: fetchPosts
+    refetch: () => queryClient.invalidateQueries({ queryKey: ["blog-posts"] })
   };
 }

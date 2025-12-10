@@ -2,12 +2,31 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Calendar, User } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
 import LazyImage from "@/components/LazyImage";
+import { Skeleton } from "@/components/ui/skeleton";
+
+const BlogPostSkeleton = () => (
+  <li>
+    <article className="bg-card border border-border rounded-xl overflow-hidden h-full">
+      <Skeleton className="w-full h-48" />
+      <div className="p-5">
+        <div className="flex items-center gap-4 mb-3">
+          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-3 w-16" />
+        </div>
+        <Skeleton className="h-5 w-3/4 mb-2" />
+        <Skeleton className="h-4 w-full mb-1" />
+        <Skeleton className="h-4 w-2/3 mb-3" />
+        <Skeleton className="h-4 w-24" />
+      </div>
+    </article>
+  </li>
+);
 
 const BlogPreview = () => {
-  const { posts } = useBlogPosts();
+  const { posts, loading } = useBlogPosts();
   const recentPosts = posts.slice(0, 3);
 
-  if (recentPosts.length === 0) return null;
+  if (!loading && recentPosts.length === 0) return null;
 
   return (
     <section className="py-16 bg-secondary/30" aria-labelledby="blog-section-heading">
@@ -28,45 +47,53 @@ const BlogPreview = () => {
         </div>
 
         <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0" role="list">
-          {recentPosts.map((post) => (
-            <li key={post.id}>
-              <article className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow h-full">
-                {post.image && (
-                  <LazyImage 
-                    src={post.image} 
-                    alt={`Featured image for ${post.title}`}
-                    className="w-full h-48 object-cover"
-                    wrapperClassName="w-full h-48"
-                  />
-                )}
-                <div className="p-5">
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
-                    <time dateTime={new Date(post.createdAt).toISOString()} className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" aria-hidden="true" />
-                      {new Date(post.createdAt).toLocaleDateString()}
-                    </time>
-                    <span className="flex items-center gap-1">
-                      <User className="h-3 w-3" aria-hidden="true" />
-                      {post.author}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
-                    <Link to={`/blog/${post.slug}`} className="hover:text-primary transition-colors focus:text-primary">
-                      {post.title}
+          {loading ? (
+            <>
+              <BlogPostSkeleton />
+              <BlogPostSkeleton />
+              <BlogPostSkeleton />
+            </>
+          ) : (
+            recentPosts.map((post) => (
+              <li key={post.id}>
+                <article className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow h-full">
+                  {post.image && (
+                    <LazyImage 
+                      src={post.image} 
+                      alt={`Featured image for ${post.title}`}
+                      className="w-full h-48 object-cover"
+                      wrapperClassName="w-full h-48"
+                    />
+                  )}
+                  <div className="p-5">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
+                      <time dateTime={new Date(post.createdAt).toISOString()} className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" aria-hidden="true" />
+                        {new Date(post.createdAt).toLocaleDateString()}
+                      </time>
+                      <span className="flex items-center gap-1">
+                        <User className="h-3 w-3" aria-hidden="true" />
+                        {post.author}
+                      </span>
+                    </div>
+                    <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
+                      <Link to={`/blog/${post.slug}`} className="hover:text-primary transition-colors focus:text-primary">
+                        {post.title}
+                      </Link>
+                    </h3>
+                    <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{post.excerpt}</p>
+                    <Link 
+                      to={`/blog/${post.slug}`} 
+                      className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus:underline"
+                    >
+                      Read more about {post.title.length > 30 ? post.title.substring(0, 30) + '...' : post.title}
+                      <ArrowRight className="h-3 w-3" aria-hidden="true" />
                     </Link>
-                  </h3>
-                  <p className="text-sm text-muted-foreground line-clamp-2 mb-3">{post.excerpt}</p>
-                  <Link 
-                    to={`/blog/${post.slug}`} 
-                    className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus:underline"
-                  >
-                    Read more about {post.title.length > 30 ? post.title.substring(0, 30) + '...' : post.title}
-                    <ArrowRight className="h-3 w-3" aria-hidden="true" />
-                  </Link>
-                </div>
-              </article>
-            </li>
-          ))}
+                  </div>
+                </article>
+              </li>
+            ))
+          )}
         </ul>
 
         <Link
