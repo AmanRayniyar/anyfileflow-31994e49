@@ -59,9 +59,8 @@ const BlogPreview = () => {
                   <Link 
                     to={`/blog/${post.slug}`} 
                     className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus:underline"
-                    aria-label={`Read more about ${post.title}`}
                   >
-                    Read more
+                    Read more about {post.title.length > 30 ? post.title.substring(0, 30) + '...' : post.title}
                     <ArrowRight className="h-3 w-3" aria-hidden="true" />
                   </Link>
                 </div>
