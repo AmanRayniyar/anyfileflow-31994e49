@@ -80,8 +80,8 @@ const Index = memo(() => {
           
           {/* Brand Welcome Section */}
           <section className="container mx-auto px-4 py-6 text-center" aria-label="Brand introduction">
-            <p className="text-muted-foreground max-w-3xl mx-auto">
-              <strong>Welcome to AnyFile Flow</strong> — also called <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
+            <p className="text-muted-foreground/70 max-w-3xl mx-auto">
+              <strong className="text-muted-foreground">Welcome to AnyFile Flow</strong> — also called <strong className="text-muted-foreground">AnyFileFlow</strong> or <strong className="text-muted-foreground">Any File Flow</strong>. 
               Whether you know us as <em>anyfileflow</em> or <em>any file flow</em>, you've found the right place for all your file conversion needs. 
               AnyFile Flow offers 200+ free tools trusted by users worldwide.
             </p>

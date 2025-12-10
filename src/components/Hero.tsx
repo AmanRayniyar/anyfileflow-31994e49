@@ -1,12 +1,8 @@
-import { ArrowRight, Zap, Shield, Clock, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { Zap, Shield, Clock } from "lucide-react";
 import { tools } from "@/data/tools";
-import { useAnyFlowAI } from "@/hooks/useAnyFlowAI";
 import { memo } from "react";
 
 const Hero = memo(() => {
-  const { open } = useAnyFlowAI();
 
   return (
     <section className="relative overflow-hidden py-16 md:py-24" aria-labelledby="hero-heading">
@@ -33,30 +29,11 @@ const Hero = memo(() => {
           </h1>
 
           {/* Description - LCP element, no delay */}
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Welcome to <strong>AnyFile Flow</strong> — also called <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
+          <p className="text-lg md:text-xl text-muted-foreground/70 mb-12 max-w-2xl mx-auto">
+            Welcome to <strong className="text-muted-foreground">AnyFile Flow</strong> — also called <strong className="text-muted-foreground">AnyFileFlow</strong> or <strong className="text-muted-foreground">Any File Flow</strong>. 
             The ultimate toolkit for all your file conversions. Fast, free, and secure. 
             No registration required – just drag, drop, and convert.
           </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-            <Button variant="hero" size="xl" asChild>
-              <Link to="/tools">
-                Explore All Tools
-                <ArrowRight className="h-5 w-5" aria-hidden="true" />
-              </Link>
-            </Button>
-            <Button variant="outline" size="xl" asChild>
-              <Link to="/tool/jpg-to-png">
-                Try JPG to PNG
-              </Link>
-            </Button>
-            <Button variant="outline" size="xl" onClick={open} className="gap-2">
-              <Sparkles className="h-5 w-5" aria-hidden="true" />
-              Try AnyFlow AI
-            </Button>
-          </div>
 
           {/* Features */}
           <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto list-none p-0" role="list" aria-label="Key features">
