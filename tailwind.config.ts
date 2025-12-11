@@ -2,13 +2,15 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./src/**/*.{ts,tsx}"],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
       center: true,
       padding: "2rem",
-      screens: { "2xl": "1400px" },
+      screens: {
+        "2xl": "1400px",
+      },
     },
     extend: {
       fontFamily: {
@@ -49,14 +51,14 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         tool: {
-          image: "hsl(340 82% 52%)",
-          document: "hsl(25 95% 53%)",
-          audio: "hsl(262 83% 58%)",
-          video: "hsl(0 84% 60%)",
-          archive: "hsl(142 71% 45%)",
-          code: "hsl(199 89% 48%)",
-          data: "hsl(45 93% 47%)",
-          text: "hsl(215 16% 47%)",
+          image: "hsl(var(--tool-image))",
+          document: "hsl(var(--tool-document))",
+          audio: "hsl(var(--tool-audio))",
+          video: "hsl(var(--tool-video))",
+          archive: "hsl(var(--tool-archive))",
+          code: "hsl(var(--tool-code))",
+          data: "hsl(var(--tool-data))",
+          text: "hsl(var(--tool-text))",
         },
       },
       borderRadius: {
@@ -73,10 +75,20 @@ export default {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "fade-in": {
+          from: { opacity: "0", transform: "translateY(10px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        "slide-in": {
+          from: { opacity: "0", transform: "translateX(-10px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "fade-in": "fade-in 0.5s ease-out forwards",
+        "slide-in": "slide-in 0.3s ease-out forwards",
       },
     },
   },
