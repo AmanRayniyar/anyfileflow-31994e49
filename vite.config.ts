@@ -28,6 +28,9 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('node_modules/react/')) return 'react';
           if (id.includes('react-router')) return 'router';
           
+          // Icons - separate chunk for tree shaking
+          if (id.includes('lucide-react')) return 'icons';
+          
           // Heavy libs - load on demand
           if (id.includes('@radix-ui')) return 'radix';
           if (id.includes('@tanstack')) return 'query';
@@ -39,9 +42,11 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('recharts')) return 'charts';
           if (id.includes('react-image-crop')) return 'crop';
           
-          // Utils
+          // Utils - smaller separate chunks
           if (id.includes('date-fns')) return 'date';
           if (id.includes('clsx') || id.includes('tailwind-merge')) return 'utils';
+          if (id.includes('zod')) return 'zod';
+          if (id.includes('zustand')) return 'zustand';
         },
       },
     },
