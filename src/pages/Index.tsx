@@ -1,12 +1,12 @@
 import { Helmet } from "react-helmet-async";
 import { memo, Suspense, lazy, useMemo, useState } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import { categories, ToolCategory } from "@/data/tools";
 import { cn } from "@/lib/utils";
 
-// Lazy load all non-critical components for reduced initial bundle
-const Header = lazy(() => import("@/components/Header"));
-const Footer = lazy(() => import("@/components/Footer"));
+// Lazy load non-critical below-fold components
 const CategorySection = lazy(() => import("@/components/CategorySection"));
 const SearchBar = lazy(() => import("@/components/SearchBar"));
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
@@ -64,9 +64,7 @@ const Index = memo(() => {
       
       <div className="min-h-screen bg-background">
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        <Suspense fallback={<div className="h-16 bg-background" />}>
-          <Header />
-        </Suspense>
+        <Header />
         <main id="main-content" role="main" aria-label="Main content">
           <Hero />
           
@@ -122,9 +120,7 @@ const Index = memo(() => {
             <BannerAd />
           </Suspense>
         </main>
-        <Suspense fallback={null}>
-          <Footer />
-        </Suspense>
+        <Footer />
       </div>
     </>;
 });
