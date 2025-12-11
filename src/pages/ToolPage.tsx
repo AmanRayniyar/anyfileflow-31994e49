@@ -36,6 +36,7 @@ const JpgToPngSeoContent = lazy(() => import("@/components/tools/JpgToPngSeoCont
 const TypingTestSeoContent = lazy(() => import("@/components/tools/TypingTestSeoContent"));
 const QRCodeGeneratorSeoContent = lazy(() => import("@/components/tools/QRCodeGeneratorSeoContent"));
 const ImageCropperSeoContent = lazy(() => import("@/components/tools/ImageCropperSeoContent"));
+const BmiCalculatorSeoContent = lazy(() => import("@/components/tools/BmiCalculatorSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -163,6 +164,8 @@ const ToolPage = () => {
           ? 'JPG to PNG Converter – Free, Lossless Quality with Transparency | AnyFile Flow'
           : tool.id === 'typing-test'
           ? 'Typing Speed Test – Free Online WPM Test & Accuracy Checker | AnyFile Flow'
+          : tool.id === 'bmi-calculator'
+          ? 'BMI Calculator – Free Body Mass Index Calculator Online 2025 | AnyFile Flow'
           : `${tool.name} - Free Online Tool | AnyFile Flow (AnyFileFlow)`}
         </title>
         <meta name="description" content={tool.id === 'png-to-jpg' 
@@ -171,6 +174,8 @@ const ToolPage = () => {
           ? 'Convert JPG/JPEG images to PNG format with AnyFile Flow. Free, lossless quality, transparency support. Bulk conversion up to 20 images. No registration required.'
           : tool.id === 'typing-test'
           ? 'Take a free typing speed test online. Check your WPM, CPM, and accuracy instantly. Multiple difficulty levels, custom time limits. No registration required. Practice typing and improve your speed.'
+          : tool.id === 'bmi-calculator'
+          ? 'Calculate your BMI instantly with our free online BMI calculator. Get accurate Body Mass Index results, health category classification, and personalized weight recommendations. Fast, private, no registration.'
           : `${tool.description}. Free ${tool.name} by AnyFile Flow (also known as AnyFileFlow, Any File Flow). Fast, secure, no registration required.`} />
         <meta name="keywords" content={tool.id === 'png-to-jpg' 
           ? 'png to jpg, png to jpg converter, convert png to jpg, free png to jpg online, high quality png to jpg, bulk image converter, image compression, online image converter, jpg converter, fast png to jpg, anyfile flow converter, image tools online, convert png to jpeg, png to jpeg, batch png to jpg, png to jpg without losing quality' 
@@ -178,6 +183,8 @@ const ToolPage = () => {
           ? 'jpg to png, jpg to png converter, convert jpg to png, free jpg to png online, jpg to png with transparency, bulk image converter, lossless converter, jpeg to png, convert jpeg to png, jpg to png free, batch jpg to png, jpg to png transparent background'
           : tool.id === 'typing-test'
           ? 'typing test, typing speed test, wpm test, typing test online, free typing test, keyboard typing test, typing practice, typing test for jobs, typing accuracy test, fast typing test, online typing test free, how to improve typing speed, typing test 1 minute, typing speed checker, typing test for data entry, typing test for students'
+          : tool.id === 'bmi-calculator'
+          ? 'bmi calculator, body mass index calculator, calculate bmi online, bmi check, healthy bmi, bmi chart, bmi formula, ideal bmi, bmi range, bmi calculator for men, bmi calculator for women, free bmi calculator, bmi calculator 2025, best bmi calculator online, bmi health calculator, what is a good bmi, how to calculate bmi, bmi for weight loss'
           : `${tool.name}, ${tool.from} to ${tool.to}, AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, free online tool`} />
         <meta property="og:title" content={tool.id === 'png-to-jpg' 
           ? 'PNG to JPG Converter – Free, Fast & High-Quality | AnyFile Flow' 
@@ -185,6 +192,8 @@ const ToolPage = () => {
           ? 'JPG to PNG Converter – Free, Lossless & Transparent | AnyFile Flow'
           : tool.id === 'typing-test'
           ? 'Typing Speed Test – Free WPM & Accuracy Test | AnyFile Flow'
+          : tool.id === 'bmi-calculator'
+          ? 'BMI Calculator – Free Body Mass Index Tool 2025 | AnyFile Flow'
           : `${tool.name} - AnyFile Flow | AnyFileFlow`} />
         <meta property="og:description" content={tool.id === 'png-to-jpg' 
           ? 'Convert PNG images to JPG format instantly. Free bulk conversion, no watermarks, 100% secure. Try AnyFile Flow now!' 
@@ -192,6 +201,8 @@ const ToolPage = () => {
           ? 'Convert JPG to PNG with transparency support. Free, lossless quality, bulk conversion. Try AnyFile Flow now!'
           : tool.id === 'typing-test'
           ? 'Free online typing speed test. Check WPM, CPM & accuracy instantly. Multiple difficulty levels. No registration required!'
+          : tool.id === 'bmi-calculator'
+          ? 'Calculate your BMI instantly for free. Get accurate health category results and personalized recommendations. No registration required!'
           : `${tool.description}. Free tool by AnyFile Flow (AnyFileFlow).`} />
         <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
       </Helmet>
@@ -316,6 +327,13 @@ const ToolPage = () => {
               {tool.id === 'image-cropper' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <ImageCropperSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for BMI Calculator Tool */}
+              {tool.id === 'bmi-calculator' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <BmiCalculatorSeoContent />
                 </Suspense>
               )}
 
