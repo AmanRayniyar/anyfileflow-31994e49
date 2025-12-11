@@ -5,11 +5,6 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-  }
-
   :root {
     --background: 210 20% 98%;
     --foreground: 222 47% 11%;
@@ -96,20 +91,6 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Optimize scroll performance on mobile */
-  @media (max-width: 768px) {
-    * {
-      -webkit-transform: translateZ(0);
-      transform: translateZ(0);
-    }
-    
-    .will-change-scroll {
-      will-change: transform;
-      backface-visibility: hidden;
-    }
   }
 
   body {
