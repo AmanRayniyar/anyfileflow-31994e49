@@ -6,7 +6,7 @@ import Hero from "@/components/Hero";
 import { categories, ToolCategory } from "@/data/tools";
 import { cn } from "@/lib/utils";
 
-// Lazy load non-critical below-fold components
+// Lazy load all non-critical components
 const CategorySection = lazy(() => import("@/components/CategorySection"));
 const SearchBar = lazy(() => import("@/components/SearchBar"));
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
