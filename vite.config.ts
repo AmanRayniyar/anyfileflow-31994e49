@@ -16,25 +16,39 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    sourcemap: true,
+    sourcemap: false,
     target: 'esnext',
     minify: 'esbuild',
     cssMinify: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Vendor chunks for better caching
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs', '@radix-ui/react-tooltip'],
-          'utils': ['clsx', 'tailwind-merge', 'date-fns'],
+        manualChunks(id) {
+          // Core React - smallest possible
+          if (id.includes('react-dom')) return 'react-dom';
+          if (id.includes('node_modules/react/')) return 'react';
+          if (id.includes('react-router')) return 'router';
+          
+          // Heavy libs - load on demand
+          if (id.includes('@radix-ui')) return 'radix';
+          if (id.includes('@tanstack')) return 'query';
+          if (id.includes('react-helmet')) return 'helmet';
+          
+          // Tool-specific heavy libs
+          if (id.includes('qrcode') || id.includes('html5-qrcode')) return 'qr';
+          if (id.includes('pdf') || id.includes('qpdf')) return 'pdf';
+          if (id.includes('recharts')) return 'charts';
+          if (id.includes('react-image-crop')) return 'crop';
+          
+          // Utils
+          if (id.includes('date-fns')) return 'date';
+          if (id.includes('clsx') || id.includes('tailwind-merge')) return 'utils';
         },
       },
     },
-    // Optimize chunk size warnings
-    chunkSizeWarningLimit: 1000,
+    chunkSizeWarningLimit: 500,
   },
-  // Performance optimizations
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
+    include: ['react', 'react-dom'],
+    exclude: ['@neslinesli93/qpdf-wasm'],
   },
 }));
