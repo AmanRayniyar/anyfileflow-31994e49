@@ -30,6 +30,7 @@ const ImageCompressorTool = lazy(() => import("@/components/tools/ImageCompresso
 const MemeGeneratorTool = lazy(() => import("@/components/tools/MemeGeneratorTool"));
 const QRScannerTool = lazy(() => import("@/components/tools/QRScannerTool"));
 const WatermarkImageTool = lazy(() => import("@/components/tools/WatermarkImageTool"));
+const FrequencyDetectorTool = lazy(() => import("@/components/tools/FrequencyDetectorTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const SidebarAd = lazy(() => import("@/components/SidebarAd"));
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
@@ -39,6 +40,7 @@ const QRCodeGeneratorSeoContent = lazy(() => import("@/components/tools/QRCodeGe
 const ImageCropperSeoContent = lazy(() => import("@/components/tools/ImageCropperSeoContent"));
 const BmiCalculatorSeoContent = lazy(() => import("@/components/tools/BmiCalculatorSeoContent"));
 const WatermarkImageSeoContent = lazy(() => import("@/components/tools/WatermarkImageSeoContent"));
+const FrequencyDetectorSeoContent = lazy(() => import("@/components/tools/FrequencyDetectorSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -140,6 +142,11 @@ const ToolPage = () => {
     // Special case for Watermark Image
     if (tool.id === 'watermark-image') {
       return <WatermarkImageTool />;
+    }
+    
+    // Special case for Frequency Detector
+    if (tool.id === 'frequency-detector') {
+      return <FrequencyDetectorTool />;
     }
     
     switch (tool.toolType) {
@@ -348,6 +355,13 @@ const ToolPage = () => {
               {tool.id === 'watermark-image' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <WatermarkImageSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Frequency Detector Tool */}
+              {tool.id === 'frequency-detector' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <FrequencyDetectorSeoContent />
                 </Suspense>
               )}
 
