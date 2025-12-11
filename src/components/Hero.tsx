@@ -1,45 +1,57 @@
-import { Zap, Shield, Clock } from "lucide-react";
 import { tools } from "@/data/tools";
 import { memo } from "react";
 
-const Hero = memo(() => {
+// Inline SVG Icons
+const ZapIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+  </svg>
+);
 
+const ShieldIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+  </svg>
+);
+
+const ClockIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+const Hero = memo(() => {
   return (
     <section className="relative overflow-hidden py-16 md:py-24" aria-labelledby="hero-heading">
-      {/* Background decoration */}
+      {/* Background */}
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl animate-float" />
-        <div className="absolute -bottom-1/2 -left-1/4 w-[500px] h-[500px] rounded-full bg-accent/5 blur-3xl animate-float" style={{ animationDelay: "-3s" }} />
+        <div className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl" />
+        <div className="absolute -bottom-1/2 -left-1/4 w-[500px] h-[500px] rounded-full bg-accent/5 blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 relative">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Badge - no animation delay */}
+          {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Zap className="h-4 w-4 text-primary" aria-hidden="true" />
-            <span className="text-sm font-medium text-primary">
-              {tools.length}+ Free Tools Available
-            </span>
+            <ZapIcon className="h-4 w-4 text-primary" />
+            <span className="text-sm font-medium text-primary">{tools.length}+ Free Tools</span>
           </div>
 
-          {/* Heading - removed animation delay for faster LCP */}
+          {/* Heading */}
           <h1 id="hero-heading" className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
-            Convert Any File with{" "}
-            <span className="flow-text">AnyFile Flow</span>
+            Convert Any File with <span className="flow-text">AnyFile Flow</span>
           </h1>
 
-          {/* Description - LCP element, no delay */}
+          {/* Description */}
           <p className="text-lg md:text-xl text-muted-foreground/70 mb-12 max-w-2xl mx-auto">
-            Welcome to <strong className="text-muted-foreground">AnyFile Flow</strong> — also called <strong className="text-muted-foreground">AnyFileFlow</strong> or <strong className="text-muted-foreground">Any File Flow</strong>. 
-            The ultimate toolkit for all your file conversions. Fast, free, and secure. 
-            No registration required – just drag, drop, and convert.
+            The ultimate toolkit for all your file conversions. Fast, free, and secure. No registration required.
           </p>
 
           {/* Features */}
-          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto list-none p-0" role="list" aria-label="Key features">
+          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
             <li className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card border border-border">
-              <div className="p-2 rounded-lg bg-tool-archive/10" aria-hidden="true">
-                <Zap className="h-5 w-5 text-tool-archive" aria-hidden="true" />
+              <div className="p-2 rounded-lg bg-tool-archive/10">
+                <ZapIcon className="h-5 w-5 text-tool-archive" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-foreground">Lightning Fast</p>
@@ -47,8 +59,8 @@ const Hero = memo(() => {
               </div>
             </li>
             <li className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card border border-border">
-              <div className="p-2 rounded-lg bg-tool-audio/10" aria-hidden="true">
-                <Shield className="h-5 w-5 text-tool-audio" aria-hidden="true" />
+              <div className="p-2 rounded-lg bg-tool-audio/10">
+                <ShieldIcon className="h-5 w-5 text-tool-audio" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-foreground">100% Secure</p>
@@ -56,8 +68,8 @@ const Hero = memo(() => {
               </div>
             </li>
             <li className="flex items-center justify-center gap-3 p-4 rounded-xl bg-card border border-border">
-              <div className="p-2 rounded-lg bg-tool-code/10" aria-hidden="true">
-                <Clock className="h-5 w-5 text-tool-code" aria-hidden="true" />
+              <div className="p-2 rounded-lg bg-tool-code/10">
+                <ClockIcon className="h-5 w-5 text-tool-code" />
               </div>
               <div className="text-left">
                 <p className="font-semibold text-foreground">No Limits</p>
