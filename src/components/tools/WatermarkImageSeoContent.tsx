@@ -47,7 +47,7 @@ const WatermarkImageSeoContent = () => {
   const totalKeywords = keywordCategories.reduce((acc, cat) => acc + cat.keywords.length, 0);
 
   return (
-    <div className="mt-12 space-y-10">
+    <div className="mt-12 space-y-10 transform-gpu will-change-scroll">
       {/* Schema.org Structured Data */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{
         __html: JSON.stringify({
@@ -401,7 +401,7 @@ const WatermarkImageSeoContent = () => {
               a: "Our online tool provides Photoshop-level watermarking features without any software installation. Upload your images, customize your watermark with fonts, colors, effects, and positioning, then download - all from your web browser."
             }
           ].map((faq, index) => (
-            <div key={index} className="bg-muted/30 rounded-xl p-5 hover:bg-muted/50 transition-colors">
+            <div key={index} className="bg-muted/30 rounded-xl p-5 sm:hover:bg-muted/50 sm:transition-colors">
               <h3 className="font-semibold text-foreground mb-2">{faq.q}</h3>
               <p className="text-sm text-muted-foreground">{faq.a}</p>
             </div>
@@ -435,7 +435,7 @@ const WatermarkImageSeoContent = () => {
                 {category.keywords.map((keyword, keyIndex) => (
                   <span
                     key={keyIndex}
-                    className="px-3 py-1.5 bg-muted/70 hover:bg-primary/20 text-muted-foreground hover:text-primary text-xs rounded-full transition-colors cursor-default"
+                    className="px-3 py-1.5 bg-muted/70 sm:hover:bg-primary/20 text-muted-foreground sm:hover:text-primary text-xs rounded-full sm:transition-colors cursor-default"
                   >
                     {keyword}
                   </span>
