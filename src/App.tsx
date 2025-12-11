@@ -1,14 +1,12 @@
 import { Suspense, lazy } from "react";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import Index from "./pages/Index";
-
-// Lazy load toast components - not needed for initial render
-const Toaster = lazy(() => import("@/components/ui/toaster").then(m => ({ default: m.Toaster })));
-const Sonner = lazy(() => import("@/components/ui/sonner").then(m => ({ default: m.Toaster })));
 
 // Lazy load non-critical pages for code splitting
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
@@ -49,10 +47,8 @@ const App = () => (
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <Suspense fallback={null}>
-            <Toaster />
-            <Sonner />
-          </Suspense>
+          <Toaster />
+          <Sonner />
           <BrowserRouter>
             <Suspense fallback={<PageLoader />}>
               <Routes>
