@@ -1,5 +1,3 @@
-/* Google Fonts loaded asynchronously in index.html */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,237 +6,83 @@
   :root {
     --background: 210 20% 98%;
     --foreground: 222 47% 11%;
-
     --card: 0 0% 100%;
     --card-foreground: 222 47% 11%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-
     --primary: 199 89% 38%;
     --primary-foreground: 0 0% 100%;
-
     --secondary: 210 40% 96%;
     --secondary-foreground: 222 47% 11%;
-
     --muted: 210 40% 96%;
     --muted-foreground: 215 25% 35%;
-
     --accent: 173 80% 40%;
     --accent-foreground: 0 0% 100%;
-
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-
     --border: 214 32% 91%;
     --input: 214 32% 91%;
     --ring: 199 89% 48%;
-
     --radius: 0.75rem;
-
-    /* Custom colors */
     --flow-start: 199 89% 48%;
     --flow-end: 173 80% 40%;
-    --flow-gradient: linear-gradient(135deg, hsl(var(--flow-start)) 0%, hsl(var(--flow-end)) 100%);
-    
-    --tool-image: 340 82% 52%;
-    --tool-document: 25 95% 53%;
-    --tool-audio: 262 83% 58%;
-    --tool-video: 0 84% 60%;
-    --tool-archive: 142 71% 45%;
-    --tool-code: 199 89% 48%;
-    --tool-data: 45 93% 47%;
-    --tool-text: 215 16% 47%;
   }
 
   .dark {
     --background: 222 47% 6%;
     --foreground: 210 40% 98%;
-
     --card: 222 47% 11%;
     --card-foreground: 210 40% 98%;
-
     --popover: 222 47% 11%;
     --popover-foreground: 210 40% 98%;
-
     --primary: 199 89% 48%;
     --primary-foreground: 0 0% 100%;
-
     --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
-
     --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
-
     --accent: 173 80% 40%;
     --accent-foreground: 0 0% 100%;
-
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-
     --border: 217 33% 17%;
     --input: 217 33% 17%;
     --ring: 199 89% 48%;
   }
-}
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  html {
-    scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
-    text-size-adjust: 100%;
-  }
-
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
     line-height: 1.6;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Focus visible for accessibility - WCAG AA compliant */
-  :focus-visible {
-    @apply outline-2 outline-offset-2 outline-primary;
-    outline-style: solid;
-  }
+  :focus-visible { @apply outline-2 outline-offset-2 outline-primary; outline-style: solid; }
+  .skip-link { @apply sr-only; }
+  .skip-link:focus { @apply not-sr-only fixed top-4 left-4 z-[9999] bg-primary text-primary-foreground px-4 py-2 rounded-md font-semibold; }
 
-  /* High contrast focus for better accessibility */
-  a:focus-visible,
-  button:focus-visible,
-  input:focus-visible,
-  select:focus-visible,
-  textarea:focus-visible {
-    @apply ring-2 ring-primary ring-offset-2 ring-offset-background;
-  }
-
-  /* Skip link styles - must be visible on focus */
-  .skip-link {
-    @apply sr-only;
-  }
-
-  .skip-link:focus {
-    @apply not-sr-only fixed top-4 left-4 z-[9999] bg-primary text-primary-foreground px-4 py-2 rounded-md font-semibold;
-    outline: 3px solid hsl(var(--ring));
-    outline-offset: 2px;
-  }
-
-  /* Reduced motion for accessibility */
   @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
-      scroll-behavior: auto !important;
     }
   }
 
-  /* High contrast mode support */
-  @media (prefers-contrast: high) {
-    :root {
-      --border: 215 25% 20%;
-    }
-    .dark {
-      --border: 215 25% 80%;
-    }
-  }
-
-  /* Improve text rendering */
-  h1, h2, h3, h4, h5, h6 {
-    text-wrap: balance;
-    font-weight: 700;
-  }
-
-  p {
-    text-wrap: pretty;
-  }
-
-  /* Better link accessibility */
-  a {
-    text-decoration-skip-ink: auto;
-  }
-
-  /* Ensure minimum touch target size (WCAG) */
-  button, a, input, select, textarea {
-    min-height: 44px;
-  }
-
-  /* Exception for small inline elements */
-  .inline-touch-target {
-    min-height: auto;
-  }
-
-  /* Ensure images don't overflow */
-  img, video, svg {
-    max-width: 100%;
-    height: auto;
-  }
-
-  /* Selection colors for accessibility */
-  ::selection {
-    background: hsl(var(--primary) / 0.3);
-    color: hsl(var(--foreground));
-  }
+  h1, h2, h3, h4, h5, h6 { text-wrap: balance; font-weight: 700; }
+  img, video, svg { max-width: 100%; height: auto; }
 }
 
 @layer utilities {
-  .flow-gradient {
-    background: linear-gradient(135deg, hsl(var(--flow-start)) 0%, hsl(var(--flow-end)) 100%);
-  }
-  
+  .flow-gradient { background: linear-gradient(135deg, hsl(var(--flow-start)) 0%, hsl(var(--flow-end)) 100%); }
   .flow-text {
     background: linear-gradient(135deg, hsl(var(--flow-start)) 0%, hsl(var(--flow-end)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  
-  .glass {
-    background: hsl(var(--card) / 0.8);
-    backdrop-filter: blur(12px);
-    border: 1px solid hsl(var(--border) / 0.5);
-  }
-  
-  .tool-card-hover {
-    @apply transition-all duration-200 ease-out;
-  }
-  
-  .tool-card-hover:hover {
-    @apply -translate-y-1 shadow-lg;
-  }
-
-  /* GPU-accelerated animations for performance */
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-    will-change: transform;
-    transform: translateZ(0);
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0px) translateZ(0); }
-    50% { transform: translateY(-10px) translateZ(0); }
-  }
-  
-  .animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  /* Content visibility for performance */
-  .content-visibility-auto {
-    content-visibility: auto;
-    contain-intrinsic-size: auto 500px;
-  }
-
-  /* Optimize paint for fixed/sticky elements */
-  .optimize-paint {
-    will-change: transform;
-    transform: translateZ(0);
-  }
+  .glass { background: hsl(var(--card) / 0.8); backdrop-filter: blur(12px); }
+  .tool-card-hover { @apply transition-transform duration-200; }
+  .tool-card-hover:hover { @apply -translate-y-1; }
+  .content-visibility-auto { content-visibility: auto; contain-intrinsic-size: auto 500px; }
 }
