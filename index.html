@@ -1,13 +1,24 @@
 <!doctype html>
 <html lang="en" dir="ltr">
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Z3F93NH71"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8Z3F93NH71');
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
-    <!-- Critical resource hints - prioritized -->
+    <!-- Critical resource hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
+    <link rel="preconnect" href="https://fundingchoicesmessages.google.com" crossorigin />
     <link rel="dns-prefetch" href="https://cmcvkmttlrjahpxsotyr.supabase.co" />
     
     <!-- Favicon & Icons -->
@@ -30,12 +41,13 @@
     <meta name="format-detection" content="telephone=no" />
     <link rel="canonical" href="https://anyfileflow.com/" />
 
-    <!-- Font - non-blocking load -->
+    <!-- Preload critical font -->
     <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
     
-    <!-- Google AdSense - meta only, script deferred -->
+    <!-- Google AdSense -->
     <meta name="google-adsense-account" content="ca-pub-1759447626015713">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1759447626015713" crossorigin="anonymous"></script>
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -171,26 +183,13 @@
       :root{--background:210 20% 98%;--foreground:222 47% 11%;--primary:199 89% 48%}
       .dark{--background:222 47% 6%;--foreground:210 40% 98%}
       *,::before,::after{box-sizing:border-box}
-      html{-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;background:hsl(var(--background))}
+      html{-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4}
       body{margin:0;background:hsl(var(--background));color:hsl(var(--foreground));font-family:Inter,system-ui,-apple-system,sans-serif;line-height:1.5}
-      #root{min-height:100vh;background:hsl(var(--background))}
+      #root{min-height:100vh}
       .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
       .skip-link{position:absolute;top:-40px;left:0;background:hsl(var(--primary));color:#fff;padding:8px 16px;z-index:100;transition:top 0.3s}
       .skip-link:focus{top:0}
-      .init-loader{display:flex;align-items:center;justify-content:center;min-height:100vh;background:hsl(var(--background))}
-      .init-spinner{width:32px;height:32px;border:3px solid hsl(var(--foreground)/0.1);border-top-color:hsl(var(--primary));border-radius:50%;animation:spin 1s linear infinite}
-      @keyframes spin{to{transform:rotate(360deg)}}
     </style>
-    <!-- Dark mode detection before render -->
-    <script>
-      (function(){
-        var d=document.documentElement;
-        var t=localStorage.getItem('theme');
-        if(t==='dark'||(t!=='light'&&window.matchMedia('(prefers-color-scheme:dark)').matches)){
-          d.classList.add('dark');
-        }
-      })();
-    </script>
   </head>
 
   <body>
@@ -202,33 +201,6 @@
     
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    
-    <!-- Deferred non-critical scripts - load after page -->
-    <script>
-      window.addEventListener('load', function() {
-        // Google Analytics - deferred
-        var ga = document.createElement('script');
-        ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-8Z3F93NH71';
-        ga.async = true;
-        document.head.appendChild(ga);
-        ga.onload = function() {
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          window.gtag = gtag;
-          gtag('js', new Date());
-          gtag('config', 'G-8Z3F93NH71');
-        };
-        
-        // AdSense - deferred
-        setTimeout(function() {
-          var ads = document.createElement('script');
-          ads.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1759447626015713';
-          ads.async = true;
-          ads.crossOrigin = 'anonymous';
-          document.head.appendChild(ads);
-        }, 2000);
-      });
-    </script>
   
   </body>
 </html>

@@ -3,12 +3,12 @@ import { memo, Suspense, lazy, useMemo, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
+import CategorySection from "@/components/CategorySection";
+import SearchBar from "@/components/SearchBar";
 import { categories, ToolCategory } from "@/data/tools";
 import { cn } from "@/lib/utils";
 
-// Lazy load non-critical below-fold components
-const CategorySection = lazy(() => import("@/components/CategorySection"));
-const SearchBar = lazy(() => import("@/components/SearchBar"));
+// Lazy load below-fold components
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
 const BannerAd = lazy(() => import("@/components/BannerAd"));
 
@@ -75,9 +75,7 @@ const Index = memo(() => {
                 <h2 className="text-lg font-semibold text-foreground mb-1">Find Your Tool Instantly</h2>
                 <p className="text-sm text-muted-foreground">Search 200+ free tools by name or function</p>
               </div>
-              <Suspense fallback={<div className="h-12 bg-muted animate-pulse rounded-xl" />}>
-                <SearchBar large />
-              </Suspense>
+              <SearchBar large />
             </div>
           </section>
           
@@ -107,9 +105,7 @@ const Index = memo(() => {
 
           {/* Selected Category Tools */}
           <section className="container mx-auto px-4 py-8" aria-label="File conversion tools">
-            <Suspense fallback={<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">{[1,2,3,4,5,6].map(i=><div key={i} className="h-32 bg-muted animate-pulse rounded-xl"/>)}</div>}>
-              {selectedCategoryInfo && <CategorySection key={selectedCategoryInfo.id} category={selectedCategoryInfo} />}
-            </Suspense>
+            {selectedCategoryInfo && <CategorySection key={selectedCategoryInfo.id} category={selectedCategoryInfo} />}
           </section>
           
           <Suspense fallback={<BlogPreviewSkeleton />}>

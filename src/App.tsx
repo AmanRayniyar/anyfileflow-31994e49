@@ -34,7 +34,7 @@ const queryClient = new QueryClient({
 
 // Optimized loading fallback with accessibility
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background" role="status" aria-live="polite" aria-label="Loading page">
+  <div className="min-h-screen flex items-center justify-center" role="status" aria-live="polite" aria-label="Loading page">
     <div className="flex flex-col items-center gap-4">
       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" aria-hidden="true" />
       <span className="sr-only">Loading...</span>
