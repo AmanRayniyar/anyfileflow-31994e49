@@ -29,6 +29,7 @@ const CountdownTimerTool = lazy(() => import("@/components/tools/CountdownTimerT
 const ImageCompressorTool = lazy(() => import("@/components/tools/ImageCompressorTool"));
 const MemeGeneratorTool = lazy(() => import("@/components/tools/MemeGeneratorTool"));
 const QRScannerTool = lazy(() => import("@/components/tools/QRScannerTool"));
+const WatermarkImageTool = lazy(() => import("@/components/tools/WatermarkImageTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const SidebarAd = lazy(() => import("@/components/SidebarAd"));
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
@@ -37,6 +38,7 @@ const TypingTestSeoContent = lazy(() => import("@/components/tools/TypingTestSeo
 const QRCodeGeneratorSeoContent = lazy(() => import("@/components/tools/QRCodeGeneratorSeoContent"));
 const ImageCropperSeoContent = lazy(() => import("@/components/tools/ImageCropperSeoContent"));
 const BmiCalculatorSeoContent = lazy(() => import("@/components/tools/BmiCalculatorSeoContent"));
+const WatermarkImageSeoContent = lazy(() => import("@/components/tools/WatermarkImageSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -133,6 +135,11 @@ const ToolPage = () => {
     // Special case for QR Scanner
     if (tool.id === 'qr-scanner') {
       return <QRScannerTool />;
+    }
+    
+    // Special case for Watermark Image
+    if (tool.id === 'watermark-image') {
+      return <WatermarkImageTool />;
     }
     
     switch (tool.toolType) {
@@ -334,6 +341,13 @@ const ToolPage = () => {
               {tool.id === 'bmi-calculator' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <BmiCalculatorSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Watermark Image Tool */}
+              {tool.id === 'watermark-image' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <WatermarkImageSeoContent />
                 </Suspense>
               )}
 
