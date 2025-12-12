@@ -6,10 +6,61 @@ import { Calendar, User, Tag, ArrowLeft } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
 import DOMPurify from "dompurify";
 import founderPortrait from "@/assets/founder-portrait.png";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Progress } from "@/components/ui/progress";
+import { useState, useEffect } from "react";
+
+const BlogPostSkeleton = () => {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setProgress((prev) => (prev >= 90 ? 90 : prev + 10));
+    }, 100);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main className="container mx-auto px-4 py-12">
+        <article className="max-w-3xl mx-auto">
+          <Skeleton className="h-4 w-32 mb-6" />
+          <Skeleton className="w-full h-64 md:h-96 rounded-xl mb-8" />
+          <div className="mb-8">
+            <Skeleton className="h-10 w-3/4 mb-4" />
+            <div className="flex gap-4">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+          </div>
+          <div className="space-y-4">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-5/6" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-4/5" />
+          </div>
+          <div className="mt-8">
+            <Progress value={progress} className="h-2" />
+            <p className="text-sm text-muted-foreground text-center mt-2">Loading blog post...</p>
+          </div>
+        </article>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
 const BlogPostPage = () => {
   const { slug } = useParams();
-  const { getPostBySlug } = useBlogPosts();
+  const { getPostBySlug, loading } = useBlogPosts();
   const post = slug ? getPostBySlug(slug) : null;
+
+  if (loading) {
+    return <BlogPostSkeleton />;
+  }
 
   if (!post) {
     return (
