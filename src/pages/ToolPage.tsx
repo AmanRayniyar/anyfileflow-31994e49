@@ -5,6 +5,7 @@ import { useEffect, lazy, Suspense } from "react";
 import ShareButton from "@/components/ShareButton";
 import ToolAIHelp from "@/components/ToolAIHelp";
 import ToolSEOSchemas from "@/components/ToolSEOSchemas";
+import ToolRating from "@/components/ToolRating";
 import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 
 import Header from "@/components/Header";
@@ -269,6 +270,11 @@ const ToolPage = () => {
                 <Suspense fallback={<ToolLoader />}>
                   {renderToolComponent()}
                 </Suspense>
+              </div>
+
+              {/* Rating & Views Section */}
+              <div className="mt-6">
+                <ToolRating toolId={tool.id} toolName={tool.name} />
               </div>
 
               {/* Info Section */}
