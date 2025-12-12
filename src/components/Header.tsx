@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { categories, searchTools, Tool } from "@/data/tools";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import AnyFlowAI from "@/components/AnyFlowAI";
+
+// Lazy load AnyFlowAI as it's not critical for initial render
+const AnyFlowAI = lazy(() => import("@/components/AnyFlowAI"));
 
 // Inline SVG Icons for performance
 const SearchIcon = ({ className }: { className?: string }) => (
@@ -98,7 +100,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-14 items-center justify-between gap-3">
           <Link to="/" className="flex items-center gap-2 shrink-0" aria-label="AnyFile Flow - Home">
-            <img alt="AnyFile Flow" width="32" height="32" loading="eager" fetchPriority="high" decoding="async" className="h-8 w-8 rounded-lg" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeyiR2Gsfj8ovCgzUdcir5Bklumw5zL3asPJTUmJGDk7giKJ818wLusersNt4aIyF1p3Z7XgLKdqPdDcKF5fm4741RnzRswwFSYZFwhcHrchPB5QNdhyphenhyphenKqkGh0s9v9O4SfUvYkk9Hc0qpJgK0Of27xv7Y76aKEAr046NCaMgcBUb4dzon2VnwmNxnjYBDX/w643-h643-rw/cropped_circle_image.png" />
+            <img alt="AnyFile Flow" width="32" height="32" loading="eager" decoding="async" className="h-8 w-8 rounded-lg" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeyiR2Gsfj8ovCgzUdcir5Bklumw5zL3asPJTUmJGDk7giKJ818wLusersNt4aIyF1p3Z7XgLKdqPdDcKF5fm4741RnzRswwFSYZFwhcHrchPB5QNdhyphenhyphenKqkGh0s9v9O4SfUvYkk9Hc0qpJgK0Of27xv7Y76aKEAr046NCaMgcBUb4dzon2VnwmNxnjYBDX/w643-h643-rw/cropped_circle_image.png" />
             <span className="text-lg font-bold hidden sm:block">
               <span className="flow-text">AnyFile</span>
               <span className="text-foreground"> Flow</span>
@@ -168,7 +170,9 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center gap-1">
-            <AnyFlowAI />
+            <Suspense fallback={null}>
+              <AnyFlowAI />
+            </Suspense>
             <a href="mailto:anyfileflow@gmail.com?subject=Feedback" className="hidden sm:flex items-center gap-1 px-2 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50" aria-label="Feedback">
               <MessageIcon className="h-3.5 w-3.5" />
               <span className="hidden md:inline">Feedback</span>

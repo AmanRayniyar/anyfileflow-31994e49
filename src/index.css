@@ -165,14 +165,20 @@
     text-decoration-skip-ink: auto;
   }
 
-  /* Ensure minimum touch target size (WCAG) */
-  button, a, input, select, textarea {
+  /* Ensure minimum touch target size (WCAG) - only for interactive standalone elements */
+  button:not(.inline-touch-target),
+  [role="button"]:not(.inline-touch-target) {
     min-height: 44px;
   }
 
-  /* Exception for small inline elements */
-  .inline-touch-target {
+  /* Links within text should not have min-height */
+  a {
     min-height: auto;
+  }
+
+  /* Standalone link buttons */
+  a.btn, a[role="button"] {
+    min-height: 44px;
   }
 
   /* Ensure images don't overflow */

@@ -23,27 +23,27 @@ const ClockIcon = ({ className }: { className?: string }) => (
 const Hero = memo(() => {
   return (
     <section className="relative overflow-hidden py-16 md:py-24" aria-labelledby="hero-heading">
-      {/* Background */}
-      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl" />
-        <div className="absolute -bottom-1/2 -left-1/4 w-[500px] h-[500px] rounded-full bg-accent/5 blur-3xl" />
+      {/* Background - reduce complexity for performance */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute -top-1/2 -right-1/4 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl opacity-50" />
+        <div className="absolute -bottom-1/2 -left-1/4 w-[500px] h-[500px] rounded-full bg-accent/5 blur-3xl opacity-50" />
       </div>
 
       <div className="container mx-auto px-4 relative">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <ZapIcon className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">{tools.length}+ Free Tools</span>
+          {/* Badge - smaller for mobile */}
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6">
+            <ZapIcon className="h-3.5 w-3.5 text-primary" />
+            <span className="text-xs md:text-sm font-medium text-primary">{tools.length}+ Free Tools</span>
           </div>
 
-          {/* Heading */}
-          <h1 id="hero-heading" className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+          {/* Heading - Critical LCP element */}
+          <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-4 md:mb-6">
             Convert Any File with <span className="flow-text">AnyFile Flow</span>
           </h1>
 
           {/* Description */}
-          <p className="text-lg md:text-xl text-muted-foreground/70 mb-12 max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-muted-foreground/70 mb-8 md:mb-12 max-w-2xl mx-auto">
             The ultimate toolkit for all your file conversions. Fast, free, and secure. No registration required.
           </p>
 
