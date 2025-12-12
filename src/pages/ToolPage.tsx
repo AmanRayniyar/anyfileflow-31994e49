@@ -5,6 +5,7 @@ import { useEffect, lazy, Suspense } from "react";
 import ShareButton from "@/components/ShareButton";
 import ToolAIHelp from "@/components/ToolAIHelp";
 import ToolSEOSchemas from "@/components/ToolSEOSchemas";
+import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -56,12 +57,16 @@ const ToolLoader = () => (
 );
 
 const ToolPage = () => {
-  // Scroll to top on mount
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   const { toolId } = useParams<{ toolId: string }>();
   const tool = toolId ? getToolById(toolId) : undefined;
+
+  // Scroll to top on mount and track recently used
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (toolId) {
+      addRecentlyUsed(toolId);
+    }
+  }, [toolId]);
 
   if (!tool) {
     return (
