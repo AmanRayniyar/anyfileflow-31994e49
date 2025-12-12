@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 
 // Lazy load below-fold components
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
-const BannerAd = lazy(() => import("@/components/BannerAd"));
 
 // Optimized skeleton
 const BlogPreviewSkeleton = memo(() => <section className="py-12 bg-secondary/30" aria-busy="true" aria-label="Loading blog">
@@ -112,9 +111,6 @@ const Index = memo(() => {
             <BlogPreview />
           </Suspense>
           
-          <Suspense fallback={null}>
-            <BannerAd />
-          </Suspense>
         </main>
         <Footer />
       </div>
