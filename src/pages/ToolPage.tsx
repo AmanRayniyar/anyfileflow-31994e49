@@ -31,6 +31,7 @@ const MemeGeneratorTool = lazy(() => import("@/components/tools/MemeGeneratorToo
 const QRScannerTool = lazy(() => import("@/components/tools/QRScannerTool"));
 const WatermarkImageTool = lazy(() => import("@/components/tools/WatermarkImageTool"));
 const FrequencyDetectorTool = lazy(() => import("@/components/tools/FrequencyDetectorTool"));
+const PDFMetadataEditorTool = lazy(() => import("@/components/tools/PDFMetadataEditorTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const SidebarAd = lazy(() => import("@/components/SidebarAd"));
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
@@ -147,6 +148,11 @@ const ToolPage = () => {
     // Special case for Frequency Detector
     if (tool.id === 'frequency-detector') {
       return <FrequencyDetectorTool />;
+    }
+    
+    // Special case for PDF Metadata Editor
+    if (tool.id === 'pdf-metadata-editor') {
+      return <PDFMetadataEditorTool />;
     }
     
     switch (tool.toolType) {
