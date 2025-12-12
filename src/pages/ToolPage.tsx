@@ -181,7 +181,7 @@ const ToolPage = () => {
         <title>{tool.id === 'png-to-jpg' 
           ? 'PNG to JPG Converter – Free, Fast & High-Quality Image Conversion | AnyFile Flow' 
           : tool.id === 'jpg-to-png'
-          ? 'JPG to PNG Converter – Free, Lossless Quality with Transparency | AnyFile Flow'
+          ? 'JPG to PNG Converter Online Free – Convert JPEG to PNG with Transparency | AnyFile Flow'
           : tool.id === 'typing-test'
           ? 'Typing Speed Test – Free Online WPM Test & Accuracy Checker | AnyFile Flow'
           : tool.id === 'bmi-calculator'
@@ -191,7 +191,7 @@ const ToolPage = () => {
         <meta name="description" content={tool.id === 'png-to-jpg' 
           ? 'Convert PNG images to JPG format instantly with AnyFile Flow PNG to JPG Converter. Free, fast, bulk conversion up to 20 images. No registration, no watermarks, 100% secure.' 
           : tool.id === 'jpg-to-png'
-          ? 'Convert JPG/JPEG images to PNG format with AnyFile Flow. Free, lossless quality, transparency support. Bulk conversion up to 20 images. No registration required.'
+          ? 'Free JPG to PNG converter online. Convert JPEG images to PNG format with transparency support, lossless quality. Bulk convert up to 20 images. No signup, 100% secure browser processing.'
           : tool.id === 'typing-test'
           ? 'Take a free typing speed test online. Check your WPM, CPM, and accuracy instantly. Multiple difficulty levels, custom time limits. No registration required. Practice typing and improve your speed.'
           : tool.id === 'bmi-calculator'
@@ -200,16 +200,24 @@ const ToolPage = () => {
         <meta name="keywords" content={tool.id === 'png-to-jpg' 
           ? 'png to jpg, png to jpg converter, convert png to jpg, free png to jpg online, high quality png to jpg, bulk image converter, image compression, online image converter, jpg converter, fast png to jpg, anyfile flow converter, image tools online, convert png to jpeg, png to jpeg, batch png to jpg, png to jpg without losing quality' 
           : tool.id === 'jpg-to-png'
-          ? 'jpg to png, jpg to png converter, convert jpg to png, free jpg to png online, jpg to png with transparency, bulk image converter, lossless converter, jpeg to png, convert jpeg to png, jpg to png free, batch jpg to png, jpg to png transparent background'
+          ? 'jpg to png, jpg to png converter, convert jpg to png, jpeg to png, convert jpeg to png, jpg to png online free, jpg to png with transparency, jpg to png transparent background, bulk jpg to png converter, batch convert jpg to png, free jpg to png, lossless jpg to png, high quality jpg to png, anyfile flow, anyfileflow'
           : tool.id === 'typing-test'
           ? 'typing test, typing speed test, wpm test, typing test online, free typing test, keyboard typing test, typing practice, typing test for jobs, typing accuracy test, fast typing test, online typing test free, how to improve typing speed, typing test 1 minute, typing speed checker, typing test for data entry, typing test for students'
           : tool.id === 'bmi-calculator'
           ? 'bmi calculator, body mass index calculator, calculate bmi online, bmi check, healthy bmi, bmi chart, bmi formula, ideal bmi, bmi range, bmi calculator for men, bmi calculator for women, free bmi calculator, bmi calculator 2025, best bmi calculator online, bmi health calculator, what is a good bmi, how to calculate bmi, bmi for weight loss'
           : `${tool.name}, ${tool.from} to ${tool.to}, AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, free online tool`} />
+        {tool.id === 'jpg-to-png' && (
+          <>
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="author" content="AnyFile Flow" />
+            <meta name="rating" content="General" />
+            <meta name="revisit-after" content="3 days" />
+          </>
+        )}
         <meta property="og:title" content={tool.id === 'png-to-jpg' 
           ? 'PNG to JPG Converter – Free, Fast & High-Quality | AnyFile Flow' 
           : tool.id === 'jpg-to-png'
-          ? 'JPG to PNG Converter – Free, Lossless & Transparent | AnyFile Flow'
+          ? 'JPG to PNG Converter – Free Online JPEG to PNG with Transparency'
           : tool.id === 'typing-test'
           ? 'Typing Speed Test – Free WPM & Accuracy Test | AnyFile Flow'
           : tool.id === 'bmi-calculator'
@@ -218,12 +226,27 @@ const ToolPage = () => {
         <meta property="og:description" content={tool.id === 'png-to-jpg' 
           ? 'Convert PNG images to JPG format instantly. Free bulk conversion, no watermarks, 100% secure. Try AnyFile Flow now!' 
           : tool.id === 'jpg-to-png'
-          ? 'Convert JPG to PNG with transparency support. Free, lossless quality, bulk conversion. Try AnyFile Flow now!'
+          ? 'Convert JPG/JPEG to PNG with transparency. Free, lossless quality, bulk conversion up to 20 images. No signup required!'
           : tool.id === 'typing-test'
           ? 'Free online typing speed test. Check WPM, CPM & accuracy instantly. Multiple difficulty levels. No registration required!'
           : tool.id === 'bmi-calculator'
           ? 'Calculate your BMI instantly for free. Get accurate health category results and personalized recommendations. No registration required!'
           : `${tool.description}. Free tool by AnyFile Flow (AnyFileFlow).`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://anyfileflow.com/tool/${tool.id}`} />
+        <meta property="og:site_name" content="AnyFile Flow" />
+        <meta property="og:locale" content="en_US" />
+        {tool.id === 'jpg-to-png' && (
+          <>
+            <meta property="og:image" content="https://anyfileflow.com/og-jpg-to-png.png" />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+            <meta property="og:image:alt" content="JPG to PNG Converter - Free Online Tool" />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content="JPG to PNG Converter – Free Online JPEG to PNG" />
+            <meta name="twitter:description" content="Convert JPG to PNG with transparency support. Free, lossless, bulk conversion. No signup!" />
+          </>
+        )}
         <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
       </Helmet>
       
