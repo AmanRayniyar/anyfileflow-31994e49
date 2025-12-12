@@ -33,7 +33,7 @@ const WatermarkImageTool = lazy(() => import("@/components/tools/WatermarkImageT
 const FrequencyDetectorTool = lazy(() => import("@/components/tools/FrequencyDetectorTool"));
 const PDFMetadataEditorTool = lazy(() => import("@/components/tools/PDFMetadataEditorTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
-const SidebarAd = lazy(() => import("@/components/SidebarAd"));
+
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
 const JpgToPngSeoContent = lazy(() => import("@/components/tools/JpgToPngSeoContent"));
 const TypingTestSeoContent = lazy(() => import("@/components/tools/TypingTestSeoContent"));
@@ -398,10 +398,6 @@ const ToolPage = () => {
             {/* Sidebar */}
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
-                {/* Ad Section - Loads First */}
-                <Suspense fallback={<div className="h-[290px] bg-muted rounded-2xl animate-pulse" />}>
-                  <SidebarAd />
-                </Suspense>
 
                 {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
