@@ -22,7 +22,7 @@
     --secondary-foreground: 222 47% 11%;
 
     --muted: 210 40% 96%;
-    --muted-foreground: 215 25% 35%;
+    --muted-foreground: 215 25% 27%;
 
     --accent: 173 80% 40%;
     --accent-foreground: 0 0% 100%;
@@ -68,7 +68,7 @@
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217 33% 17%;
-    --muted-foreground: 215 20% 65%;
+    --muted-foreground: 215 20% 72%;
 
     --accent: 173 80% 40%;
     --accent-foreground: 0 0% 100%;
@@ -165,19 +165,37 @@
     text-decoration-skip-ink: auto;
   }
 
-  /* Ensure minimum touch target size (WCAG) - only for interactive standalone elements */
+  /* Ensure minimum touch target size (WCAG 2.5.5) - 44x44px */
   button:not(.inline-touch-target),
-  [role="button"]:not(.inline-touch-target) {
+  [role="button"]:not(.inline-touch-target),
+  input[type="checkbox"],
+  input[type="radio"] {
     min-height: 44px;
+    min-width: 44px;
   }
 
   /* Links within text should not have min-height */
-  a {
+  a:not([role="button"]):not(.btn) {
     min-height: auto;
+    min-width: auto;
   }
 
   /* Standalone link buttons */
   a.btn, a[role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Input elements need proper sizing for touch */
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="url"],
+  textarea,
+  select {
     min-height: 44px;
   }
 

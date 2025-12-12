@@ -55,21 +55,21 @@ const Footer = () => {
               <img src={founderImg} alt="" className="h-8 w-8 rounded-full object-cover" width="32" height="32" loading="lazy" decoding="async" />
               <div>
                 <p className="text-xs text-muted-foreground"><strong>Founder:</strong> Aman Rauniyar</p>
-                <nav className="flex items-center gap-2 mt-1" aria-label="Founder social">
-                  <a href="https://www.facebook.com/aman.rauniyar.980" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary" aria-label="Facebook">
-                    <FacebookIcon className="h-4 w-4" />
+                <nav className="flex items-center gap-1 mt-1" aria-label="Founder social media">
+                  <a href="https://www.facebook.com/aman.rauniyar.980" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary p-2 min-h-[44px] min-w-[44px] flex items-center justify-center inline-touch-target" aria-label="Aman Rauniyar on Facebook">
+                    <FacebookIcon className="h-5 w-5" />
                   </a>
-                  <a href="https://github.com/AmanRayniyar" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary" aria-label="GitHub">
-                    <GithubIcon className="h-4 w-4" />
+                  <a href="https://github.com/AmanRayniyar" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary p-2 min-h-[44px] min-w-[44px] flex items-center justify-center inline-touch-target" aria-label="Aman Rauniyar on GitHub">
+                    <GithubIcon className="h-5 w-5" />
                   </a>
-                  <a href="https://www.instagram.com/amanrauniyar2064/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary" aria-label="Instagram">
-                    <InstagramIcon className="h-4 w-4" />
+                  <a href="https://www.instagram.com/amanrauniyar2064/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary p-2 min-h-[44px] min-w-[44px] flex items-center justify-center inline-touch-target" aria-label="Aman Rauniyar on Instagram">
+                    <InstagramIcon className="h-5 w-5" />
                   </a>
                 </nav>
               </div>
             </div>
-            <a href="mailto:anyfileflow@gmail.com" className="text-xs text-primary hover:underline flex items-center gap-1">
-              <MailIcon className="h-3 w-3" /> anyfileflow@gmail.com
+            <a href="mailto:anyfileflow@gmail.com" className="text-xs text-primary hover:underline flex items-center gap-1 py-2" aria-label="Email AnyFile Flow">
+              <MailIcon className="h-4 w-4" aria-hidden="true" /> anyfileflow@gmail.com
             </a>
           </div>
 
@@ -77,11 +77,11 @@ const Footer = () => {
           <nav aria-label="Popular tools">
             <h2 className="font-semibold text-foreground text-sm mb-2">Popular Tools</h2>
             <ul className="space-y-1">
-              <li><Link to="/tool/jpg-to-png" className="text-xs text-muted-foreground hover:text-foreground">JPG to PNG</Link></li>
-              <li><Link to="/tool/png-to-jpg" className="text-xs text-muted-foreground hover:text-foreground">PNG to JPG</Link></li>
-              <li><Link to="/tool/image-compressor" className="text-xs text-muted-foreground hover:text-foreground">Image Compressor</Link></li>
-              <li><Link to="/tool/word-counter" className="text-xs text-muted-foreground hover:text-foreground">Word Counter</Link></li>
-              <li><Link to="/tool/bmi-calculator" className="text-xs text-muted-foreground hover:text-foreground">BMI Calculator</Link></li>
+              <li><Link to="/tool/jpg-to-png" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">JPG to PNG</Link></li>
+              <li><Link to="/tool/png-to-jpg" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">PNG to JPG</Link></li>
+              <li><Link to="/tool/image-compressor" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Image Compressor</Link></li>
+              <li><Link to="/tool/word-counter" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Word Counter</Link></li>
+              <li><Link to="/tool/bmi-calculator" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">BMI Calculator</Link></li>
             </ul>
           </nav>
 
@@ -89,14 +89,14 @@ const Footer = () => {
           <nav aria-label="Quick links">
             <h2 className="font-semibold text-foreground text-sm mb-2">Quick Links</h2>
             <ul className="space-y-1">
-              <li><Link to="/tools" className="text-xs text-muted-foreground hover:text-foreground">All Tools</Link></li>
-              <li><Link to="/blog" className="text-xs text-muted-foreground hover:text-foreground">Blog</Link></li>
-              <li><Link to="/about" className="text-xs text-muted-foreground hover:text-foreground">About Us</Link></li>
-              <li><Link to="/brand" className="text-xs text-muted-foreground hover:text-foreground">About Our Brand</Link></li>
-              <li><Link to="/contact" className="text-xs text-muted-foreground hover:text-foreground">Contact Us</Link></li>
+              <li><Link to="/tools" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">All Tools</Link></li>
+              <li><Link to="/blog" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Blog</Link></li>
+              <li><Link to="/about" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">About Us</Link></li>
+              <li><Link to="/brand" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">About Our Brand</Link></li>
+              <li><Link to="/contact" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Contact Us</Link></li>
               <li>
-                <a href="mailto:anyfileflow@gmail.com?subject=Feedback" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1">
-                  <MessageIcon className="h-3 w-3" /> Feedback
+                <a href="mailto:anyfileflow@gmail.com?subject=Feedback" className="text-xs text-muted-foreground hover:text-foreground flex items-center gap-1 py-1.5 min-h-[44px]" aria-label="Send feedback email">
+                  <MessageIcon className="h-4 w-4" aria-hidden="true" /> Feedback
                 </a>
               </li>
             </ul>
@@ -106,9 +106,9 @@ const Footer = () => {
           <nav aria-label="Legal">
             <h2 className="font-semibold text-foreground text-sm mb-2">Legal</h2>
             <ul className="space-y-1">
-              <li><Link to="/privacy-policy" className="text-xs text-muted-foreground hover:text-foreground">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="text-xs text-muted-foreground hover:text-foreground">Terms of Service</Link></li>
-              <li><Link to="/disclaimer" className="text-xs text-muted-foreground hover:text-foreground">Disclaimer</Link></li>
+              <li><Link to="/privacy-policy" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Privacy Policy</Link></li>
+              <li><Link to="/terms" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Terms of Service</Link></li>
+              <li><Link to="/disclaimer" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Disclaimer</Link></li>
             </ul>
           </nav>
         </div>

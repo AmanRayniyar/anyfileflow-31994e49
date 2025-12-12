@@ -24,11 +24,12 @@ export function ThemeToggle() {
       size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-      className="relative"
+      aria-pressed={isDark}
+      className="relative h-11 w-11"
     >
       <SunIcon className={`h-5 w-5 transition-all ${isDark ? 'rotate-90 scale-0' : 'rotate-0 scale-100'}`} />
       <MoonIcon className={`absolute h-5 w-5 transition-all ${isDark ? 'rotate-0 scale-100' : '-rotate-90 scale-0'}`} />
-      <span className="sr-only">Toggle theme</span>
+      <span className="sr-only">Toggle theme between light and dark mode</span>
     </Button>
   );
 }
