@@ -1,8 +1,26 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Calendar, User } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
 import LazyImage from "@/components/LazyImage";
 import { Skeleton } from "@/components/ui/skeleton";
+
+// Inline SVG Icons for performance
+const ArrowRightIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+  </svg>
+);
+
+const CalendarIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+  </svg>
+);
+
+const UserIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+);
 
 const BlogPostSkeleton = () => (
   <li>
@@ -42,7 +60,7 @@ const BlogPreview = () => {
             aria-label="View all blog posts"
           >
             View all posts
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <ArrowRightIcon className="h-4 w-4" />
           </Link>
         </div>
 
@@ -68,11 +86,11 @@ const BlogPreview = () => {
                   <div className="p-5">
                     <div className="flex items-center gap-4 text-xs text-muted-foreground mb-3">
                       <time dateTime={new Date(post.createdAt).toISOString()} className="flex items-center gap-1">
-                        <Calendar className="h-3 w-3" aria-hidden="true" />
+                        <CalendarIcon className="h-3 w-3" />
                         {new Date(post.createdAt).toLocaleDateString()}
                       </time>
                       <span className="flex items-center gap-1">
-                        <User className="h-3 w-3" aria-hidden="true" />
+                        <UserIcon className="h-3 w-3" />
                         {post.author}
                       </span>
                     </div>
@@ -87,7 +105,7 @@ const BlogPreview = () => {
                       className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus:underline"
                     >
                       Read more about {post.title.length > 30 ? post.title.substring(0, 30) + '...' : post.title}
-                      <ArrowRight className="h-3 w-3" aria-hidden="true" />
+                      <ArrowRightIcon className="h-3 w-3" />
                     </Link>
                   </div>
                 </article>
@@ -102,7 +120,7 @@ const BlogPreview = () => {
           aria-label="View all blog posts"
         >
           View all posts
-          <ArrowRight className="h-4 w-4" aria-hidden="true" />
+          <ArrowRightIcon className="h-4 w-4" />
         </Link>
       </div>
     </section>

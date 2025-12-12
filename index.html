@@ -1,24 +1,14 @@
 <!doctype html>
 <html lang="en" dir="ltr">
   <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8Z3F93NH71"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-8Z3F93NH71');
-    </script>
-
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     
-    <!-- Critical resource hints -->
+    <!-- Critical resource hints - prioritize logo CDN -->
+    <link rel="preconnect" href="https://blogger.googleusercontent.com" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://pagead2.googlesyndication.com" crossorigin />
-    <link rel="preconnect" href="https://fundingchoicesmessages.google.com" crossorigin />
     <link rel="dns-prefetch" href="https://cmcvkmttlrjahpxsotyr.supabase.co" />
     
     <!-- Favicon & Icons -->
@@ -41,13 +31,9 @@
     <meta name="format-detection" content="telephone=no" />
     <link rel="canonical" href="https://anyfileflow.com/" />
 
-    <!-- Preload critical font -->
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" /></noscript>
-    
-    <!-- Google AdSense -->
-    <meta name="google-adsense-account" content="ca-pub-1759447626015713">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1759447626015713" crossorigin="anonymous"></script>
+    <!-- Font loading - non-blocking -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" /></noscript>
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -178,17 +164,20 @@
     }
     </script>
 
-    <!-- Critical CSS -->
+    <!-- Critical CSS for layout stability -->
     <style>
       :root{--background:210 20% 98%;--foreground:222 47% 11%;--primary:199 89% 48%}
       .dark{--background:222 47% 6%;--foreground:210 40% 98%}
       *,::before,::after{box-sizing:border-box}
       html{-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4}
       body{margin:0;background:hsl(var(--background));color:hsl(var(--foreground));font-family:Inter,system-ui,-apple-system,sans-serif;line-height:1.5}
-      #root{min-height:100vh}
+      #root{min-height:100vh;display:flex;flex-direction:column}
       .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
       .skip-link{position:absolute;top:-40px;left:0;background:hsl(var(--primary));color:#fff;padding:8px 16px;z-index:100;transition:top 0.3s}
       .skip-link:focus{top:0}
+      /* Critical above-fold styles */
+      .container{width:100%;max-width:1280px;margin:0 auto;padding-left:1rem;padding-right:1rem}
+      .flow-text{background:linear-gradient(135deg,hsl(199 89% 48%) 0%,hsl(173 80% 40%) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     </style>
   </head>
 
@@ -201,6 +190,23 @@
     
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-  
+    
+    <!-- Deferred Analytics - load after page is interactive -->
+    <script>
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var s = document.createElement('script');
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=G-8Z3F93NH71';
+          s.async = true;
+          document.head.appendChild(s);
+          s.onload = function() {
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-8Z3F93NH71');
+          };
+        }, 2000);
+      });
+    </script>
   </body>
 </html>
