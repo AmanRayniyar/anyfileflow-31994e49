@@ -99,16 +99,22 @@ const BlogPage = () => {
                           </span>
                         </div>
                         <h2 className="text-xl font-semibold text-foreground mb-3">
-                          <Link to={`/blog/${post.slug}`} className="hover:text-primary transition-colors">
+                          <Link 
+                            to={`/blog/${post.slug}`} 
+                            className="hover:text-primary transition-colors focus:text-primary"
+                            aria-label={`Read full article: ${post.title}`}
+                          >
                             {post.title}
                           </Link>
                         </h2>
                         <p className="text-muted-foreground mb-4 line-clamp-2">{post.excerpt}</p>
                         <Link 
                           to={`/blog/${post.slug}`}
-                          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus:underline"
+                          aria-label={`Continue reading: ${post.title}`}
                         >
-                          Read more <ArrowRight className="h-4 w-4" />
+                          Read full article: {post.title.length > 25 ? post.title.substring(0, 25) + '...' : post.title}
+                          <ArrowRight className="h-4 w-4" aria-hidden="true" />
                         </Link>
                       </div>
                     </div>
