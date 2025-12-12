@@ -60,7 +60,12 @@ const ContactPage = () => {
       <Helmet>
         <title>Contact Us - AnyFile Flow</title>
         <meta name="description" content="Get in touch with AnyFile Flow. We'd love to hear from you about our online file conversion tools." />
+        <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://anyfileflow.com/contact" />
+        <meta property="og:title" content="Contact Us - AnyFile Flow" />
+        <meta property="og:description" content="Get in touch with AnyFile Flow. We'd love to hear from you." />
+        <meta property="og:url" content="https://anyfileflow.com/contact" />
+        <meta property="og:type" content="website" />
       </Helmet>
 
       <div className="min-h-screen bg-background">

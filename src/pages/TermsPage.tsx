@@ -8,7 +8,12 @@ const TermsPage = () => {
       <Helmet>
         <title>Terms of Service - AnyFile Flow</title>
         <meta name="description" content="Read our terms of service to understand the rules and guidelines for using AnyFile Flow's online tools." />
+        <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://anyfileflow.com/terms" />
+        <meta property="og:title" content="Terms of Service - AnyFile Flow" />
+        <meta property="og:description" content="Read our terms of service for using AnyFile Flow's online tools." />
+        <meta property="og:url" content="https://anyfileflow.com/terms" />
+        <meta property="og:type" content="website" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
