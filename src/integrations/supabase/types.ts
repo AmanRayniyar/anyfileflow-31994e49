@@ -119,6 +119,54 @@ export type Database = {
         }
         Relationships: []
       }
+      tool_ratings: {
+        Row: {
+          created_at: string
+          id: string
+          rating: number
+          tool_id: string
+          user_fingerprint: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          rating: number
+          tool_id: string
+          user_fingerprint: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          rating?: number
+          tool_id?: string
+          user_fingerprint?: string
+        }
+        Relationships: []
+      }
+      tool_stats: {
+        Row: {
+          average_rating: number
+          tool_id: string
+          total_ratings: number
+          updated_at: string
+          view_count: number
+        }
+        Insert: {
+          average_rating?: number
+          tool_id: string
+          total_ratings?: number
+          updated_at?: string
+          view_count?: number
+        }
+        Update: {
+          average_rating?: number
+          tool_id?: string
+          total_ratings?: number
+          updated_at?: string
+          view_count?: number
+        }
+        Relationships: []
+      }
       tools: {
         Row: {
           category: string
@@ -200,6 +248,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_tool_view: { Args: { p_tool_id: string }; Returns: undefined }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"

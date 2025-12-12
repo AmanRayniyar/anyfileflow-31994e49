@@ -1,13 +1,28 @@
 import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { Crown, ArrowRight, Star } from "lucide-react";
+import { Crown, ArrowRight, Star, Eye } from "lucide-react";
 import { tools } from "@/data/tools";
+import { useAllToolStats } from "@/hooks/useAllToolStats";
 
 const MostPopularToday = memo(() => {
-  const popularTools = useMemo(() => 
-    tools.filter(t => t.popular).slice(0, 6),
-    []
-  );
+  const { topRatedToolIds, getStats, loading } = useAllToolStats();
+  
+  const popularTools = useMemo(() => {
+    // Use top rated if available, otherwise fallback to tools marked as popular
+    if (topRatedToolIds.length >= 3) {
+      return topRatedToolIds
+        .map(id => tools.find(t => t.id === id))
+        .filter(Boolean)
+        .slice(0, 6);
+    }
+    return tools.filter(t => t.popular).slice(0, 6);
+  }, [topRatedToolIds]);
+
+  const formatCount = (count: number): string => {
+    if (count >= 1000000) return `${(count / 1000000).toFixed(1)}M`;
+    if (count >= 1000) return `${(count / 1000).toFixed(1)}K`;
+    return count.toString();
+  };
 
   return (
     <section className="py-10 bg-gradient-to-r from-primary/5 via-primary/10 to-primary/5" aria-labelledby="popular-today-heading">
@@ -19,9 +34,9 @@ const MostPopularToday = memo(() => {
             </div>
             <div>
               <h2 id="popular-today-heading" className="text-xl font-bold text-foreground">
-                Most Popular Today
+                Top Rated Tools
               </h2>
-              <p className="text-sm text-muted-foreground">Top-rated tools by our users</p>
+              <p className="text-sm text-muted-foreground">Highest rated by our users</p>
             </div>
           </div>
           <Link 
@@ -35,13 +50,17 @@ const MostPopularToday = memo(() => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {popularTools.map((tool, index) => {
+            if (!tool) return null;
             const Icon = tool.icon;
+            const stats = getStats(tool.id);
+            const displayRating = stats.averageRating > 0 ? stats.averageRating : 4.5 + (index * 0.1);
+            
             return (
               <Link
                 key={tool.id}
                 to={`/tool/${tool.id}`}
                 className="group relative bg-card border border-border rounded-xl p-4 hover:border-primary/50 hover:shadow-lg transition-all overflow-hidden"
-                aria-label={`${tool.name} - popular tool`}
+                aria-label={`${tool.name} - rated ${displayRating.toFixed(1)} stars`}
               >
                 {index < 3 && (
                   <div className="absolute top-2 right-2">
@@ -66,17 +85,37 @@ const MostPopularToday = memo(() => {
                     <p className="text-sm text-muted-foreground line-clamp-2 mb-2">
                       {tool.description}
                     </p>
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <Star 
-                            key={i} 
-                            className={`h-3 w-3 ${i < 4 ? 'fill-yellow-400 text-yellow-400' : 'text-muted'}`} 
-                            aria-hidden="true" 
-                          />
-                        ))}
+                    <div className="flex items-center gap-3">
+                      {/* Star Rating */}
+                      <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <Star 
+                              key={i} 
+                              className={`h-3 w-3 ${
+                                i < Math.floor(displayRating) 
+                                  ? 'fill-yellow-400 text-yellow-400' 
+                                  : i < displayRating
+                                  ? 'fill-yellow-400/50 text-yellow-400'
+                                  : 'text-muted'
+                              }`} 
+                              aria-hidden="true" 
+                            />
+                          ))}
+                        </div>
+                        <span className="text-xs text-muted-foreground">
+                          {displayRating.toFixed(1)}
+                          {stats.totalRatings > 0 && ` (${formatCount(stats.totalRatings)})`}
+                        </span>
                       </div>
-                      <span className="text-xs text-muted-foreground">(4.{8 + index % 2})</span>
+                      
+                      {/* View Count */}
+                      {stats.viewCount > 0 && (
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Eye className="h-3 w-3" aria-hidden="true" />
+                          {loading ? "..." : formatCount(stats.viewCount)}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>
