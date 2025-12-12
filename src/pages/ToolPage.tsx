@@ -151,7 +151,7 @@ const ToolPage = () => {
     }
     
     // Special case for PDF Metadata Editor
-    if (tool.id === 'pdf-metadata-editor') {
+    if (tool.id === 'pdf-metadata') {
       return <PDFMetadataEditorTool />;
     }
     
