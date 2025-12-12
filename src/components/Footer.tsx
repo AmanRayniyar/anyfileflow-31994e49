@@ -42,7 +42,7 @@ const Footer = () => {
           {/* Brand */}
           <div>
             <Link to="/" className="flex items-center gap-2 mb-3" aria-label="AnyFile Flow - Home">
-              <img alt="" className="h-10 w-10 rounded-lg" width="40" height="40" loading="lazy" decoding="async" src="/lovable-uploads/33a729e8-7326-4a49-8542-853fcab5bea3.png" />
+              <img alt="" className="h-10 w-10 rounded-lg" width="40" height="40" loading="lazy" decoding="async" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjeyiR2Gsfj8ovCgzUdcir5Bklumw5zL3asPJTUmJGDk7giKJ818wLusersNt4aIyF1p3Z7XgLKdqPdDcKF5fm4741RnzRswwFSYZFwhcHrchPB5QNdhyphenhyphenKqkGh0s9v9O4SfUvYkk9Hc0qpJgK0Of27xv7Y76aKEAr046NCaMgcBUb4dzon2VnwmNxnjYBDX/w643-h643-rw/cropped_circle_image.png" />
               <span className="text-lg font-bold">
                 <span className="flow-text">AnyFile</span>
                 <span className="text-foreground"> Flow</span>
