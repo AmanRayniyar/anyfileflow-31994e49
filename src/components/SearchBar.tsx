@@ -68,61 +68,71 @@ const SearchBar = ({ large = false }: SearchBarProps) => {
   const showEmpty = isOpen && query.length >= 2 && results.length === 0;
 
   return (
-    <div className="relative w-full" role="search">
-      {/* Search Input */}
-      <div
-        className={cn(
-          "relative flex items-center bg-card border border-border rounded-xl",
-          large ? "px-5 py-3.5" : "px-4 py-2",
-          showResults && "rounded-b-none border-b-0"
-        )}
-      >
-        {/* Search Icon - Inline SVG for performance */}
-        <svg 
-          className={cn("text-muted-foreground shrink-0", large ? "w-5 h-5" : "w-4 h-4")} 
-          fill="none" 
-          stroke="currentColor" 
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        
-        <input
-          ref={inputRef}
-          type="search"
-          value={query}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-          onFocus={() => query.length >= 2 && setIsOpen(true)}
-          placeholder="Search 200+ tools..."
+    <div className="relative w-full">
+      <form role="search" onSubmit={(e) => e.preventDefault()}>
+        {/* Search Input */}
+        <div
           className={cn(
-            "flex-1 bg-transparent border-none outline-none placeholder:text-muted-foreground/60 text-foreground",
-            large ? "ml-3 text-base" : "ml-2.5 text-sm"
+            "relative flex items-center bg-card border border-border rounded-xl",
+            large ? "px-5 py-3.5" : "px-4 py-2.5",
+            showResults && "rounded-b-none border-b-0"
           )}
-          aria-label="Search tools"
-          aria-expanded={showResults}
-        />
-        
-        {/* Clear Button */}
-        {query && (
-          <button
-            onClick={clearSearch}
-            className="p-1.5 hover:bg-secondary rounded-md"
-            aria-label="Clear search"
-            type="button"
+        >
+          {/* Search Icon - Inline SVG for performance */}
+          <svg 
+            className={cn("text-muted-foreground shrink-0 pointer-events-none", large ? "w-5 h-5" : "w-4 h-4")} 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+            aria-hidden="true"
           >
-            <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        )}
-      </div>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          
+          <label htmlFor="tool-search" className="sr-only">Search 200+ tools</label>
+          <input
+            id="tool-search"
+            ref={inputRef}
+            type="search"
+            value={query}
+            onChange={handleChange}
+            onKeyDown={handleKeyDown}
+            onFocus={() => query.length >= 2 && setIsOpen(true)}
+            placeholder="Search 200+ tools..."
+            className={cn(
+              "flex-1 bg-transparent border-none outline-none placeholder:text-muted-foreground/70 text-foreground min-h-[44px]",
+              large ? "ml-3 text-base" : "ml-2.5 text-sm"
+            )}
+            aria-label="Search tools"
+            aria-expanded={showResults}
+            aria-controls="search-dropdown"
+            aria-autocomplete="list"
+            aria-describedby="search-description"
+          />
+          <span id="search-description" className="sr-only">Type to search through 200+ file conversion tools. Use arrow keys to navigate results.</span>
+          
+          {/* Clear Button */}
+          {query && (
+            <button
+              onClick={clearSearch}
+              className="p-2 hover:bg-secondary rounded-md min-h-[44px] min-w-[44px] flex items-center justify-center inline-touch-target"
+              aria-label="Clear search"
+              type="button"
+            >
+              <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </form>
 
       {/* Results Dropdown */}
       {showResults && (
         <ul 
+          id="search-dropdown"
           role="listbox" 
+          aria-label="Search results"
           className="absolute top-full left-0 right-0 bg-card border border-t-0 border-border rounded-b-xl shadow-lg z-50 overflow-hidden"
         >
           {results.map((tool, index) => {
@@ -132,12 +142,12 @@ const SearchBar = ({ large = false }: SearchBarProps) => {
                 <button
                   onClick={() => handleSelect(tool)}
                   className={cn(
-                    "w-full flex items-center gap-3 px-5 py-2.5 text-left",
+                    "w-full flex items-center gap-3 px-5 py-3 text-left min-h-[48px]",
                     index === selectedIndex ? "bg-secondary" : "hover:bg-secondary/50"
                   )}
                   type="button"
                 >
-                  <span className={cn("w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold", category?.bgClass, category?.colorClass)}>
+                  <span className={cn("w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold", category?.bgClass, category?.colorClass)} aria-hidden="true">
                     {tool.name.charAt(0)}
                   </span>
                   <span className="flex-1 min-w-0">
@@ -156,8 +166,8 @@ const SearchBar = ({ large = false }: SearchBarProps) => {
 
       {/* No Results */}
       {showEmpty && (
-        <div className="absolute top-full left-0 right-0 bg-card border border-t-0 border-border rounded-b-xl shadow-lg z-50 px-5 py-3">
-          <p className="text-muted-foreground text-center text-sm">No tools found</p>
+        <div className="absolute top-full left-0 right-0 bg-card border border-t-0 border-border rounded-b-xl shadow-lg z-50 px-5 py-4" role="status" aria-live="polite">
+          <p className="text-muted-foreground text-center text-sm">No tools found for "{query}"</p>
         </div>
       )}
     </div>

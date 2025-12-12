@@ -109,34 +109,47 @@ const Header = () => {
 
           {/* Desktop Search */}
           <div ref={searchRef} className="hidden md:flex relative flex-1 max-w-sm">
-            <div className="relative w-full">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <form className="relative w-full" role="search" onSubmit={(e) => e.preventDefault()}>
+              <label htmlFor="desktop-search" className="sr-only">Search tools</label>
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
               <input
+                id="desktop-search"
                 type="search"
                 placeholder="Search 200+ tools..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
                 onFocus={() => searchQuery.trim() && setShowResults(true)}
-                className="w-full pl-9 pr-8 py-2 rounded-lg bg-secondary/50 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                className="w-full pl-9 pr-10 py-2.5 rounded-lg bg-secondary/50 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
                 aria-label="Search tools"
+                aria-describedby="search-hint"
+                aria-expanded={showResults && searchResults.length > 0}
+                aria-controls="search-results"
+                aria-autocomplete="list"
               />
+              <span id="search-hint" className="sr-only">Type to search through 200+ file conversion tools</span>
               {searchQuery && (
-                <button onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-1" aria-label="Clear">
-                  <XIcon className="h-3 w-3" />
+                <button 
+                  onClick={() => setSearchQuery("")} 
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-2 min-h-[44px] min-w-[44px] flex items-center justify-center inline-touch-target" 
+                  aria-label="Clear search"
+                  type="button"
+                >
+                  <XIcon className="h-4 w-4" />
                 </button>
               )}
-            </div>
+            </form>
 
             {showResults && searchResults.length > 0 && (
-              <ul className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
+              <ul id="search-results" role="listbox" aria-label="Search results" className="absolute top-full left-0 right-0 mt-1 bg-card border border-border rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
                 {searchResults.map((tool, index) => (
-                  <li key={tool.id}>
+                  <li key={tool.id} role="option" aria-selected={index === selectedIndex}>
                     <button
                       onClick={() => handleSelect(tool)}
-                      className={cn("w-full flex items-center gap-3 px-3 py-2 text-left hover:bg-secondary/50", index === selectedIndex && "bg-secondary/50")}
+                      className={cn("w-full flex items-center gap-3 px-3 py-3 text-left hover:bg-secondary/50 min-h-[48px]", index === selectedIndex && "bg-secondary/50")}
+                      type="button"
                     >
-                      <span className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">{tool.name.charAt(0)}</span>
+                      <span className="w-8 h-8 rounded bg-primary/10 flex items-center justify-center text-xs font-bold text-primary" aria-hidden="true">{tool.name.charAt(0)}</span>
                       <div className="min-w-0">
                         <p className="text-sm font-medium text-foreground truncate">{tool.name}</p>
                         <p className="text-xs text-muted-foreground truncate">{tool.from} → {tool.to}</p>
@@ -149,36 +162,36 @@ const Header = () => {
           </div>
 
           {/* Desktop Nav */}
-          <nav className="hidden lg:flex items-center gap-1" aria-label="Main">
-            <Link to="/" className="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50">Home</Link>
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Main navigation">
+            <Link to="/" className="px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50 min-h-[44px] flex items-center">Home</Link>
             <div className="relative group">
-              <button className="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50 flex items-center gap-1">
-                Tools <ChevronDownIcon className="h-3 w-3" />
+              <button className="px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50 flex items-center gap-1 min-h-[44px]" aria-haspopup="true" aria-expanded="false">
+                Tools <ChevronDownIcon className="h-3 w-3" aria-hidden="true" />
               </button>
-              <div className="absolute top-full left-0 mt-1 w-52 bg-card border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50">
+              <div className="absolute top-full left-0 mt-1 w-52 bg-card border border-border rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50" role="menu" aria-label="Tool categories">
                 {categories.map(cat => (
-                  <Link key={cat.id} to={`/tools?category=${cat.id}`} className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-secondary/50 first:rounded-t-lg last:rounded-b-lg">
-                    <span className={cn("w-4 h-4 rounded", cat.bgClass)} />
+                  <Link key={cat.id} to={`/tools?category=${cat.id}`} className="flex items-center gap-2 px-3 py-3 text-sm hover:bg-secondary/50 first:rounded-t-lg last:rounded-b-lg min-h-[44px]" role="menuitem">
+                    <span className={cn("w-4 h-4 rounded", cat.bgClass)} aria-hidden="true" />
                     {cat.name}
                   </Link>
                 ))}
               </div>
             </div>
-            <Link to="/blog" className="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50">Blog</Link>
-            <Link to="/about" className="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50">About</Link>
-            <Link to="/contact" className="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50">Contact</Link>
+            <Link to="/blog" className="px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50 min-h-[44px] flex items-center">Blog</Link>
+            <Link to="/about" className="px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50 min-h-[44px] flex items-center">About</Link>
+            <Link to="/contact" className="px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50 min-h-[44px] flex items-center">Contact</Link>
           </nav>
 
           <div className="flex items-center gap-1">
             <Suspense fallback={null}>
               <AnyFlowAI />
             </Suspense>
-            <a href="mailto:anyfileflow@gmail.com?subject=Feedback" className="hidden sm:flex items-center gap-1 px-2 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50" aria-label="Feedback">
-              <MessageIcon className="h-3.5 w-3.5" />
+            <a href="mailto:anyfileflow@gmail.com?subject=Feedback" className="hidden sm:flex items-center gap-1 px-3 py-2.5 text-xs font-medium text-muted-foreground hover:text-foreground rounded-md hover:bg-secondary/50 min-h-[44px]" aria-label="Send feedback email">
+              <MessageIcon className="h-4 w-4" aria-hidden="true" />
               <span className="hidden md:inline">Feedback</span>
             </a>
             <ThemeToggle />
-            <Button variant="ghost" size="sm" className="lg:hidden h-8 w-8 p-0" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}>
+            <Button variant="ghost" size="sm" className="lg:hidden h-11 w-11 p-0" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"} aria-expanded={mobileMenuOpen}>
               {mobileMenuOpen ? <XIcon className="h-5 w-5" /> : <MenuIcon className="h-5 w-5" />}
             </Button>
           </div>
@@ -187,16 +200,25 @@ const Header = () => {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden pb-4 animate-fade-in">
-            <div className="mb-3 relative">
-              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <input type="search" placeholder="Search tools..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="w-full pl-9 pr-4 py-2 rounded-lg bg-secondary/50 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/50" aria-label="Search" />
-            </div>
-            <nav className="flex flex-col gap-1">
-              <Link to="/" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md" onClick={() => setMobileMenuOpen(false)}>Home</Link>
-              <Link to="/tools" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md" onClick={() => setMobileMenuOpen(false)}>All Tools</Link>
-              <Link to="/blog" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
-              <Link to="/about" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md" onClick={() => setMobileMenuOpen(false)}>About</Link>
-              <Link to="/contact" className="px-3 py-2 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
+            <form className="mb-3 relative" role="search" onSubmit={(e) => e.preventDefault()}>
+              <label htmlFor="mobile-search" className="sr-only">Search tools</label>
+              <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
+              <input 
+                id="mobile-search"
+                type="search" 
+                placeholder="Search tools..." 
+                value={searchQuery} 
+                onChange={e => setSearchQuery(e.target.value)} 
+                className="w-full pl-9 pr-4 py-3 rounded-lg bg-secondary/50 border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/50 min-h-[48px]" 
+                aria-label="Search tools"
+              />
+            </form>
+            <nav className="flex flex-col gap-1" aria-label="Mobile navigation">
+              <Link to="/" className="px-3 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md min-h-[48px] flex items-center" onClick={() => setMobileMenuOpen(false)}>Home</Link>
+              <Link to="/tools" className="px-3 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md min-h-[48px] flex items-center" onClick={() => setMobileMenuOpen(false)}>All Tools</Link>
+              <Link to="/blog" className="px-3 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md min-h-[48px] flex items-center" onClick={() => setMobileMenuOpen(false)}>Blog</Link>
+              <Link to="/about" className="px-3 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md min-h-[48px] flex items-center" onClick={() => setMobileMenuOpen(false)}>About</Link>
+              <Link to="/contact" className="px-3 py-3 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-secondary rounded-md min-h-[48px] flex items-center" onClick={() => setMobileMenuOpen(false)}>Contact</Link>
             </nav>
           </div>
         )}
