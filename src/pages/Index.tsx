@@ -18,6 +18,8 @@ const MostPopularToday = lazy(() => import("@/components/home/MostPopularToday")
 const RecentlyUsedTools = lazy(() => import("@/components/home/RecentlyUsedTools"));
 const RecentlyAddedTools = lazy(() => import("@/components/home/RecentlyAddedTools"));
 const AIToolRecommender = lazy(() => import("@/components/home/AIToolRecommender"));
+const TrustBadges = lazy(() => import("@/components/home/TrustBadges"));
+const HomeFAQ = lazy(() => import("@/components/home/HomeFAQ"));
 
 // Optimized skeleton
 const SectionSkeleton = memo(({ height = "h-48" }: { height?: string }) => (
@@ -170,6 +172,11 @@ const Index = memo(() => {
         <main id="main-content" role="main" aria-label="Main content">
           <Hero />
           
+          {/* Trust Badges - Right under hero */}
+          <Suspense fallback={<SectionSkeleton height="h-16" />}>
+            <TrustBadges />
+          </Suspense>
+          
           {/* Why AnyFile Flow - Above the fold */}
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
             <WhyAnyFileFlow />
@@ -263,6 +270,11 @@ const Index = memo(() => {
           
           <Suspense fallback={<BlogPreviewSkeleton />}>
             <BlogPreview />
+          </Suspense>
+          
+          {/* FAQ Section */}
+          <Suspense fallback={<SectionSkeleton height="h-96" />}>
+            <HomeFAQ />
           </Suspense>
           
         </main>
