@@ -35,7 +35,12 @@ const BlogPage = () => {
       <Helmet>
         <title>Blog - AnyFile Flow | Tips, Tutorials & Updates</title>
         <meta name="description" content="Read the latest tips, tutorials, and updates about file conversion, image editing, and productivity tools from AnyFile Flow." />
+        <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://anyfileflow.com/blog" />
+        <meta property="og:title" content="Blog - AnyFile Flow | Tips, Tutorials & Updates" />
+        <meta property="og:description" content="Read the latest tips, tutorials, and updates about file conversion from AnyFile Flow." />
+        <meta property="og:url" content="https://anyfileflow.com/blog" />
+        <meta property="og:type" content="website" />
       </Helmet>
 
       <div className="min-h-screen bg-background">

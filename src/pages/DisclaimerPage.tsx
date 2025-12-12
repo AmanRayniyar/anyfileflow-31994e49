@@ -8,7 +8,12 @@ const DisclaimerPage = () => {
       <Helmet>
         <title>Disclaimer - AnyFile Flow</title>
         <meta name="description" content="Read our disclaimer to understand the limitations and responsibilities when using AnyFile Flow's online tools." />
+        <meta name="robots" content="index, follow" />
         <link rel="canonical" href="https://anyfileflow.com/disclaimer" />
+        <meta property="og:title" content="Disclaimer - AnyFile Flow" />
+        <meta property="og:description" content="Read our disclaimer for using AnyFile Flow's online tools." />
+        <meta property="og:url" content="https://anyfileflow.com/disclaimer" />
+        <meta property="og:type" content="website" />
       </Helmet>
 
       <div className="min-h-screen bg-background">

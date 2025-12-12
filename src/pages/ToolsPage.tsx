@@ -48,9 +48,12 @@ const ToolsPage = () => {
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
         <meta name="keywords" content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, free online tools, file converter, image tools, audio tools" />
+        <meta name="robots" content="index, follow" />
         <link rel="canonical" href={`https://anyfileflow.com/tools${selectedCategory ? `?category=${selectedCategory}` : ''}`} />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
+        <meta property="og:url" content={`https://anyfileflow.com/tools${selectedCategory ? `?category=${selectedCategory}` : ''}`} />
+        <meta property="og:type" content="website" />
       </Helmet>
       
       <div className="min-h-screen bg-background">
