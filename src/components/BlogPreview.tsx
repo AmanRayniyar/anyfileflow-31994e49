@@ -95,7 +95,11 @@ const BlogPreview = () => {
                       </span>
                     </div>
                     <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
-                      <Link to={`/blog/${post.slug}`} className="hover:text-primary transition-colors focus:text-primary">
+                      <Link 
+                        to={`/blog/${post.slug}`} 
+                        className="hover:text-primary transition-colors focus:text-primary"
+                        aria-label={`Read full article: ${post.title}`}
+                      >
                         {post.title}
                       </Link>
                     </h3>
@@ -103,9 +107,10 @@ const BlogPreview = () => {
                     <Link 
                       to={`/blog/${post.slug}`} 
                       className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus:underline"
+                      aria-label={`Continue reading: ${post.title}`}
                     >
-                      Read more about {post.title.length > 30 ? post.title.substring(0, 30) + '...' : post.title}
-                      <ArrowRightIcon className="h-3 w-3" />
+                      Read article: {post.title.length > 25 ? post.title.substring(0, 25) + '...' : post.title}
+                      <ArrowRightIcon className="h-3 w-3" aria-hidden="true" />
                     </Link>
                   </div>
                 </article>
