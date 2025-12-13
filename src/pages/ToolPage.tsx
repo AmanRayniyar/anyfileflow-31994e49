@@ -211,17 +211,17 @@ const ToolPage = () => {
         <meta property="og:title" content={`${tool.name} - Free Online Tool | AnyFile Flow`} />
         <meta property="og:description" content={`${tool.description}. Free tool by AnyFile Flow (AnyFileFlow). Fast, secure, no registration required!`} />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://anyfileflow.com/tool/${tool.id}`} />
+        <meta property="og:url" content={`https://anyfileflow.lovable.app/tool/${tool.id}`} />
         <meta property="og:site_name" content="AnyFile Flow" />
         <meta property="og:locale" content="en_US" />
-        <meta property="og:image" content={`https://anyfileflow.com/og-${tool.id}.png`} />
+        <meta property="og:image" content={`https://anyfileflow.lovable.app/og-${tool.id}.png`} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={`${tool.name} - Free Online Tool`} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${tool.name} - Free Online Tool | AnyFile Flow`} />
         <meta name="twitter:description" content={`${tool.description}. Free, fast, secure. No signup required!`} />
-        <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
+        <link rel="canonical" href={`https://anyfileflow.lovable.app/tool/${tool.id}`} />
       </Helmet>
       
       {/* SEO Schemas for ALL tools */}
@@ -273,7 +273,7 @@ const ToolPage = () => {
                         <ShareButton 
                           title={`${tool.name} - AnyFile Flow`}
                           description={tool.description}
-                          url={`https://anyfileflow.com/tool/${tool.id}`}
+                          url={`https://anyfileflow.lovable.app/tool/${tool.id}`}
                         />
                       </div>
                     </div>
