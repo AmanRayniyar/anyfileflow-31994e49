@@ -37,6 +37,7 @@ const WatermarkImageTool = lazy(() => import("@/components/tools/WatermarkImageT
 const FrequencyDetectorTool = lazy(() => import("@/components/tools/FrequencyDetectorTool"));
 const PDFMetadataEditorTool = lazy(() => import("@/components/tools/PDFMetadataEditorTool"));
 const AudioCutterTool = lazy(() => import("@/components/tools/AudioCutterTool"));
+const AudioJoinerTool = lazy(() => import("@/components/tools/AudioJoinerTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -49,6 +50,7 @@ const BmiCalculatorSeoContent = lazy(() => import("@/components/tools/BmiCalcula
 const WatermarkImageSeoContent = lazy(() => import("@/components/tools/WatermarkImageSeoContent"));
 const FrequencyDetectorSeoContent = lazy(() => import("@/components/tools/FrequencyDetectorSeoContent"));
 const AudioCutterSeoContent = lazy(() => import("@/components/tools/AudioCutterSeoContent"));
+const AudioJoinerSeoContent = lazy(() => import("@/components/tools/AudioJoinerSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -169,6 +171,11 @@ const ToolPage = () => {
     // Special case for Audio Cutter
     if (tool.id === 'audio-cutter') {
       return <AudioCutterTool />;
+    }
+    
+    // Special case for Audio Joiner
+    if (tool.id === 'audio-joiner') {
+      return <AudioJoinerTool />;
     }
     
     switch (tool.toolType) {
@@ -395,6 +402,13 @@ const ToolPage = () => {
               {tool.id === 'audio-cutter' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <AudioCutterSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Audio Joiner Tool */}
+              {tool.id === 'audio-joiner' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <AudioJoinerSeoContent />
                 </Suspense>
               )}
 
