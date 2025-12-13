@@ -38,6 +38,7 @@ const FrequencyDetectorTool = lazy(() => import("@/components/tools/FrequencyDet
 const PDFMetadataEditorTool = lazy(() => import("@/components/tools/PDFMetadataEditorTool"));
 const AudioCutterTool = lazy(() => import("@/components/tools/AudioCutterTool"));
 const AudioJoinerTool = lazy(() => import("@/components/tools/AudioJoinerTool"));
+const PregnancyDueDateTool = lazy(() => import("@/components/tools/PregnancyDueDateTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -51,6 +52,7 @@ const WatermarkImageSeoContent = lazy(() => import("@/components/tools/Watermark
 const FrequencyDetectorSeoContent = lazy(() => import("@/components/tools/FrequencyDetectorSeoContent"));
 const AudioCutterSeoContent = lazy(() => import("@/components/tools/AudioCutterSeoContent"));
 const AudioJoinerSeoContent = lazy(() => import("@/components/tools/AudioJoinerSeoContent"));
+const PregnancyDueDateSeoContent = lazy(() => import("@/components/tools/PregnancyDueDateSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -176,6 +178,11 @@ const ToolPage = () => {
     // Special case for Audio Joiner
     if (tool.id === 'audio-joiner') {
       return <AudioJoinerTool />;
+    }
+    
+    // Special case for Pregnancy Due Date
+    if (tool.id === 'pregnancy-due') {
+      return <PregnancyDueDateTool />;
     }
     
     switch (tool.toolType) {
@@ -409,6 +416,13 @@ const ToolPage = () => {
               {tool.id === 'audio-joiner' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <AudioJoinerSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Pregnancy Due Date Tool */}
+              {tool.id === 'pregnancy-due' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <PregnancyDueDateSeoContent />
                 </Suspense>
               )}
 
