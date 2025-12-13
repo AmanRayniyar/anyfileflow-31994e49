@@ -36,6 +36,7 @@ const QRScannerTool = lazy(() => import("@/components/tools/QRScannerTool"));
 const WatermarkImageTool = lazy(() => import("@/components/tools/WatermarkImageTool"));
 const FrequencyDetectorTool = lazy(() => import("@/components/tools/FrequencyDetectorTool"));
 const PDFMetadataEditorTool = lazy(() => import("@/components/tools/PDFMetadataEditorTool"));
+const AudioCutterTool = lazy(() => import("@/components/tools/AudioCutterTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -47,6 +48,7 @@ const ImageCropperSeoContent = lazy(() => import("@/components/tools/ImageCroppe
 const BmiCalculatorSeoContent = lazy(() => import("@/components/tools/BmiCalculatorSeoContent"));
 const WatermarkImageSeoContent = lazy(() => import("@/components/tools/WatermarkImageSeoContent"));
 const FrequencyDetectorSeoContent = lazy(() => import("@/components/tools/FrequencyDetectorSeoContent"));
+const AudioCutterSeoContent = lazy(() => import("@/components/tools/AudioCutterSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -162,6 +164,11 @@ const ToolPage = () => {
     // Special case for PDF Metadata Editor
     if (tool.id === 'pdf-metadata') {
       return <PDFMetadataEditorTool />;
+    }
+    
+    // Special case for Audio Cutter
+    if (tool.id === 'audio-cutter') {
+      return <AudioCutterTool />;
     }
     
     switch (tool.toolType) {
@@ -381,6 +388,13 @@ const ToolPage = () => {
               {tool.id === 'frequency-detector' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <FrequencyDetectorSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Audio Cutter Tool */}
+              {tool.id === 'audio-cutter' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <AudioCutterSeoContent />
                 </Suspense>
               )}
 
