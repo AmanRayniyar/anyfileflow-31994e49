@@ -16,7 +16,9 @@ interface ShareButtonProps {
 
 const ShareButton = ({ title, description, url }: ShareButtonProps) => {
   const [copied, setCopied] = useState(false);
-  const shareUrl = url || window.location.href;
+  const baseUrl = "https://anyfileflow.lovable.app";
+  const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
+  const shareUrl = url || `${baseUrl}${currentPath}`;
 
   const copyToClipboard = async () => {
     try {
