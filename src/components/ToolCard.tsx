@@ -23,7 +23,7 @@ const ToolCard = memo(({ tool }: ToolCardProps) => {
       className="group block tool-card-hover focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded-xl"
       aria-label={`${tool.name}: Convert ${tool.from} to ${tool.to}`}
     >
-      <article className="bg-card border border-border rounded-xl p-5 h-full hover:border-primary/30 transition-colors duration-200">
+      <article className="bg-card border border-border rounded-xl p-5 h-full hover:border-primary/30 hover:shadow-lg hover:-translate-y-1 transition-all duration-200">
         <div className="flex items-start gap-4">
           <div className={cn("p-3 rounded-lg shrink-0 flex items-center justify-center", category?.bgClass)}>
             <span className={cn("text-sm font-bold", category?.colorClass)}>{tool.name.charAt(0)}</span>

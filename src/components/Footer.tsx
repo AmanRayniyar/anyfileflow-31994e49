@@ -118,6 +118,9 @@ const Footer = () => {
           <p className="text-center text-xs text-muted-foreground mb-2">
             <strong>AnyFile Flow</strong> is your trusted destination for free online file conversion.
           </p>
+          <p className="text-center text-xs font-medium text-foreground/80 mb-2">
+            Built by developers. Trusted by users worldwide.
+          </p>
           <p className="text-center text-xs text-muted-foreground">
             © {currentYear} <Link to="/brand" className="hover:text-primary">AnyFile Flow</Link>. All rights reserved.
           </p>
