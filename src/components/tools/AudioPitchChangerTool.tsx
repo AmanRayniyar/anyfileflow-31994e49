@@ -156,10 +156,10 @@ const AudioPitchChangerTool: React.FC = () => {
 
     ctx.clearRect(0, 0, width, height);
     
-    // Draw background gradient
+    // Draw background gradient with actual colors (canvas doesn't support CSS variables)
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
-    gradient.addColorStop(0, 'hsl(var(--primary) / 0.1)');
-    gradient.addColorStop(1, 'hsl(var(--primary) / 0.05)');
+    gradient.addColorStop(0, 'rgba(139, 92, 246, 0.1)');
+    gradient.addColorStop(1, 'rgba(139, 92, 246, 0.05)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
 
@@ -184,7 +184,7 @@ const AudioPitchChangerTool: React.FC = () => {
       ctx.lineTo(i, y2);
     }
     
-    ctx.strokeStyle = 'hsl(var(--primary))';
+    ctx.strokeStyle = '#8b5cf6';
     ctx.lineWidth = 1;
     ctx.stroke();
   }, []);
