@@ -39,6 +39,7 @@ const PDFMetadataEditorTool = lazy(() => import("@/components/tools/PDFMetadataE
 const AudioCutterTool = lazy(() => import("@/components/tools/AudioCutterTool"));
 const AudioJoinerTool = lazy(() => import("@/components/tools/AudioJoinerTool"));
 const PregnancyDueDateTool = lazy(() => import("@/components/tools/PregnancyDueDateTool"));
+const AudioPitchChangerTool = lazy(() => import("@/components/tools/AudioPitchChangerTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -53,6 +54,7 @@ const FrequencyDetectorSeoContent = lazy(() => import("@/components/tools/Freque
 const AudioCutterSeoContent = lazy(() => import("@/components/tools/AudioCutterSeoContent"));
 const AudioJoinerSeoContent = lazy(() => import("@/components/tools/AudioJoinerSeoContent"));
 const PregnancyDueDateSeoContent = lazy(() => import("@/components/tools/PregnancyDueDateSeoContent"));
+const AudioPitchChangerSeoContent = lazy(() => import("@/components/tools/AudioPitchChangerSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -183,6 +185,11 @@ const ToolPage = () => {
     // Special case for Pregnancy Due Date
     if (tool.id === 'pregnancy-due') {
       return <PregnancyDueDateTool />;
+    }
+    
+    // Special case for Audio Pitch Changer
+    if (tool.id === 'pitch-changer') {
+      return <AudioPitchChangerTool />;
     }
     
     switch (tool.toolType) {
@@ -423,6 +430,13 @@ const ToolPage = () => {
               {tool.id === 'pregnancy-due' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <PregnancyDueDateSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Audio Pitch Changer Tool */}
+              {tool.id === 'pitch-changer' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <AudioPitchChangerSeoContent />
                 </Suspense>
               )}
 
