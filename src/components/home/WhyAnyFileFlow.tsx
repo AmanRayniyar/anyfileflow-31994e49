@@ -20,7 +20,7 @@ const features = [
   {
     icon: Lock,
     title: "Privacy First",
-    description: "Zero data collection or tracking"
+    description: "Privacy-first analytics. No personal data collected."
   },
   {
     icon: Sparkles,
