@@ -43,7 +43,7 @@ const WhyAnyFileFlow = memo(() => {
             Why Choose AnyFile Flow?
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Trusted by millions worldwide for fast, secure, and free file conversions
+            Trusted by many worldwide for fast, secure, and free file conversions
           </p>
         </div>
         
