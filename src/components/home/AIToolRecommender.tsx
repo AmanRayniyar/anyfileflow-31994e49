@@ -93,14 +93,19 @@ const AIToolRecommender = memo(() => {
           )}
 
           {/* Ask AI button */}
-          <Button 
-            onClick={open}
-            className="gap-2"
-            size="lg"
-          >
-            <Bot className="h-4 w-4" aria-hidden="true" />
-            Ask AnyFlow AI for Help
-          </Button>
+          <div className="space-y-2">
+            <Button 
+              onClick={open}
+              className="gap-2"
+              size="lg"
+            >
+              <Bot className="h-4 w-4" aria-hidden="true" />
+              Ask AnyFlow AI (Free Tool Assistant)
+            </Button>
+            <p className="text-sm text-muted-foreground">
+              Describe your task in plain English.
+            </p>
+          </div>
         </div>
       </div>
     </section>
