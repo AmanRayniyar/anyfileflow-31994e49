@@ -4,7 +4,7 @@ import { Users, ShieldCheck, Zap, Search } from "lucide-react";
 const badges = [
   {
     icon: Users,
-    label: "Trusted by 1M+ users",
+    label: "Trusted by many users",
     color: "text-green-500",
     bg: "bg-green-500/10"
   },
