@@ -81,19 +81,24 @@ const UserTestimonials = memo(() => {
               </blockquote>
 
               {/* Author - single line format */}
-              <div className="flex items-center gap-3">
-                <img
-                  src={testimonial.avatar}
-                  alt={testimonial.name}
-                  className="w-10 h-10 rounded-full object-cover border-2 border-primary/20"
-                  loading="lazy"
-                />
-                <p className="text-sm font-medium text-foreground">
-                  — {testimonial.name}, {testimonial.country}
-                </p>
-              </div>
+              <p className="text-sm font-medium text-foreground">
+                — {testimonial.name}, {testimonial.country}
+              </p>
             </div>
           ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center mt-10">
+          <p className="text-lg text-muted-foreground mb-4">
+            Join thousands of users using AnyFile Flow every day
+          </p>
+          <a
+            href="/tools"
+            className="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors"
+          >
+            Start Using Free Tools
+          </a>
         </div>
       </div>
     </section>
