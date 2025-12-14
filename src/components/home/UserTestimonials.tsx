@@ -80,10 +80,18 @@ const UserTestimonials = memo(() => {
                 "{testimonial.quote}"
               </blockquote>
 
-              {/* Author - single line format */}
-              <p className="text-sm font-medium text-foreground">
-                — {testimonial.name}, {testimonial.country}
-              </p>
+              {/* Author with avatar */}
+              <div className="flex items-center gap-3">
+                <img
+                  src={testimonial.avatar}
+                  alt={testimonial.name}
+                  className="w-10 h-10 rounded-full object-cover border-2 border-primary/20"
+                  loading="lazy"
+                />
+                <p className="text-sm font-medium text-foreground">
+                  — {testimonial.name}, {testimonial.country}
+                </p>
+              </div>
             </div>
           ))}
         </div>

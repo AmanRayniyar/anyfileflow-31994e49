@@ -84,11 +84,23 @@ const ToolRating = memo(({ toolId, toolName }: ToolRatingProps) => {
           
           {/* Rating Summary */}
           <div className="flex items-center gap-3 mt-2 text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">
-              {stats.averageRating > 0 ? stats.averageRating.toFixed(1) : "No ratings yet"}
-            </span>
-            {stats.totalRatings > 0 && (
-              <span>({formatCount(stats.totalRatings)} rating{stats.totalRatings !== 1 ? 's' : ''})</span>
+            {stats.averageRating > 0 ? (
+              <>
+                <span className="font-medium text-foreground">
+                  {stats.averageRating.toFixed(1)}
+                </span>
+                <span>({formatCount(stats.totalRatings)} rating{stats.totalRatings !== 1 ? 's' : ''})</span>
+              </>
+            ) : (
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} className="h-3 w-3 fill-yellow-400 text-yellow-400" aria-hidden="true" />
+                  ))}
+                  <span className="text-xs text-muted-foreground ml-1">(Early Access Rating)</span>
+                </div>
+                <span className="text-xs text-primary">⭐ Be the first to rate this tool — takes 2 seconds</span>
+              </div>
             )}
           </div>
         </div>
