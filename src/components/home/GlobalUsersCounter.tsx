@@ -43,27 +43,21 @@ const GlobalUsersCounter = memo(() => {
           </div>
         </div>
 
-        {/* Stats content */}
-        <div className="relative flex flex-col">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-              {formatNumber(totalViews)}
+        {/* Stats content - single line format */}
+        <div className="relative flex items-center gap-2">
+          <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            {formatNumber(totalViews)}
+          </span>
+          <span className="text-sm text-muted-foreground">users worldwide</span>
+          <span className="flex items-center gap-1 text-xs text-green-500 font-medium">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75 animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
             </span>
-            <TrendingUp className="w-4 h-4 text-green-500 animate-bounce" />
-          </div>
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Users className="w-3 h-3" />
-            <span>Total Users Worldwide</span>
-            <Eye className="w-3 h-3 ml-1" />
-            <span className="text-primary font-medium">Live</span>
-          </div>
+            Live
+          </span>
         </div>
 
-        {/* Live indicator dot */}
-        <div className="absolute -top-1 -right-1 flex items-center justify-center">
-          <span className="absolute inline-flex h-3 w-3 rounded-full bg-green-500 opacity-75 animate-ping" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-        </div>
       </div>
     </div>
   );

@@ -40,12 +40,17 @@ const Hero = memo(() => {
           </div>
 
           {/* Heading - Critical LCP element */}
-          <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-4 md:mb-6">
+          <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-3 md:mb-4">
             Convert Any File with <span className="flow-text">AnyFile Flow</span>
           </h1>
 
+          {/* Outcome line */}
+          <p className="text-base md:text-lg text-foreground font-medium mb-3">
+            Convert images, PDFs, audio, and more — directly in your browser.
+          </p>
+
           {/* Description */}
-          <p className="text-base md:text-xl text-muted-foreground/70 mb-6 max-w-2xl mx-auto">
+          <p className="text-sm md:text-base text-muted-foreground/70 mb-6 max-w-2xl mx-auto">
             The ultimate toolkit for all your file conversions. Fast, free, and secure. No registration required.
           </p>
 
