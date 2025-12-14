@@ -6,37 +6,43 @@ const testimonials = [
     rating: 5,
     quote: "Fastest JPG to PNG converter I've used. No signup and works instantly.",
     name: "Sarah M.",
-    country: "USA"
+    country: "USA",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face"
   },
   {
     rating: 5,
     quote: "Finally found a PDF tool that doesn't ask for my email. Love the privacy focus!",
     name: "Rajesh K.",
-    country: "India"
+    country: "India",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
   },
   {
     rating: 5,
     quote: "Use the QR generator daily for my small business. Simple and reliable.",
     name: "Emma L.",
-    country: "UK"
+    country: "UK",
+    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face"
   },
   {
     rating: 5,
     quote: "As a student, I compress images and convert files here all the time. Completely free!",
     name: "Ahmed S.",
-    country: "UAE"
+    country: "UAE",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face"
   },
   {
     rating: 5,
     quote: "The audio cutter saved me hours. Works right in the browser, no software needed.",
     name: "Thomas B.",
-    country: "Germany"
+    country: "Germany",
+    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
   },
   {
     rating: 5,
     quote: "Best free tool collection I've found. Everything just works, even on my phone.",
     name: "Priya T.",
-    country: "Nepal"
+    country: "Nepal",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face"
   }
 ];
 
@@ -75,12 +81,13 @@ const UserTestimonials = memo(() => {
               </blockquote>
 
               {/* Author */}
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                  <span className="text-xs font-semibold text-primary">
-                    {testimonial.name.charAt(0)}
-                  </span>
-                </div>
+              <div className="flex items-center gap-3">
+                <img
+                  src={testimonial.avatar}
+                  alt={`${testimonial.name} from ${testimonial.country}`}
+                  className="w-10 h-10 rounded-full object-cover border-2 border-primary/20"
+                  loading="lazy"
+                />
                 <div>
                   <p className="text-sm font-medium text-foreground">{testimonial.name}</p>
                   <p className="text-xs text-muted-foreground">{testimonial.country}</p>
