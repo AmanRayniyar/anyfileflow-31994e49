@@ -20,6 +20,7 @@ const RecentlyAddedTools = lazy(() => import("@/components/home/RecentlyAddedToo
 const AIToolRecommender = lazy(() => import("@/components/home/AIToolRecommender"));
 const TrustBadges = lazy(() => import("@/components/home/TrustBadges"));
 const HomeFAQ = lazy(() => import("@/components/home/HomeFAQ"));
+const UserTestimonials = lazy(() => import("@/components/home/UserTestimonials"));
 
 // Optimized skeleton
 const SectionSkeleton = memo(({ height = "h-48" }: { height?: string }) => (
@@ -261,6 +262,11 @@ const Index = memo(() => {
           {/* Recently Added Tools */}
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
             <RecentlyAddedTools />
+          </Suspense>
+          
+          {/* User Testimonials */}
+          <Suspense fallback={<SectionSkeleton height="h-64" />}>
+            <UserTestimonials />
           </Suspense>
           
           {/* Comparison Section */}
