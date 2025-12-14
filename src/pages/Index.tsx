@@ -20,7 +20,6 @@ const RecentlyAddedTools = lazy(() => import("@/components/home/RecentlyAddedToo
 const AIToolRecommender = lazy(() => import("@/components/home/AIToolRecommender"));
 const TrustBadges = lazy(() => import("@/components/home/TrustBadges"));
 const HomeFAQ = lazy(() => import("@/components/home/HomeFAQ"));
-const GlobalUsersCounter = lazy(() => import("@/components/home/GlobalUsersCounter"));
 
 // Optimized skeleton
 const SectionSkeleton = memo(({ height = "h-48" }: { height?: string }) => (
@@ -171,11 +170,6 @@ const Index = memo(() => {
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <Header />
         <main id="main-content" role="main" aria-label="Main content">
-          {/* Global Users Counter - Top of page */}
-          <Suspense fallback={<SectionSkeleton height="h-16" />}>
-            <GlobalUsersCounter />
-          </Suspense>
-          
           <Hero />
           
           {/* Trust Badges - Right under hero */}
