@@ -1,4 +1,4 @@
-import { Globe } from "lucide-react";
+import { Globe, Check, ChevronDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,30 +6,23 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useLanguage, SUPPORTED_LANGUAGES, Language } from "@/contexts/LanguageContext";
+import { useParams } from "react-router-dom";
 
-interface Language {
-  code: string;
-  name: string;
-  nativeName: string;
-  flag: string;
+interface LanguageSelectorProps {
+  /** Optional: specify the tool ID to navigate to when changing language */
+  toolId?: string;
 }
 
-const languages: Language[] = [
-  { code: "en", name: "English", nativeName: "English", flag: "🇺🇸" },
-  { code: "hi", name: "Hindi", nativeName: "हिन्दी", flag: "🇮🇳" },
-  { code: "es", name: "Spanish", nativeName: "Español", flag: "🇪🇸" },
-  { code: "pt", name: "Portuguese", nativeName: "Português", flag: "🇧🇷" },
-  { code: "ar", name: "Arabic", nativeName: "العربية", flag: "🇸🇦" },
-];
-
-export function LanguageSelector() {
-  const [selectedLanguage, setSelectedLanguage] = useState<Language>(languages[0]);
+export function LanguageSelector({ toolId }: LanguageSelectorProps) {
+  const { currentLanguage, setLanguage } = useLanguage();
+  const params = useParams();
+  
+  // Use provided toolId or get from URL params
+  const activeToolId = toolId || params.toolId;
 
   const handleLanguageChange = (language: Language) => {
-    setSelectedLanguage(language);
-    // Future: Implement actual language switching logic
-    // For now, this serves as a UI placeholder for multi-language support
+    setLanguage(language, activeToolId);
   };
 
   return (
@@ -38,32 +31,85 @@ export function LanguageSelector() {
         <Button 
           variant="outline" 
           size="sm" 
-          className="gap-2 bg-card border-border hover:bg-accent"
+          className="gap-2 bg-card border-border hover:bg-accent min-w-[120px] justify-between"
+          aria-label={`Current language: ${currentLanguage.name}. Click to change language.`}
         >
-          <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{selectedLanguage.flag} {selectedLanguage.name}</span>
-          <span className="sm:hidden">{selectedLanguage.flag}</span>
+          <div className="flex items-center gap-2">
+            <Globe className="h-4 w-4" aria-hidden="true" />
+            <span className="hidden sm:inline">{currentLanguage.flag} {currentLanguage.name}</span>
+            <span className="sm:hidden">{currentLanguage.flag}</span>
+          </div>
+          <ChevronDown className="h-3 w-3 opacity-50" aria-hidden="true" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="bg-popover border-border z-50">
-        {languages.map((language) => (
+      <DropdownMenuContent 
+        align="end" 
+        className="bg-popover border-border z-50 min-w-[180px]"
+      >
+        {SUPPORTED_LANGUAGES.map((language) => (
           <DropdownMenuItem
             key={language.code}
             onClick={() => handleLanguageChange(language)}
             className={`cursor-pointer gap-3 ${
-              selectedLanguage.code === language.code 
+              currentLanguage.code === language.code 
                 ? "bg-accent text-accent-foreground" 
                 : "hover:bg-accent/50"
             }`}
+            aria-current={currentLanguage.code === language.code ? "true" : undefined}
           >
-            <span className="text-lg">{language.flag}</span>
-            <div className="flex flex-col">
+            <span className="text-lg" aria-hidden="true">{language.flag}</span>
+            <div className="flex flex-col flex-1">
               <span className="font-medium">{language.name}</span>
               <span className="text-xs text-muted-foreground">{language.nativeName}</span>
             </div>
+            {currentLanguage.code === language.code && (
+              <Check className="h-4 w-4 text-primary" aria-hidden="true" />
+            )}
           </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+/**
+ * Language suggestion banner for first-time visitors
+ * Shows when browser language differs from current language
+ */
+export function LanguageSuggestionBanner() {
+  const { suggestedLanguage, showSuggestion, setLanguage, dismissSuggestion } = useLanguage();
+  const params = useParams();
+  
+  if (!showSuggestion || !suggestedLanguage) return null;
+  
+  return (
+    <div 
+      className="bg-primary/10 border-b border-primary/20 px-4 py-3"
+      role="alert"
+      aria-live="polite"
+    >
+      <div className="container mx-auto flex flex-col sm:flex-row items-center justify-center gap-3 text-sm">
+        <span className="text-foreground">
+          {suggestedLanguage.flag} Would you like to view this page in {suggestedLanguage.name} ({suggestedLanguage.nativeName})?
+        </span>
+        <div className="flex gap-2">
+          <Button 
+            size="sm" 
+            onClick={() => setLanguage(suggestedLanguage, params.toolId)}
+            className="h-7"
+          >
+            Yes, switch to {suggestedLanguage.name}
+          </Button>
+          <Button 
+            size="sm" 
+            variant="ghost" 
+            onClick={dismissSuggestion}
+            className="h-7"
+          >
+            No, keep English
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
