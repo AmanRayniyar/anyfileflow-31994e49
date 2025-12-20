@@ -251,6 +251,14 @@ const ToolPage = () => {
         <meta name="twitter:title" content={getPageTitle()} />
         <meta name="twitter:description" content={getPageDescription()} />
         <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
+        
+        {/* Hreflang tags for international SEO */}
+        <link rel="alternate" hrefLang="en-US" href={`https://anyfileflow.com/tool/${tool.id}`} />
+        <link rel="alternate" hrefLang="en-GB" href={`https://anyfileflow.com/tool/${tool.id}`} />
+        <link rel="alternate" hrefLang="en-IN" href={`https://anyfileflow.com/tool/${tool.id}`} />
+        <link rel="alternate" hrefLang="en-AU" href={`https://anyfileflow.com/tool/${tool.id}`} />
+        <link rel="alternate" hrefLang="en-NP" href={`https://anyfileflow.com/tool/${tool.id}`} />
+        <link rel="alternate" hrefLang="x-default" href={`https://anyfileflow.com/tool/${tool.id}`} />
       </Helmet>
       
       {/* SEO Schemas for ALL tools */}
