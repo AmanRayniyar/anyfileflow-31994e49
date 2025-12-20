@@ -6,6 +6,7 @@ import ShareButton from "@/components/ShareButton";
 import ToolAIHelp from "@/components/ToolAIHelp";
 import ToolSEOSchemas from "@/components/ToolSEOSchemas";
 import ToolRating from "@/components/ToolRating";
+import { LanguageSelector } from "@/components/LanguageSelector";
 import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 
 import Header from "@/components/Header";
@@ -277,17 +278,20 @@ const ToolPage = () => {
         </a>
         <Header />
         <main id="main-content" className="container mx-auto px-4 py-6 sm:py-8" role="main">
-          {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-6 flex-wrap">
-            <Link to="/tools" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-              <span>All Tools</span>
-            </Link>
-            <span className="text-muted-foreground" aria-hidden="true">/</span>
-            <span className="text-sm text-muted-foreground">{category?.name}</span>
-            <span className="text-muted-foreground" aria-hidden="true">/</span>
-            <span className="text-sm font-medium text-foreground">{tool.name}</span>
-          </nav>
+          {/* Language Selector & Breadcrumb */}
+          <div className="flex items-center justify-between gap-4 mb-6 flex-wrap">
+            <nav aria-label="Breadcrumb" className="flex items-center gap-2 flex-wrap">
+              <Link to="/tools" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+                <span>All Tools</span>
+              </Link>
+              <span className="text-muted-foreground" aria-hidden="true">/</span>
+              <span className="text-sm text-muted-foreground">{category?.name}</span>
+              <span className="text-muted-foreground" aria-hidden="true">/</span>
+              <span className="text-sm font-medium text-foreground">{tool.name}</span>
+            </nav>
+            <LanguageSelector />
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Main Content */}
