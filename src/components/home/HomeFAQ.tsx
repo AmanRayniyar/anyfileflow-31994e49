@@ -1,5 +1,4 @@
 import { memo } from "react";
-import { Helmet } from "react-helmet-async";
 import {
   Accordion,
   AccordionContent,
@@ -72,27 +71,11 @@ const faqs = [
 ];
 
 const HomeFAQ = memo(() => {
-  // FAQ Schema for SEO
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map((faq) => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
-  };
+  // Note: FAQPage schema is defined in Index.tsx to avoid duplicate schemas
+  // Google requires only ONE FAQPage per URL
 
   return (
-    <>
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
-      </Helmet>
-      
-      <section className="py-12 bg-background" aria-labelledby="faq-heading">
+    <section className="py-12 bg-background" aria-labelledby="faq-heading">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             {/* Header */}
@@ -153,7 +136,6 @@ const HomeFAQ = memo(() => {
           </div>
         </div>
       </section>
-    </>
   );
 });
 
