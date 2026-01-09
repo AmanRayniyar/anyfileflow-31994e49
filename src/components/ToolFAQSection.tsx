@@ -32,7 +32,7 @@ const generateFAQs = (
     },
     {
       question: `Is ${toolName} completely free to use?`,
-      answer: `Yes, ${toolName} is 100% free with no hidden costs, subscriptions, or premium features locked behind a paywall. You can use it unlimited times without creating an account. AnyFile Flow provides all 200+ tools completely free as part of our mission to make file conversion accessible to everyone.`
+      answer: `Yes, ${toolName} is 100% free with no hidden costs, subscriptions, or premium features locked behind a paywall. You can use it unlimited times without creating an account. AnyFile Flow provides all 1000+ tools completely free as part of our mission to make file conversion accessible to everyone.`
     },
     {
       question: `Is my data safe when using ${toolName}?`,

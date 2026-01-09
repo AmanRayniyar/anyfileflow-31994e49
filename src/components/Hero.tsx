@@ -1,4 +1,3 @@
-import { tools } from "@/data/tools";
 import { memo, Suspense, lazy } from "react";
 
 const GlobalUsersCounter = lazy(() => import("@/components/home/GlobalUsersCounter"));
@@ -36,7 +35,7 @@ const Hero = memo(() => {
           {/* Badge - smaller for mobile */}
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4 md:mb-6">
             <ZapIcon className="h-3.5 w-3.5 text-primary" />
-            <span className="text-xs md:text-sm font-medium text-primary">{tools.length}+ Free Tools</span>
+            <span className="text-xs md:text-sm font-medium text-primary">1000+ Free Tools</span>
           </div>
 
           {/* Heading - Critical LCP element */}

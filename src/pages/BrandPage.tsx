@@ -13,7 +13,7 @@ const BrandPage = () => {
     "alternateName": ["AnyFileFlow", "Any File Flow", "anyfileflow", "anyfile", "any file flow"],
     "url": "https://anyfileflow.com",
     "logo": "https://anyfileflow.com/favicon.ico",
-    "description": "AnyFile Flow (also known as AnyFileFlow, Any File Flow, anyfileflow) is a free online file conversion platform with 200+ tools for images, documents, audio, and video.",
+    "description": "AnyFile Flow (also known as AnyFileFlow, Any File Flow, anyfileflow) is a free online file conversion platform with 1000+ tools for images, documents, audio, and video.",
     "founder": {
       "@type": "Person",
       "name": "Aman Rauniyar"
@@ -24,11 +24,11 @@ const BrandPage = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>About AnyFile Flow Brand | AnyFileFlow | Any File Flow - Our Identity</title>
-        <meta name="description" content="Learn about AnyFile Flow brand identity. Whether you call us AnyFileFlow, Any File Flow, anyfileflow, or any file flow — we're the same trusted platform with 200+ free tools." />
+        <meta name="description" content="Learn about AnyFile Flow brand identity. Whether you call us AnyFileFlow, Any File Flow, anyfileflow, or any file flow — we're the same trusted platform with 1000+ free tools." />
         <meta name="keywords" content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, any file flow, brand, about, file converter brand" />
         <link rel="canonical" href="https://anyfileflow.com/brand" />
         <meta property="og:title" content="About AnyFile Flow Brand | AnyFileFlow | Any File Flow" />
-        <meta property="og:description" content="Learn about AnyFile Flow brand. Also known as AnyFileFlow, Any File Flow, anyfileflow. 200+ free file conversion tools." />
+        <meta property="og:description" content="Learn about AnyFile Flow brand. Also known as AnyFileFlow, Any File Flow, anyfileflow. 1000+ free file conversion tools." />
         <meta property="og:url" content="https://anyfileflow.com/brand" />
         <script type="application/ld+json">{JSON.stringify(brandSchema)}</script>
       </Helmet>
@@ -55,7 +55,7 @@ const BrandPage = () => {
             <strong>AnyFile Flow</strong> — also known as <strong>AnyFileFlow</strong>, <strong>Any File Flow</strong>, and <strong>anyfileflow</strong>
           </p>
           <p className="text-muted-foreground">
-            No matter how you spell it or search for it, you'll find the same powerful suite of 200+ free online file conversion tools.
+            No matter how you spell it or search for it, you'll find the same powerful suite of 1000+ free online file conversion tools.
           </p>
         </header>
 
@@ -184,7 +184,7 @@ const BrandPage = () => {
               Whether you're a student, professional, or casual user, AnyFileFlow (or Any File Flow, as some call it) provides the tools you need without complicated software or expensive subscriptions.
             </p>
             <p className="text-muted-foreground mb-4">
-              Today, <strong>AnyFile Flow</strong> offers 200+ free online tools covering image conversion, document processing, audio editing, video transformation, and much more. 
+              Today, <strong>AnyFile Flow</strong> offers 1000+ free online tools covering image conversion, document processing, audio editing, video transformation, and much more. 
               Our platform is used by millions of users worldwide who trust anyfileflow for their daily file conversion needs.
             </p>
             <p className="text-muted-foreground">
@@ -200,7 +200,7 @@ const BrandPage = () => {
             Start Using AnyFile Flow Today
           </h2>
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-            Experience why millions trust AnyFile Flow (AnyFileFlow / Any File Flow) for their file conversion needs. 200+ free tools, no registration required.
+            Experience why millions trust AnyFile Flow (AnyFileFlow / Any File Flow) for their file conversion needs. 1000+ free tools, no registration required.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Button variant="hero" size="lg" asChild>
