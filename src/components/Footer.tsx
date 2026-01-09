@@ -49,7 +49,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="text-xs text-muted-foreground mb-2">
-              <strong>AnyFile Flow</strong> — 200+ free online tools for file conversion.
+              <strong>AnyFile Flow</strong> — 1000+ free online tools for file conversion.
             </p>
             <div className="flex items-center gap-2 mb-1">
               <img src={founderImg} alt="" className="h-8 w-8 rounded-full object-cover" width="32" height="32" loading="lazy" decoding="async" />

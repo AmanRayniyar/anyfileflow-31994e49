@@ -115,7 +115,7 @@ const Header = () => {
               <input
                 id="desktop-search"
                 type="search"
-                placeholder="Search 200+ tools..."
+                placeholder="Search 1000+ tools..."
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
@@ -127,7 +127,7 @@ const Header = () => {
                 aria-controls="search-results"
                 aria-autocomplete="list"
               />
-              <span id="search-hint" className="sr-only">Type to search through 200+ file conversion tools</span>
+              <span id="search-hint" className="sr-only">Type to search through 1000+ file conversion tools</span>
               {searchQuery && (
                 <button 
                   onClick={() => setSearchQuery("")} 

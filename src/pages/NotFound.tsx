@@ -15,7 +15,7 @@ const NotFound = () => {
     <>
       <Helmet>
         <title>Page Not Found - AnyFile Flow</title>
-        <meta name="description" content="The page you're looking for doesn't exist. Return to AnyFile Flow homepage to explore 200+ free online tools." />
+        <meta name="description" content="The page you're looking for doesn't exist. Return to AnyFile Flow homepage to explore 1000+ free online tools." />
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       <div className="min-h-screen bg-background">

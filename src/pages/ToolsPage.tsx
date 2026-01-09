@@ -36,11 +36,11 @@ const ToolsPage = () => {
 
   const pageTitle = selectedCategoryInfo 
     ? `${selectedCategoryInfo.name} - Free Online Tools | AnyFile Flow (AnyFileFlow)`
-    : "All Tools - 200+ Free Online Tools | AnyFile Flow | AnyFileFlow | Any File Flow";
+    : "All Tools - 1000+ Free Online Tools | AnyFile Flow | AnyFileFlow | Any File Flow";
 
   const pageDescription = selectedCategoryInfo
     ? `Free ${selectedCategoryInfo.name.toLowerCase()} by AnyFile Flow (also known as AnyFileFlow, Any File Flow). ${selectedCategoryInfo.description}. No registration required.`
-    : "Browse AnyFile Flow's collection of 200+ free online tools. AnyFileFlow (Any File Flow) offers file conversion, image editing, audio processing, and more.";
+    : "Browse AnyFile Flow's collection of 1000+ free online tools. AnyFileFlow (Any File Flow) offers file conversion, image editing, audio processing, and more.";
 
   return (
     <>

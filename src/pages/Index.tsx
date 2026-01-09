@@ -60,7 +60,7 @@ const Index = memo(() => {
       "name": "AnyFile Flow",
       "alternateName": ["AnyFileFlow", "Any File Flow"],
       "url": "https://anyfileflow.com/",
-      "description": "200+ free online tools for file conversion, editing, and more",
+      "description": "1000+ free online tools for file conversion, editing, and more",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://anyfileflow.com/tools?search={search_term_string}",
@@ -123,7 +123,7 @@ const Index = memo(() => {
           "name": "What is AnyFile Flow?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "AnyFile Flow is a free online platform with 200+ tools for file conversion, image editing, PDF manipulation, audio/video processing, and more. All tools work directly in your browser with no registration required."
+            "text": "AnyFile Flow is a free online platform with 1000+ tools for file conversion, image editing, PDF manipulation, audio/video processing, and more. All tools work directly in your browser with no registration required."
           }
         },
         {
@@ -149,17 +149,17 @@ const Index = memo(() => {
   return (
     <>
       <Helmet>
-        <title>AnyFile Flow | AnyFileFlow | Any File Flow - 200+ Free Online File Conversion Tools</title>
-        <meta name="description" content="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. 200+ free online tools for image, document, audio, video conversion. Fast, secure, no registration required." />
+        <title>AnyFile Flow | AnyFileFlow | Any File Flow - 1000+ Free Online File Conversion Tools</title>
+        <meta name="description" content="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. 1000+ free online tools for image, document, audio, video conversion. Fast, secure, no registration required." />
         <meta name="keywords" content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, any file flow, file converter, image converter, pdf tools, audio converter, video editor, online tools, free tools, jpg to png, webp converter" />
         <link rel="canonical" href="https://anyfileflow.com/" />
-        <meta property="og:title" content="AnyFile Flow | AnyFileFlow | Any File Flow - 200+ Free Online Tools" />
-        <meta property="og:description" content="Welcome to AnyFile Flow (AnyFileFlow / Any File Flow). Convert, edit, and transform your files with 200+ free online tools. No limits, no registration." />
+        <meta property="og:title" content="AnyFile Flow | AnyFileFlow | Any File Flow - 1000+ Free Online Tools" />
+        <meta property="og:description" content="Welcome to AnyFile Flow (AnyFileFlow / Any File Flow). Convert, edit, and transform your files with 1000+ free online tools. No limits, no registration." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://anyfileflow.com/" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="AnyFile Flow | AnyFileFlow - 200+ Free Online Tools" />
-        <meta name="twitter:description" content="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. Convert, edit, and transform files with 200+ free online tools." />
+        <meta name="twitter:title" content="AnyFile Flow | AnyFileFlow - 1000+ Free Online Tools" />
+        <meta name="twitter:description" content="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. Convert, edit, and transform files with 1000+ free online tools." />
         <script type="application/ld+json">{JSON.stringify(schemas.website)}</script>
         <script type="application/ld+json">{JSON.stringify(schemas.organization)}</script>
         <script type="application/ld+json">{JSON.stringify(schemas.softwareApp)}</script>
@@ -193,7 +193,7 @@ const Index = memo(() => {
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-4">
                 <h2 className="text-lg font-semibold text-foreground mb-1">Find Your Tool Instantly</h2>
-                <p className="text-sm text-muted-foreground">Search 200+ free tools by name or function</p>
+                <p className="text-sm text-muted-foreground">Search 1000+ free tools by name or function</p>
               </div>
               <SearchBar large />
             </div>
