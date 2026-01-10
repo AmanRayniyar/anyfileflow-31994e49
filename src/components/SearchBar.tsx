@@ -89,7 +89,7 @@ const SearchBar = ({ large = false }: SearchBarProps) => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           
-          <label htmlFor="tool-search" className="sr-only">Search 200+ tools</label>
+          <label htmlFor="tool-search" className="sr-only">Search 1000+ tools</label>
           <input
             id="tool-search"
             ref={inputRef}
@@ -98,7 +98,7 @@ const SearchBar = ({ large = false }: SearchBarProps) => {
             onChange={handleChange}
             onKeyDown={handleKeyDown}
             onFocus={() => query.length >= 2 && setIsOpen(true)}
-            placeholder="Search 200+ tools..."
+            placeholder="Search 1000+ tools..."
             className={cn(
               "flex-1 bg-transparent border-none outline-none placeholder:text-muted-foreground/70 text-foreground min-h-[44px]",
               large ? "ml-3 text-base" : "ml-2.5 text-sm"
@@ -109,7 +109,7 @@ const SearchBar = ({ large = false }: SearchBarProps) => {
             aria-autocomplete="list"
             aria-describedby="search-description"
           />
-          <span id="search-description" className="sr-only">Type to search through 200+ file conversion tools. Use arrow keys to navigate results.</span>
+          <span id="search-description" className="sr-only">Type to search through 1000+ tools. Use arrow keys to navigate results.</span>
           
           {/* Clear Button */}
           {query && (

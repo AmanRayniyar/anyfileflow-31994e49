@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Filter, Grid3X3, List, ArrowLeft } from "lucide-react";
@@ -7,34 +7,32 @@ import Footer from "@/components/Footer";
 import ToolCard from "@/components/ToolCard";
 import SearchBar from "@/components/SearchBar";
 import { Button } from "@/components/ui/button";
-import { categories, tools, getToolsByCategory, ToolCategory } from "@/data/tools";
+import { categories, ToolCategory } from "@/data/tools";
 import { cn } from "@/lib/utils";
+import { useAllEnabledTools } from "@/hooks/useAllEnabledTools";
 
 const ToolsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedCategory = searchParams.get("category") as ToolCategory | null;
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
+  const { tools, loading, error } = useAllEnabledTools();
+
   const filteredTools = useMemo(() => {
-    if (selectedCategory) {
-      return getToolsByCategory(selectedCategory);
-    }
+    if (selectedCategory) return tools.filter((t) => t.category === selectedCategory);
     return tools;
-  }, [selectedCategory]);
+  }, [selectedCategory, tools]);
 
   const handleCategoryChange = (categoryId: ToolCategory | null) => {
-    if (categoryId) {
-      setSearchParams({ category: categoryId });
-    } else {
-      setSearchParams({});
-    }
+    if (categoryId) setSearchParams({ category: categoryId });
+    else setSearchParams({});
   };
 
-  const selectedCategoryInfo = selectedCategory 
-    ? categories.find(c => c.id === selectedCategory) 
+  const selectedCategoryInfo = selectedCategory
+    ? categories.find((c) => c.id === selectedCategory)
     : null;
 
-  const pageTitle = selectedCategoryInfo 
+  const pageTitle = selectedCategoryInfo
     ? `${selectedCategoryInfo.name} - Free Online Tools | AnyFile Flow (AnyFileFlow)`
     : "All Tools - 1000+ Free Online Tools | AnyFile Flow | AnyFileFlow | Any File Flow";
 
@@ -47,17 +45,29 @@ const ToolsPage = () => {
       <Helmet>
         <title>{pageTitle}</title>
         <meta name="description" content={pageDescription} />
-        <meta name="keywords" content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, free online tools, file converter, image tools, audio tools" />
+        <meta
+          name="keywords"
+          content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, free online tools, file converter, image tools, audio tools"
+        />
         <meta name="robots" content="index, follow" />
-        <link rel="canonical" href={`https://anyfileflow.com/tools${selectedCategory ? `?category=${selectedCategory}` : ''}`} />
+        <link
+          rel="canonical"
+          href={`https://anyfileflow.com/tools${selectedCategory ? `?category=${selectedCategory}` : ""}`}
+        />
         <meta property="og:title" content={pageTitle} />
         <meta property="og:description" content={pageDescription} />
-        <meta property="og:url" content={`https://anyfileflow.com/tools${selectedCategory ? `?category=${selectedCategory}` : ''}`} />
+        <meta
+          property="og:url"
+          content={`https://anyfileflow.com/tools${selectedCategory ? `?category=${selectedCategory}` : ""}`}
+        />
         <meta property="og:type" content="website" />
       </Helmet>
-      
+
       <div className="min-h-screen bg-background">
-        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-md z-[100]">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-md z-[100]"
+        >
           Skip to main content
         </a>
         <Header />
@@ -77,9 +87,14 @@ const ToolsPage = () => {
               {selectedCategoryInfo ? selectedCategoryInfo.name : "All AnyFile Flow Tools"}
             </h1>
             <p className="text-muted-foreground">
-              Browse <strong>AnyFile Flow's</strong> collection of {filteredTools.length}+ free online tools. 
+              Browse <strong>AnyFile Flow's</strong> collection of {loading ? "…" : tools.length}+ free online tools.
               Whether you call us AnyFileFlow or Any File Flow, we've got you covered.
             </p>
+            {error && (
+              <p className="mt-2 text-sm text-destructive" role="status">
+                Failed to load tools: {error}
+              </p>
+            )}
           </div>
 
           {/* Search */}
@@ -102,7 +117,7 @@ const ToolsPage = () => {
               All ({tools.length})
             </Button>
             {categories.map((category) => {
-              const count = getToolsByCategory(category.id).length;
+              const count = tools.filter((t) => t.category === category.id).length;
               const Icon = category.icon;
               return (
                 <Button
@@ -113,7 +128,13 @@ const ToolsPage = () => {
                   className="gap-2"
                   aria-pressed={selectedCategory === category.id}
                 >
-                  <Icon className={cn("h-4 w-4", selectedCategory === category.id ? "" : category.colorClass)} aria-hidden="true" />
+                  <Icon
+                    className={cn(
+                      "h-4 w-4",
+                      selectedCategory === category.id ? "" : category.colorClass
+                    )}
+                    aria-hidden="true"
+                  />
                   {category.name.replace(" Tools", "")} ({count})
                 </Button>
               );
@@ -123,7 +144,9 @@ const ToolsPage = () => {
           {/* View Toggle & Results Count */}
           <div className="flex items-center justify-between mb-6">
             <p className="text-sm text-muted-foreground" role="status" aria-live="polite">
-              Showing {filteredTools.length} tool{filteredTools.length !== 1 ? "s" : ""}
+              {loading
+                ? "Loading tools…"
+                : `Showing ${filteredTools.length} tool${filteredTools.length !== 1 ? "s" : ""}`}
             </p>
             <div className="flex items-center gap-1 p-1 bg-secondary rounded-lg" role="group" aria-label="View options">
               <button
@@ -168,7 +191,7 @@ const ToolsPage = () => {
             ))}
           </ul>
 
-          {filteredTools.length === 0 && (
+          {!loading && filteredTools.length === 0 && (
             <div className="text-center py-16" role="status">
               <p className="text-muted-foreground">No tools found in this category.</p>
             </div>
