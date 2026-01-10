@@ -1,7 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import { useEffect, lazy, Suspense } from "react";
+import { useEffect, lazy, Suspense, useMemo } from "react";
 import ShareButton from "@/components/ShareButton";
 import ToolAIHelp from "@/components/ToolAIHelp";
 import ToolSEOSchemas from "@/components/ToolSEOSchemas";
@@ -13,6 +13,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { getToolById, getCategoryById, getToolsByCategory } from "@/data/tools";
+import { useToolById } from "@/hooks/useToolById";
 import ToolCard from "@/components/ToolCard";
 import { cn } from "@/lib/utils";
 
@@ -68,7 +69,12 @@ const ToolLoader = () => (
 
 const ToolPage = () => {
   const { toolId } = useParams<{ toolId: string }>();
-  const tool = toolId ? getToolById(toolId) : undefined;
+
+  // Prefer DB tool (so newly-added tools work), but keep static fallback for existing curated tools.
+  const staticTool = toolId ? getToolById(toolId) : undefined;
+  const { tool: dbTool, loading: dbLoading } = useToolById(toolId);
+
+  const tool = useMemo(() => staticTool ?? dbTool ?? undefined, [staticTool, dbTool]);
 
   // Scroll to top on mount and track recently used
   useEffect(() => {
@@ -79,6 +85,19 @@ const ToolPage = () => {
   }, [toolId]);
 
   if (!tool) {
+    // If DB is still loading, show skeleton instead of "Tool Not Found"
+    if (dbLoading) {
+      return (
+        <div className="min-h-screen bg-background">
+          <Header />
+          <main className="container mx-auto px-4 py-16" role="main">
+            <ToolLoader />
+          </main>
+          <Footer />
+        </div>
+      );
+    }
+
     return (
       <div className="min-h-screen bg-background">
         <Header />
