@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ToolStatsMap {
@@ -9,11 +9,23 @@ interface ToolStatsMap {
   };
 }
 
+// Cache for stats to avoid refetching
+let cachedStatsMap: ToolStatsMap | null = null;
+let cacheTimestamp = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+
 export function useAllToolStats() {
-  const [statsMap, setStatsMap] = useState<ToolStatsMap>({});
-  const [loading, setLoading] = useState(true);
+  const [statsMap, setStatsMap] = useState<ToolStatsMap>(cachedStatsMap || {});
+  const [loading, setLoading] = useState(!cachedStatsMap);
 
   useEffect(() => {
+    // Use cached data if fresh
+    if (cachedStatsMap && Date.now() - cacheTimestamp < CACHE_DURATION) {
+      setStatsMap(cachedStatsMap);
+      setLoading(false);
+      return;
+    }
+
     const fetchAllStats = async () => {
       try {
         const { data, error } = await supabase
@@ -22,13 +34,16 @@ export function useAllToolStats() {
 
         if (!error && data) {
           const map: ToolStatsMap = {};
-          data.forEach((item) => {
+          for (let i = 0; i < data.length; i++) {
+            const item = data[i];
             map[item.tool_id] = {
               viewCount: item.view_count || 0,
-              averageRating: parseFloat(String(item.average_rating)) || 0,
+              averageRating: Number(item.average_rating) || 0,
               totalRatings: item.total_ratings || 0
             };
-          });
+          }
+          cachedStatsMap = map;
+          cacheTimestamp = Date.now();
           setStatsMap(map);
         }
       } catch (err) {
@@ -41,21 +56,27 @@ export function useAllToolStats() {
     fetchAllStats();
   }, []);
 
-  const getStats = (toolId: string) => {
+  const getStats = useCallback((toolId: string) => {
     return statsMap[toolId] || { viewCount: 0, averageRating: 0, totalRatings: 0 };
-  };
+  }, [statsMap]);
 
-  // Get trending tools (sorted by views)
+  // Get trending tools (sorted by views) - memoized for performance
   const trendingToolIds = useMemo(() => {
-    return Object.entries(statsMap)
+    const entries = Object.entries(statsMap);
+    if (entries.length === 0) return [];
+    
+    return entries
       .sort((a, b) => b[1].viewCount - a[1].viewCount)
       .slice(0, 8)
       .map(([toolId]) => toolId);
   }, [statsMap]);
 
-  // Get top rated tools
+  // Get top rated tools - memoized for performance
   const topRatedToolIds = useMemo(() => {
-    return Object.entries(statsMap)
+    const entries = Object.entries(statsMap);
+    if (entries.length === 0) return [];
+    
+    return entries
       .filter(([_, stats]) => stats.totalRatings >= 1)
       .sort((a, b) => b[1].averageRating - a[1].averageRating)
       .slice(0, 6)

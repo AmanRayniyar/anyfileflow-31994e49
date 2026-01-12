@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface ToolStats {
@@ -6,6 +6,10 @@ interface ToolStats {
   averageRating: number;
   totalRatings: number;
 }
+
+// Cache for individual tool stats
+const statsCache = new Map<string, { data: ToolStats; timestamp: number }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
 
 // Generate a unique fingerprint for the user
 const getUserFingerprint = (): string => {
@@ -18,17 +22,29 @@ const getUserFingerprint = (): string => {
 };
 
 export function useToolStats(toolId: string) {
-  const [stats, setStats] = useState<ToolStats>({
-    viewCount: 0,
-    averageRating: 0,
-    totalRatings: 0
+  const [stats, setStats] = useState<ToolStats>(() => {
+    // Initialize from cache if available
+    const cached = statsCache.get(toolId);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      return cached.data;
+    }
+    return { viewCount: 0, averageRating: 0, totalRatings: 0 };
   });
   const [userRating, setUserRating] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(() => !statsCache.has(toolId));
   const [submitting, setSubmitting] = useState(false);
+  const fetchedRef = useRef(false);
 
-  // Fetch stats
+  // Fetch stats with caching
   const fetchStats = useCallback(async () => {
+    // Check cache first
+    const cached = statsCache.get(toolId);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+      setStats(cached.data);
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data, error } = await supabase
         .from("tool_stats")
@@ -37,14 +53,18 @@ export function useToolStats(toolId: string) {
         .maybeSingle();
 
       if (!error && data) {
-        setStats({
+        const newStats = {
           viewCount: data.view_count || 0,
-          averageRating: parseFloat(String(data.average_rating)) || 0,
+          averageRating: Number(data.average_rating) || 0,
           totalRatings: data.total_ratings || 0
-        });
+        };
+        statsCache.set(toolId, { data: newStats, timestamp: Date.now() });
+        setStats(newStats);
       }
     } catch (err) {
       console.error("Error fetching tool stats:", err);
+    } finally {
+      setLoading(false);
     }
   }, [toolId]);
 
@@ -67,22 +87,22 @@ export function useToolStats(toolId: string) {
     }
   }, [toolId]);
 
-  // Increment view count
-  const incrementView = useCallback(async () => {
-    try {
-      // Check if already viewed in this session
-      const viewedKey = `viewed-${toolId}`;
-      if (sessionStorage.getItem(viewedKey)) return;
-      
-      await supabase.rpc("increment_tool_view", { p_tool_id: toolId });
-      sessionStorage.setItem(viewedKey, "true");
-      
-      // Refresh stats after increment
-      await fetchStats();
-    } catch (err) {
-      console.error("Error incrementing view:", err);
-    }
-  }, [toolId, fetchStats]);
+  // Increment view count (fire and forget)
+  const incrementView = useCallback(() => {
+    const viewedKey = `viewed-${toolId}`;
+    if (sessionStorage.getItem(viewedKey)) return;
+    
+    sessionStorage.setItem(viewedKey, "true");
+    
+    // Fire and forget - async call
+    (async () => {
+      try {
+        await supabase.rpc("increment_tool_view", { p_tool_id: toolId });
+      } catch (e) {
+        console.error(e);
+      }
+    })();
+  }, [toolId]);
 
   // Submit rating
   const submitRating = async (rating: number): Promise<boolean> => {
@@ -107,6 +127,8 @@ export function useToolStats(toolId: string) {
       }
 
       setUserRating(rating);
+      // Invalidate cache and refetch
+      statsCache.delete(toolId);
       await fetchStats();
       return true;
     } catch (err) {
@@ -117,18 +139,17 @@ export function useToolStats(toolId: string) {
     }
   };
 
-  // Initial load
+  // Initial load - only once
   useEffect(() => {
-    const init = async () => {
-      setLoading(true);
-      await Promise.all([fetchStats(), checkUserRating()]);
+    if (fetchedRef.current || !toolId) return;
+    fetchedRef.current = true;
+
+    // Start fetch immediately
+    setLoading(true);
+    Promise.all([fetchStats(), checkUserRating()]).finally(() => {
       setLoading(false);
       incrementView();
-    };
-    
-    if (toolId) {
-      init();
-    }
+    });
   }, [toolId, fetchStats, checkUserRating, incrementView]);
 
   return {
