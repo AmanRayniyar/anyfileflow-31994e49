@@ -79,7 +79,7 @@ export function useBlogPosts() {
           author: post.author,
           category: post.category,
           tags: post.tags,
-          published: post.published
+          published: post.published !== undefined ? post.published : true
         })
         .select()
         .single();
@@ -87,7 +87,13 @@ export function useBlogPosts() {
       if (error) throw error;
       return mapDbToPost(data);
     },
-    onSuccess: () => {
+    onSuccess: (newPost) => {
+      // Immediately update the cache with the new post
+      queryClient.setQueryData<BlogPost[]>(["blog-posts"], (oldPosts) => {
+        if (!oldPosts) return [newPost];
+        return [newPost, ...oldPosts];
+      });
+      // Also invalidate to ensure consistency
       queryClient.invalidateQueries({ queryKey: ["blog-posts"] });
     },
   });
