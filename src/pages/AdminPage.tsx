@@ -186,7 +186,7 @@ const AdminPage = () => {
     setIsCreating(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     const postData = {
@@ -194,15 +194,19 @@ const AdminPage = () => {
       tags: formData.tags.split(",").map((t) => t.trim()).filter(Boolean)
     };
 
-    if (editingPost) {
-      updatePost(editingPost.id, postData);
-      toast.success("Post updated successfully!");
-    } else {
-      addPost(postData);
-      toast.success("Post created successfully!");
+    try {
+      if (editingPost) {
+        await updatePost(editingPost.id, postData);
+        toast.success("Post updated successfully!");
+      } else {
+        await addPost(postData);
+        toast.success("Post created and published successfully!");
+      }
+      resetForm();
+    } catch (error) {
+      console.error("Error saving post:", error);
+      toast.error("Failed to save post. Please try again.");
     }
-    
-    resetForm();
   };
 
   const handleEdit = (post: BlogPost) => {
