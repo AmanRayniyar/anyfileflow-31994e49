@@ -23,7 +23,7 @@ const SESSION_TYPE_KEY = "anyfileflow_admin_type";
 type AdminType = 'blog' | 'tools' | 'master';
 
 const AdminPage = () => {
-  const { allPosts, addPost, updatePost, deletePost } = useBlogPosts();
+  const { allPosts, addPost, updatePost, deletePost } = useBlogPosts({ admin: true });
   const { tools, loading: toolsLoading, toggleEnabled, togglePopular, updateTool } = useToolsAdmin();
   
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
