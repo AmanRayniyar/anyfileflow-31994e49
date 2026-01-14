@@ -46,77 +46,87 @@ const mapDbToPost = (db: DbBlogPost): BlogPost => ({
   published: db.published
 });
 
-const fetchBlogPosts = async (): Promise<BlogPost[]> => {
+const fetchBlogPostsPublic = async (): Promise<BlogPost[]> => {
   const { data, error } = await supabase
     .from("blog_posts")
     .select("*")
+    .eq("published", true)
     .order("created_at", { ascending: false });
 
   if (error) throw error;
   return (data || []).map(mapDbToPost);
 };
 
-export function useBlogPosts() {
+const fetchBlogPostsAdmin = async (): Promise<BlogPost[]> => {
+  const sessionToken = sessionStorage.getItem("anyfileflow_admin_session");
+  if (!sessionToken) throw new Error("Admin session expired. Please login again.");
+
+  const { data, error } = await supabase.functions.invoke("verify-admin", {
+    body: { action: "blog-list", sessionToken },
+  });
+
+  if (error) throw error;
+  if (!data?.success) throw new Error(data?.error || "Failed to load blog posts");
+
+  const rows = (data.posts ?? []) as DbBlogPost[];
+  return rows.map(mapDbToPost);
+};
+
+export function useBlogPosts(options?: { admin?: boolean }) {
   const queryClient = useQueryClient();
+  const isAdmin = !!options?.admin;
 
   const { data: posts = [], isLoading: loading, error } = useQuery({
-    queryKey: ["blog-posts"],
-    queryFn: fetchBlogPosts,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
-    gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
+    queryKey: ["blog-posts", isAdmin ? "admin" : "public"],
+    queryFn: isAdmin ? fetchBlogPostsAdmin : fetchBlogPostsPublic,
+    staleTime: isAdmin ? 0 : 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 
   const addMutation = useMutation({
     mutationFn: async (post: Omit<BlogPost, "id" | "createdAt" | "updatedAt">) => {
-      const { data, error } = await supabase
-        .from("blog_posts")
-        .insert({
-          title: post.title,
-          slug: post.slug,
-          excerpt: post.excerpt,
-          content: post.content,
-          image: post.image || null,
-          author: post.author,
-          category: post.category,
-          tags: post.tags,
-          published: post.published !== undefined ? post.published : true
-        })
-        .select()
-        .single();
+      if (!isAdmin) {
+        throw new Error("Not allowed");
+      }
+
+      const sessionToken = sessionStorage.getItem("anyfileflow_admin_session");
+      if (!sessionToken) throw new Error("Admin session expired. Please login again.");
+
+      const { data, error } = await supabase.functions.invoke("verify-admin", {
+        body: { action: "blog-create", sessionToken, post },
+      });
 
       if (error) throw error;
-      return mapDbToPost(data);
+      if (!data?.success) throw new Error(data?.error || "Failed to create blog post");
+
+      return mapDbToPost(data.post as DbBlogPost);
     },
     onSuccess: (newPost) => {
-      // Immediately update the cache with the new post
-      queryClient.setQueryData<BlogPost[]>(["blog-posts"], (oldPosts) => {
+      queryClient.setQueryData<BlogPost[]>(["blog-posts", "admin"], (oldPosts) => {
         if (!oldPosts) return [newPost];
         return [newPost, ...oldPosts];
       });
-      // Also invalidate to ensure consistency
       queryClient.invalidateQueries({ queryKey: ["blog-posts"] });
     },
   });
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<BlogPost> }) => {
-      const dbUpdates: Record<string, unknown> = {};
-      if (updates.title !== undefined) dbUpdates.title = updates.title;
-      if (updates.slug !== undefined) dbUpdates.slug = updates.slug;
-      if (updates.excerpt !== undefined) dbUpdates.excerpt = updates.excerpt;
-      if (updates.content !== undefined) dbUpdates.content = updates.content;
-      if (updates.image !== undefined) dbUpdates.image = updates.image;
-      if (updates.author !== undefined) dbUpdates.author = updates.author;
-      if (updates.category !== undefined) dbUpdates.category = updates.category;
-      if (updates.tags !== undefined) dbUpdates.tags = updates.tags;
-      if (updates.published !== undefined) dbUpdates.published = updates.published;
+      if (!isAdmin) {
+        throw new Error("Not allowed");
+      }
 
-      const { error } = await supabase
-        .from("blog_posts")
-        .update(dbUpdates)
-        .eq("id", id);
+      const sessionToken = sessionStorage.getItem("anyfileflow_admin_session");
+      if (!sessionToken) throw new Error("Admin session expired. Please login again.");
+
+      const { data, error } = await supabase.functions.invoke("verify-admin", {
+        body: { action: "blog-update", sessionToken, id, updates },
+      });
 
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || "Failed to update blog post");
+
+      return mapDbToPost(data.post as DbBlogPost);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blog-posts"] });
@@ -125,12 +135,19 @@ export function useBlogPosts() {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from("blog_posts")
-        .delete()
-        .eq("id", id);
+      if (!isAdmin) {
+        throw new Error("Not allowed");
+      }
+
+      const sessionToken = sessionStorage.getItem("anyfileflow_admin_session");
+      if (!sessionToken) throw new Error("Admin session expired. Please login again.");
+
+      const { data, error } = await supabase.functions.invoke("verify-admin", {
+        body: { action: "blog-delete", sessionToken, id },
+      });
 
       if (error) throw error;
+      if (!data?.success) throw new Error(data?.error || "Failed to delete blog post");
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["blog-posts"] });
@@ -150,20 +167,22 @@ export function useBlogPosts() {
   };
 
   const getPostBySlug = (slug: string) => {
-    return posts.find(post => post.slug === slug && post.published);
+    return posts.find((post) => post.slug === slug && post.published);
   };
 
-  const publishedPosts = posts.filter(post => post.published);
+  // Public pages should only see published posts; admin can see all
+  const visiblePosts = isAdmin ? posts : posts.filter((p) => p.published);
 
   return {
-    posts: publishedPosts,
-    allPosts: posts,
+    posts: visiblePosts.filter((p) => p.published),
+    allPosts: visiblePosts,
     loading,
     error: error ? (error instanceof Error ? error.message : "Failed to fetch posts") : null,
     addPost,
     updatePost,
     deletePost,
     getPostBySlug,
-    refetch: () => queryClient.invalidateQueries({ queryKey: ["blog-posts"] })
+    refetch: () => queryClient.invalidateQueries({ queryKey: ["blog-posts"] }),
   };
 }
+
