@@ -4,6 +4,7 @@ import { ArrowLeft, Droplet, Zap, Shield, Globe, Heart, Users } from "lucide-rea
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import SEOHead from "@/components/SEOHead";
 
 const AboutPage = () => {
   const aboutSchema = {
@@ -22,14 +23,12 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="About AnyFile Flow | AnyFileFlow | Any File Flow - Our Mission"
+        description="Learn about AnyFile Flow (also known as AnyFileFlow, Any File Flow). We're on a mission to make file conversion accessible, fast, and free for everyone."
+        keywords="about AnyFile Flow, about AnyFileFlow, about Any File Flow, anyfileflow mission, file converter about"
+      />
       <Helmet>
-        <title>About AnyFile Flow | AnyFileFlow | Any File Flow - Our Mission</title>
-        <meta name="description" content="Learn about AnyFile Flow (also known as AnyFileFlow, Any File Flow). We're on a mission to make file conversion accessible, fast, and free for everyone." />
-        <meta name="keywords" content="about AnyFile Flow, about AnyFileFlow, about Any File Flow, anyfileflow mission, file converter about" />
-        <link rel="canonical" href="https://anyfileflow.com/about" />
-        <meta property="og:title" content="About AnyFile Flow | AnyFileFlow | Any File Flow" />
-        <meta property="og:description" content="Learn about AnyFile Flow (AnyFileFlow / Any File Flow). Making file conversion accessible, fast, and free." />
-        <meta property="og:url" content="https://anyfileflow.com/about" />
         <script type="application/ld+json">{JSON.stringify(aboutSchema)}</script>
       </Helmet>
 

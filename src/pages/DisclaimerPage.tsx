@@ -1,20 +1,14 @@
-import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 
 const DisclaimerPage = () => {
   return (
     <>
-      <Helmet>
-        <title>Disclaimer - AnyFile Flow</title>
-        <meta name="description" content="Read our disclaimer to understand the limitations and responsibilities when using AnyFile Flow's online tools." />
-        <meta name="robots" content="index, follow" />
-        <link rel="canonical" href="https://anyfileflow.com/disclaimer" />
-        <meta property="og:title" content="Disclaimer - AnyFile Flow" />
-        <meta property="og:description" content="Read our disclaimer for using AnyFile Flow's online tools." />
-        <meta property="og:url" content="https://anyfileflow.com/disclaimer" />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <SEOHead
+        title="Disclaimer - AnyFile Flow"
+        description="Read our disclaimer to understand the limitations and responsibilities when using AnyFile Flow's online tools."
+      />
 
       <div className="min-h-screen bg-background">
         <Header />

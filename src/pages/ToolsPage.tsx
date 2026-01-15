@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
 import { Filter, Grid3X3, List, ArrowLeft } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -10,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { categories, ToolCategory } from "@/data/tools";
 import { cn } from "@/lib/utils";
 import { useAllEnabledTools } from "@/hooks/useAllEnabledTools";
+import SEOHead from "@/components/SEOHead";
 
 const ToolsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,26 +42,11 @@ const ToolsPage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        <meta
-          name="keywords"
-          content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, free online tools, file converter, image tools, audio tools"
-        />
-        <meta name="robots" content="index, follow" />
-        <link
-          rel="canonical"
-          href={`https://anyfileflow.com/tools${selectedCategory ? `?category=${selectedCategory}` : ""}`}
-        />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta
-          property="og:url"
-          content={`https://anyfileflow.com/tools${selectedCategory ? `?category=${selectedCategory}` : ""}`}
-        />
-        <meta property="og:type" content="website" />
-      </Helmet>
+      <SEOHead
+        title={pageTitle}
+        description={pageDescription}
+        keywords="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, free online tools, file converter, image tools, audio tools"
+      />
 
       <div className="min-h-screen bg-background">
         <a

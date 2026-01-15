@@ -1,6 +1,5 @@
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { Helmet } from "react-helmet-async";
 import { useEffect, lazy, Suspense, useMemo } from "react";
 import ShareButton from "@/components/ShareButton";
 import ToolAIHelp from "@/components/ToolAIHelp";
@@ -8,6 +7,7 @@ import ToolSEOSchemas from "@/components/ToolSEOSchemas";
 import ToolRating from "@/components/ToolRating";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
+import SEOHead from "@/components/SEOHead";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -249,37 +249,12 @@ const ToolPage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{getPageTitle()}</title>
-        <meta name="description" content={getPageDescription()} />
-        <meta name="keywords" content={`${tool.name}, ${tool.from} to ${tool.to}, ${tool.from} converter, ${tool.to} converter, free ${tool.name.toLowerCase()}, online ${tool.name.toLowerCase()}, AnyFile Flow, free online tool, browser-based tool`} />
-        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
-        <meta name="author" content="Aman Rauniyar" />
-        <meta name="rating" content="General" />
-        <meta name="revisit-after" content="3 days" />
-        <meta property="og:title" content={getPageTitle()} />
-        <meta property="og:description" content={getPageDescription()} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://anyfileflow.com/tool/${tool.id}`} />
-        <meta property="og:site_name" content="AnyFile Flow" />
-        <meta property="og:locale" content="en_US" />
-        <meta property="og:image" content={`https://anyfileflow.com/og-${tool.id}.png`} />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content={`${tool.name} - Free Online Tool`} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={getPageTitle()} />
-        <meta name="twitter:description" content={getPageDescription()} />
-        <link rel="canonical" href={`https://anyfileflow.com/tool/${tool.id}`} />
-        
-        {/* Hreflang tags for international SEO */}
-        <link rel="alternate" hrefLang="en-US" href={`https://anyfileflow.com/tool/${tool.id}`} />
-        <link rel="alternate" hrefLang="en-GB" href={`https://anyfileflow.com/tool/${tool.id}`} />
-        <link rel="alternate" hrefLang="en-IN" href={`https://anyfileflow.com/tool/${tool.id}`} />
-        <link rel="alternate" hrefLang="en-AU" href={`https://anyfileflow.com/tool/${tool.id}`} />
-        <link rel="alternate" hrefLang="en-NP" href={`https://anyfileflow.com/tool/${tool.id}`} />
-        <link rel="alternate" hrefLang="x-default" href={`https://anyfileflow.com/tool/${tool.id}`} />
-      </Helmet>
+      <SEOHead
+        title={getPageTitle()}
+        description={getPageDescription()}
+        keywords={`${tool.name}, ${tool.from} to ${tool.to}, ${tool.from} converter, ${tool.to} converter, free ${tool.name.toLowerCase()}, online ${tool.name.toLowerCase()}, AnyFile Flow, free online tool, browser-based tool`}
+        ogImage={`https://anyfileflow.com/og-${tool.id}.png`}
+      />
       
       {/* SEO Schemas for ALL tools */}
       <ToolSEOSchemas 
