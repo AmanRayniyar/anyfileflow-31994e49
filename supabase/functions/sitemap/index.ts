@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-const SITE_URL = "https://anyfileflow.lovable.app";
+const SITE_URL = "https://anyfileflow.com";
 const TODAY = new Date().toISOString().split("T")[0];
 
 // Static pages with their priorities and change frequencies

@@ -1,8 +1,8 @@
 import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
-import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SEOHead from "@/components/SEOHead";
 
 const NotFound = () => {
   const location = useLocation();
@@ -13,11 +13,11 @@ const NotFound = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Page Not Found - AnyFile Flow</title>
-        <meta name="description" content="The page you're looking for doesn't exist. Return to AnyFile Flow homepage to explore 1000+ free online tools." />
-        <meta name="robots" content="noindex, follow" />
-      </Helmet>
+      <SEOHead
+        title="Page Not Found - AnyFile Flow"
+        description="The page you're looking for doesn't exist. Return to AnyFile Flow homepage to explore 1000+ free online tools."
+        noIndex={true}
+      />
       <div className="min-h-screen bg-background">
         <Header />
         <main className="flex flex-1 items-center justify-center py-20">

@@ -1,5 +1,5 @@
 # Robots.txt for AnyFile Flow
-# https://anyfileflow.lovable.app
+# https://anyfileflow.com
 
 User-agent: Googlebot
 Allow: /
@@ -36,4 +36,4 @@ Crawl-delay: 2
 Sitemap: https://cmcvkmttlrjahpxsotyr.supabase.co/functions/v1/sitemap
 
 # Host
-Host: https://anyfileflow.lovable.app
+Host: https://anyfileflow.com

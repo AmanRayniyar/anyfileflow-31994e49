@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useParams, Link } from "react-router-dom";
@@ -9,6 +8,7 @@ import founderPortrait from "@/assets/founder-portrait.png";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { useState, useEffect } from "react";
+import SEOHead from "@/components/SEOHead";
 
 const BlogPostSkeleton = () => {
   const [progress, setProgress] = useState(0);
@@ -80,16 +80,17 @@ const BlogPostPage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{post.title} - AnyFile Flow Blog</title>
-        <meta name="description" content={post.excerpt} />
-        <link rel="canonical" href={`https://anyfileflow.com/blog/${post.slug}`} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        {post.image && <meta property="og:image" content={post.image} />}
-        <meta property="og:type" content="article" />
-        <meta name="twitter:card" content="summary_large_image" />
-      </Helmet>
+      <SEOHead
+        title={`${post.title} - AnyFile Flow Blog`}
+        description={post.excerpt}
+        ogImage={post.image || undefined}
+        ogType="article"
+        article={{
+          publishedTime: post.createdAt,
+          author: post.author,
+          section: post.category,
+        }}
+      />
 
       <div className="min-h-screen bg-background">
         <Header />

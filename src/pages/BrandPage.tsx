@@ -4,6 +4,7 @@ import { ArrowLeft, Shield, Zap, Globe, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import SEOHead from "@/components/SEOHead";
 
 const BrandPage = () => {
   const brandSchema = {
@@ -22,14 +23,12 @@ const BrandPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="About AnyFile Flow Brand | AnyFileFlow | Any File Flow - Our Identity"
+        description="Learn about AnyFile Flow brand identity. Whether you call us AnyFileFlow, Any File Flow, anyfileflow, or any file flow — we're the same trusted platform with 1000+ free tools."
+        keywords="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, any file flow, brand, about, file converter brand"
+      />
       <Helmet>
-        <title>About AnyFile Flow Brand | AnyFileFlow | Any File Flow - Our Identity</title>
-        <meta name="description" content="Learn about AnyFile Flow brand identity. Whether you call us AnyFileFlow, Any File Flow, anyfileflow, or any file flow — we're the same trusted platform with 1000+ free tools." />
-        <meta name="keywords" content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, any file flow, brand, about, file converter brand" />
-        <link rel="canonical" href="https://anyfileflow.com/brand" />
-        <meta property="og:title" content="About AnyFile Flow Brand | AnyFileFlow | Any File Flow" />
-        <meta property="og:description" content="Learn about AnyFile Flow brand. Also known as AnyFileFlow, Any File Flow, anyfileflow. 1000+ free file conversion tools." />
-        <meta property="og:url" content="https://anyfileflow.com/brand" />
         <script type="application/ld+json">{JSON.stringify(brandSchema)}</script>
       </Helmet>
       

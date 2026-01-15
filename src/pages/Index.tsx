@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { memo, Suspense, lazy, useMemo, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -7,6 +6,8 @@ import CategorySection from "@/components/CategorySection";
 import SearchBar from "@/components/SearchBar";
 import { categories, ToolCategory, tools } from "@/data/tools";
 import { cn } from "@/lib/utils";
+import SEOHead from "@/components/SEOHead";
+import { Helmet } from "react-helmet-async";
 
 // Lazy load below-fold components
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
@@ -148,18 +149,12 @@ const Index = memo(() => {
 
   return (
     <>
+      <SEOHead
+        title="AnyFile Flow | AnyFileFlow | Any File Flow - 1000+ Free Online File Conversion Tools"
+        description="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. 1000+ free online tools for image, document, audio, video conversion. Fast, secure, no registration required."
+        keywords="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, any file flow, file converter, image converter, pdf tools, audio converter, video editor, online tools, free tools, jpg to png, webp converter"
+      />
       <Helmet>
-        <title>AnyFile Flow | AnyFileFlow | Any File Flow - 1000+ Free Online File Conversion Tools</title>
-        <meta name="description" content="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. 1000+ free online tools for image, document, audio, video conversion. Fast, secure, no registration required." />
-        <meta name="keywords" content="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, any file flow, file converter, image converter, pdf tools, audio converter, video editor, online tools, free tools, jpg to png, webp converter" />
-        <link rel="canonical" href="https://anyfileflow.com/" />
-        <meta property="og:title" content="AnyFile Flow | AnyFileFlow | Any File Flow - 1000+ Free Online Tools" />
-        <meta property="og:description" content="Welcome to AnyFile Flow (AnyFileFlow / Any File Flow). Convert, edit, and transform your files with 1000+ free online tools. No limits, no registration." />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://anyfileflow.com/" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="AnyFile Flow | AnyFileFlow - 1000+ Free Online Tools" />
-        <meta name="twitter:description" content="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. Convert, edit, and transform files with 1000+ free online tools." />
         <script type="application/ld+json">{JSON.stringify(schemas.website)}</script>
         <script type="application/ld+json">{JSON.stringify(schemas.organization)}</script>
         <script type="application/ld+json">{JSON.stringify(schemas.softwareApp)}</script>
