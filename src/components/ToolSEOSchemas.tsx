@@ -195,22 +195,22 @@ const ToolSEOSchemas = ({
     }
   };
 
+  // Combine all schemas into a single graph to avoid duplicate field issues
+  const combinedSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      { ...breadcrumbSchema, "@context": undefined },
+      { ...softwareSchema, "@context": undefined },
+      { ...faqSchema, "@context": undefined },
+      { ...howToSchema, "@context": undefined },
+      { ...webPageSchema, "@context": undefined }
+    ]
+  };
+
   return (
     <Helmet>
       <script type="application/ld+json">
-        {JSON.stringify(breadcrumbSchema)}
-      </script>
-      <script type="application/ld+json">
-        {JSON.stringify(softwareSchema)}
-      </script>
-      <script type="application/ld+json">
-        {JSON.stringify(faqSchema)}
-      </script>
-      <script type="application/ld+json">
-        {JSON.stringify(howToSchema)}
-      </script>
-      <script type="application/ld+json">
-        {JSON.stringify(webPageSchema)}
+        {JSON.stringify(combinedSchema)}
       </script>
     </Helmet>
   );
