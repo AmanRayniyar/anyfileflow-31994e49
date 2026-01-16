@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Progress } from "@/components/ui/progress";
 import { useState, useEffect } from "react";
 import SEOHead from "@/components/SEOHead";
+import SEOBreadcrumb, { generateBlogBreadcrumbs } from "@/components/SEOBreadcrumb";
 
 const BlogPostSkeleton = () => {
   const [progress, setProgress] = useState(0);
@@ -95,6 +96,9 @@ const BlogPostPage = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-4 py-12">
+          {/* SEO-Optimized Breadcrumb */}
+          <SEOBreadcrumb items={generateBlogBreadcrumbs(post.title)} />
+          
           <article className="max-w-3xl mx-auto">
             <Link to="/blog" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
               <ArrowLeft className="h-4 w-4" /> Back to Blog
