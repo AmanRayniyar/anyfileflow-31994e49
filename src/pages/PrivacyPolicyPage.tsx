@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SEOHead from "@/components/SEOHead";
+import SEOBreadcrumb, { generateSimpleBreadcrumbs } from "@/components/SEOBreadcrumb";
 
 const PrivacyPolicyPage = () => {
   return (
@@ -13,6 +14,9 @@ const PrivacyPolicyPage = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-4 py-12">
+          {/* SEO-Optimized Breadcrumb */}
+          <SEOBreadcrumb items={generateSimpleBreadcrumbs("Privacy Policy")} />
+          
           <article className="max-w-3xl mx-auto prose dark:prose-invert prose-headings:text-foreground prose-p:text-muted-foreground">
             <h1>Privacy Policy</h1>
             <p className="text-muted-foreground">Last updated: January 2024</p>

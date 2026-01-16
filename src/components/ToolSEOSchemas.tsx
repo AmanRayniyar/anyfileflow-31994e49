@@ -195,11 +195,10 @@ const ToolSEOSchemas = ({
     }
   };
 
-  // Combine all schemas into a single graph to avoid duplicate field issues
+  // Combine all schemas into a single graph (breadcrumb handled by SEOBreadcrumb component)
   const combinedSchema = {
     "@context": "https://schema.org",
     "@graph": [
-      { ...breadcrumbSchema, "@context": undefined },
       { ...softwareSchema, "@context": undefined },
       { ...faqSchema, "@context": undefined },
       { ...howToSchema, "@context": undefined },

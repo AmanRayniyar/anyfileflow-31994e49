@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
-import { Filter, Grid3X3, List, ArrowLeft } from "lucide-react";
+import { Filter, Grid3X3, List } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ToolCard from "@/components/ToolCard";
@@ -10,6 +10,7 @@ import { categories, ToolCategory } from "@/data/tools";
 import { cn } from "@/lib/utils";
 import { useAllEnabledTools } from "@/hooks/useAllEnabledTools";
 import SEOHead from "@/components/SEOHead";
+import SEOBreadcrumb, { generateSimpleBreadcrumbs, BreadcrumbItem } from "@/components/SEOBreadcrumb";
 
 const ToolsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -57,17 +58,21 @@ const ToolsPage = () => {
         </a>
         <Header />
         <main id="main-content" className="container mx-auto px-4 py-8" role="main">
+          {/* SEO-Optimized Breadcrumb */}
+          <SEOBreadcrumb 
+            items={
+              selectedCategoryInfo 
+                ? [
+                    { name: "Home", url: "/" },
+                    { name: "Tools", url: "/tools" },
+                    { name: selectedCategoryInfo.name }
+                  ] as BreadcrumbItem[]
+                : generateSimpleBreadcrumbs("All Tools")
+            }
+          />
+          
           {/* Page Header */}
           <div className="mb-8">
-            <nav aria-label="Breadcrumb" className="flex items-center gap-2 mb-4">
-              <Link
-                to="/"
-                className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-                Home
-              </Link>
-            </nav>
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
               {selectedCategoryInfo ? selectedCategoryInfo.name : "All AnyFile Flow Tools"}
             </h1>

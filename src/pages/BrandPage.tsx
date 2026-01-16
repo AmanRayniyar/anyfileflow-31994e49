@@ -1,10 +1,11 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Shield, Zap, Globe, CheckCircle } from "lucide-react";
+import { Shield, Zap, Globe, CheckCircle } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import SEOHead from "@/components/SEOHead";
+import SEOBreadcrumb, { generateSimpleBreadcrumbs } from "@/components/SEOBreadcrumb";
 
 const BrandPage = () => {
   const brandSchema = {
@@ -35,15 +36,8 @@ const BrandPage = () => {
       <Header />
       
       <main className="container mx-auto px-4 py-8">
-        {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 mb-8" aria-label="Breadcrumb">
-          <Link to="/" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-4 w-4" />
-            Home
-          </Link>
-          <span className="text-muted-foreground">/</span>
-          <span className="text-sm font-medium text-foreground">About Our Brand</span>
-        </nav>
+        {/* SEO-Optimized Breadcrumb */}
+        <SEOBreadcrumb items={generateSimpleBreadcrumbs("About Our Brand")} />
 
         {/* Hero */}
         <header className="text-center max-w-4xl mx-auto mb-16">

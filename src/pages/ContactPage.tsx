@@ -8,6 +8,7 @@ import { Mail, MapPin, Clock, Send } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import SEOHead from "@/components/SEOHead";
+import SEOBreadcrumb, { generateSimpleBreadcrumbs } from "@/components/SEOBreadcrumb";
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -65,6 +66,9 @@ const ContactPage = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-4 py-12">
+          {/* SEO-Optimized Breadcrumb */}
+          <SEOBreadcrumb items={generateSimpleBreadcrumbs("Contact Us")} />
+          
           <div className="max-w-5xl mx-auto">
             <header className="text-center mb-12">
               <h1 className="text-4xl font-bold text-foreground mb-4">Contact Us</h1>

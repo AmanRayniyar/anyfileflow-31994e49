@@ -5,6 +5,7 @@ import { Calendar, User, Tag, ArrowRight } from "lucide-react";
 import { useBlogPosts } from "@/hooks/useBlog";
 import { Skeleton } from "@/components/ui/skeleton";
 import SEOHead from "@/components/SEOHead";
+import SEOBreadcrumb, { generateSimpleBreadcrumbs } from "@/components/SEOBreadcrumb";
 
 const BlogPostSkeleton = () => (
   <article className="bg-card border border-border rounded-xl overflow-hidden">
@@ -40,6 +41,9 @@ const BlogPage = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main className="container mx-auto px-4 py-12">
+          {/* SEO-Optimized Breadcrumb */}
+          <SEOBreadcrumb items={generateSimpleBreadcrumbs("Blog")} />
+          
           <div className="max-w-4xl mx-auto">
             <header className="mb-12 text-center">
               <h1 className="text-4xl font-bold text-foreground mb-4">Blog</h1>
