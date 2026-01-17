@@ -42,6 +42,7 @@ const AudioCutterTool = lazy(() => import("@/components/tools/AudioCutterTool"))
 const AudioJoinerTool = lazy(() => import("@/components/tools/AudioJoinerTool"));
 const PregnancyDueDateTool = lazy(() => import("@/components/tools/PregnancyDueDateTool"));
 const AudioPitchChangerTool = lazy(() => import("@/components/tools/AudioPitchChangerTool"));
+const BoomerangVideoTool = lazy(() => import("@/components/tools/BoomerangVideoTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -57,6 +58,7 @@ const AudioCutterSeoContent = lazy(() => import("@/components/tools/AudioCutterS
 const AudioJoinerSeoContent = lazy(() => import("@/components/tools/AudioJoinerSeoContent"));
 const PregnancyDueDateSeoContent = lazy(() => import("@/components/tools/PregnancyDueDateSeoContent"));
 const AudioPitchChangerSeoContent = lazy(() => import("@/components/tools/AudioPitchChangerSeoContent"));
+const BoomerangVideoSeoContent = lazy(() => import("@/components/tools/BoomerangVideoSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -210,6 +212,11 @@ const ToolPage = () => {
     // Special case for Audio Pitch Changer
     if (tool.id === 'pitch-changer') {
       return <AudioPitchChangerTool />;
+    }
+    
+    // Special case for Boomerang Video Maker
+    if (tool.id === 'boomerang-video') {
+      return <BoomerangVideoTool />;
     }
     
     switch (tool.toolType) {
@@ -458,6 +465,13 @@ const ToolPage = () => {
               {tool.id === 'pitch-changer' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <AudioPitchChangerSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Boomerang Video Maker Tool */}
+              {tool.id === 'boomerang-video' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <BoomerangVideoSeoContent />
                 </Suspense>
               )}
 
