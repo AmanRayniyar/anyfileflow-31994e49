@@ -6,7 +6,7 @@ export const enTranslation: ToolTranslation = {
   pageDescription: "Convert JPG to PNG online for free. Keep transparency, lossless quality, no signup required. Fast browser-based conversion with no file uploads to servers.",
   
   // Hero section
-  heroTitle: "JPG to PNG Converter Online – Free & Lossless",
+  heroTitle: "JPG to PNG Converter – Free, Fast & Secure | AnyFile Flow",
   heroSubtitle: "Convert JPG images to PNG format instantly",
   heroDescription: "Transform your JPG images to PNG format with full transparency support. Our free online converter works entirely in your browser—no uploads, no registration, no quality loss.",
   
