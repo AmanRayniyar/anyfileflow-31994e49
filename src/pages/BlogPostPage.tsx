@@ -107,11 +107,19 @@ const BlogPostPage = () => {
             {/* Show founder portrait for founder blog post */}
             {post.slug === "founder-aman-rauniyar-anyfile-flow" ? (
               <div className="flex flex-col md:flex-row items-center gap-8 mb-8 p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-2xl">
-                <img 
-                  src={founderPortrait} 
-                  alt="Aman Rauniyar - Founder of AnyFile Flow"
-                  className="w-48 h-48 md:w-64 md:h-64 object-cover rounded-full border-4 border-primary/20 shadow-xl"
-                />
+                <div className="relative">
+                  <img 
+                    src={founderPortrait} 
+                    alt="Aman Rauniyar - Founder of AnyFile Flow"
+                    className="w-48 h-48 md:w-64 md:h-64 object-cover rounded-full border-4 border-primary/20 shadow-xl"
+                  />
+                  {/* Blue Verified Badge */}
+                  <div className="absolute bottom-2 right-2 md:bottom-4 md:right-4 bg-[#1DA1F2] rounded-full p-1.5 md:p-2 shadow-lg border-2 border-white dark:border-background">
+                    <svg className="w-5 h-5 md:w-6 md:h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                  </div>
+                </div>
                 <div className="text-center md:text-left">
                   <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2">Aman Rauniyar</h2>
                   <p className="text-lg text-primary font-medium mb-3">Founder & Creator of AnyFile Flow</p>
