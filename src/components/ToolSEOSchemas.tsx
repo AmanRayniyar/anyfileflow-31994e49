@@ -1,5 +1,4 @@
 import { Helmet } from "react-helmet-async";
-import { generateFAQs } from "./ToolFAQSection";
 
 interface ToolSEOSchemasProps {
   toolId: string;
@@ -7,7 +6,6 @@ interface ToolSEOSchemasProps {
   toolDescription: string;
   toolFrom: string;
   toolTo: string;
-  categoryName: string;
 }
 
 const ToolSEOSchemas = ({ 
@@ -18,7 +16,6 @@ const ToolSEOSchemas = ({
   toolTo,
 }: ToolSEOSchemasProps) => {
   const canonicalUrl = `https://anyfileflow.com/tool/${toolId}`;
-  const faqs = generateFAQs(toolName, toolFrom, toolTo, toolDescription);
 
   // SoftwareApplication Schema (Google-compliant)
   const softwareSchema = {
@@ -39,19 +36,6 @@ const ToolSEOSchemas = ({
       "name": "AnyFile Flow",
       "url": "https://anyfileflow.com"
     }
-  };
-
-  // FAQ Schema (Google-compliant)
-  const faqSchema = {
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(faq => ({
-      "@type": "Question",
-      "name": faq.question,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.answer
-      }
-    }))
   };
 
   // HowTo Schema (Google-compliant - simplified)
@@ -82,7 +66,7 @@ const ToolSEOSchemas = ({
     ]
   };
 
-  // WebPage Schema (simplified - removed invalid image references)
+  // WebPage Schema (simplified)
   const webPageSchema = {
     "@type": "WebPage",
     "name": `${toolName} - Free Online Tool | AnyFile Flow`,
@@ -99,14 +83,13 @@ const ToolSEOSchemas = ({
     }
   };
 
-  // Combine all schemas into a single graph (breadcrumb handled by SEOBreadcrumb component)
+  // Combine schemas into a single graph - FAQPage is handled by individual SEO content components
   const combinedSchema = {
     "@context": "https://schema.org",
     "@graph": [
-      { ...softwareSchema, "@context": undefined },
-      { ...faqSchema, "@context": undefined },
-      { ...howToSchema, "@context": undefined },
-      { ...webPageSchema, "@context": undefined }
+      softwareSchema,
+      howToSchema,
+      webPageSchema
     ]
   };
 
