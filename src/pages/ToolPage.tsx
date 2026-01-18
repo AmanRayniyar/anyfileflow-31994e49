@@ -270,7 +270,6 @@ const ToolPage = () => {
         toolDescription={tool.description}
         toolFrom={tool.from}
         toolTo={tool.to}
-        categoryName={category?.name || 'Tools'}
       />
       
       <div className="min-h-screen bg-background">
