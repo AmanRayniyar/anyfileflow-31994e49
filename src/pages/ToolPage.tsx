@@ -9,6 +9,7 @@ import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateToolBreadcrumbs } from "@/components/SEOBreadcrumb";
 import SidebarAd from "@/components/SidebarAd";
+import InlineAd from "@/components/InlineAd";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -332,6 +333,9 @@ const ToolPage = () => {
               <div className="mt-6">
                 <ToolRating toolId={tool.id} toolName={tool.name} />
               </div>
+
+              {/* Inline Ad below rating */}
+              <InlineAd />
 
               {/* Info Section */}
               <section className="bg-card border border-border rounded-2xl p-4 sm:p-6 md:p-8 mt-6" aria-labelledby="how-to-use">
