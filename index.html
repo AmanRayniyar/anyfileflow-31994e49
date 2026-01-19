@@ -209,26 +209,5 @@
       });
     </script>
     
-    <!-- Popunder Ad - loads after page interaction for mobile/desktop compatibility -->
-    <script>
-      (function() {
-        var loaded = false;
-        function loadPopunder() {
-          if (loaded) return;
-          loaded = true;
-          var s = document.createElement('script');
-          s.src = 'https://pl28512786.effectivegatecpm.com/ee/c9/8d/eec98d468a3664f6488a29f27283fcd5.js';
-          s.async = true;
-          s.setAttribute('data-cfasync', 'false');
-          document.body.appendChild(s);
-        }
-        // Load on first user interaction (works better on mobile)
-        ['click', 'touchstart', 'scroll'].forEach(function(evt) {
-          document.addEventListener(evt, loadPopunder, { once: true, passive: true });
-        });
-        // Fallback: load after 3 seconds if no interaction
-        setTimeout(loadPopunder, 3000);
-      })();
-    </script>
   </body>
 </html>
