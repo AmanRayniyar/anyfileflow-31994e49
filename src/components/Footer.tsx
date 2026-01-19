@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import founderImg from "@/assets/founder.png";
+import BannerAd from "@/components/BannerAd";
 
 // Inline SVG Icons
 const MailIcon = ({ className }: { className?: string }) => (
@@ -36,7 +37,9 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
   
   return (
-    <footer className="bg-card border-t border-border" role="contentinfo">
+    <>
+      <BannerAd />
+      <footer className="bg-card border-t border-border" role="contentinfo">
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Brand */}
@@ -135,6 +138,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
+    </>
   );
 };
 
