@@ -179,9 +179,6 @@
       .container{width:100%;max-width:1280px;margin:0 auto;padding-left:1rem;padding-right:1rem}
       .flow-text{background:linear-gradient(135deg,hsl(199 89% 48%) 0%,hsl(173 80% 40%) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
     </style>
-    
-    <!-- Popunder Ad -->
-    <script src="https://pl28512786.effectivegatecpm.com/ee/c9/8d/eec98d468a3664f6488a29f27283fcd5.js"></script>
   </head>
 
   <body>
@@ -210,6 +207,28 @@
           };
         }, 2000);
       });
+    </script>
+    
+    <!-- Popunder Ad - loads after page interaction for mobile/desktop compatibility -->
+    <script>
+      (function() {
+        var loaded = false;
+        function loadPopunder() {
+          if (loaded) return;
+          loaded = true;
+          var s = document.createElement('script');
+          s.src = 'https://pl28512786.effectivegatecpm.com/ee/c9/8d/eec98d468a3664f6488a29f27283fcd5.js';
+          s.async = true;
+          s.setAttribute('data-cfasync', 'false');
+          document.body.appendChild(s);
+        }
+        // Load on first user interaction (works better on mobile)
+        ['click', 'touchstart', 'scroll'].forEach(function(evt) {
+          document.addEventListener(evt, loadPopunder, { once: true, passive: true });
+        });
+        // Fallback: load after 3 seconds if no interaction
+        setTimeout(loadPopunder, 3000);
+      })();
     </script>
   </body>
 </html>
