@@ -8,8 +8,6 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateToolBreadcrumbs } from "@/components/SEOBreadcrumb";
-import SidebarAd from "@/components/SidebarAd";
-import InlineAd from "@/components/InlineAd";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -334,9 +332,6 @@ const ToolPage = () => {
                 <ToolRating toolId={tool.id} toolName={tool.name} />
               </div>
 
-              {/* Inline Ad below rating */}
-              <InlineAd />
-
               {/* Info Section */}
               <section className="bg-card border border-border rounded-2xl p-4 sm:p-6 md:p-8 mt-6" aria-labelledby="how-to-use">
                 <h2 id="how-to-use" className="text-lg sm:text-xl font-bold text-foreground mb-4">
@@ -506,8 +501,6 @@ const ToolPage = () => {
             {/* Sidebar */}
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
-                {/* Sidebar Ad */}
-                <SidebarAd />
 
                 {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
