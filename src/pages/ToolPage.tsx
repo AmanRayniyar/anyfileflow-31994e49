@@ -43,6 +43,7 @@ const AudioJoinerTool = lazy(() => import("@/components/tools/AudioJoinerTool"))
 const PregnancyDueDateTool = lazy(() => import("@/components/tools/PregnancyDueDateTool"));
 const AudioPitchChangerTool = lazy(() => import("@/components/tools/AudioPitchChangerTool"));
 const BoomerangVideoTool = lazy(() => import("@/components/tools/BoomerangVideoTool"));
+const WordCounterTool = lazy(() => import("@/components/tools/WordCounterTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -59,6 +60,7 @@ const AudioJoinerSeoContent = lazy(() => import("@/components/tools/AudioJoinerS
 const PregnancyDueDateSeoContent = lazy(() => import("@/components/tools/PregnancyDueDateSeoContent"));
 const AudioPitchChangerSeoContent = lazy(() => import("@/components/tools/AudioPitchChangerSeoContent"));
 const BoomerangVideoSeoContent = lazy(() => import("@/components/tools/BoomerangVideoSeoContent"));
+const WordCounterSeoContent = lazy(() => import("@/components/tools/WordCounterSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -219,6 +221,11 @@ const ToolPage = () => {
       return <BoomerangVideoTool />;
     }
     
+    // Special case for Word Counter - use ultra advanced version
+    if (tool.id === 'word-counter') {
+      return <WordCounterTool />;
+    }
+    
     switch (tool.toolType) {
       case 'image-convert':
       case 'image-edit':
@@ -244,12 +251,18 @@ const ToolPage = () => {
     if (tool.id === 'jpg-to-png') {
       return 'JPG to PNG Converter Online – Free & Lossless | AnyFile Flow';
     }
+    if (tool.id === 'word-counter') {
+      return 'Word Counter Online – Free Character, Sentence & Reading Time Calculator | AnyFile Flow';
+    }
     return `${tool.name} - Free Online Tool | AnyFile Flow`;
   };
 
   const getPageDescription = () => {
     if (tool.id === 'jpg-to-png') {
       return 'Free JPG to PNG converter online. Convert JPEG images to PNG format with transparency support and lossless quality. No signup, browser-based, up to 20 images at once.';
+    }
+    if (tool.id === 'word-counter') {
+      return 'Free online word counter with character count, reading time, readability score, keyword density, and platform limits for Twitter, Instagram, YouTube. 100% private, no signup.';
     }
     return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, no registration required. Process files instantly in your browser.`;
   };
@@ -471,6 +484,13 @@ const ToolPage = () => {
               {tool.id === 'boomerang-video' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <BoomerangVideoSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Word Counter Tool */}
+              {tool.id === 'word-counter' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <WordCounterSeoContent />
                 </Suspense>
               )}
 
