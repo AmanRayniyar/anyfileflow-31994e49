@@ -44,6 +44,7 @@ const PregnancyDueDateTool = lazy(() => import("@/components/tools/PregnancyDueD
 const AudioPitchChangerTool = lazy(() => import("@/components/tools/AudioPitchChangerTool"));
 const BoomerangVideoTool = lazy(() => import("@/components/tools/BoomerangVideoTool"));
 const WordCounterTool = lazy(() => import("@/components/tools/WordCounterTool"));
+const LoveCalculatorTool = lazy(() => import("@/components/tools/LoveCalculatorTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -61,6 +62,7 @@ const PregnancyDueDateSeoContent = lazy(() => import("@/components/tools/Pregnan
 const AudioPitchChangerSeoContent = lazy(() => import("@/components/tools/AudioPitchChangerSeoContent"));
 const BoomerangVideoSeoContent = lazy(() => import("@/components/tools/BoomerangVideoSeoContent"));
 const WordCounterSeoContent = lazy(() => import("@/components/tools/WordCounterSeoContent"));
+const LoveCalculatorSeoContent = lazy(() => import("@/components/tools/LoveCalculatorSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -226,6 +228,11 @@ const ToolPage = () => {
       return <WordCounterTool />;
     }
     
+    // Special case for Love Calculator
+    if (tool.id === 'love-calculator') {
+      return <LoveCalculatorTool />;
+    }
+    
     switch (tool.toolType) {
       case 'image-convert':
       case 'image-edit':
@@ -254,6 +261,9 @@ const ToolPage = () => {
     if (tool.id === 'word-counter') {
       return 'Word Counter Online – Free Character, Sentence & Reading Time Calculator | AnyFile Flow';
     }
+    if (tool.id === 'love-calculator') {
+      return 'Love Calculator Online – Free Couple Compatibility Test & Relationship Score | AnyFile Flow';
+    }
     return `${tool.name} - Free Online Tool | AnyFile Flow`;
   };
 
@@ -263,6 +273,9 @@ const ToolPage = () => {
     }
     if (tool.id === 'word-counter') {
       return 'Free online word counter with character count, reading time, readability score, keyword density, and platform limits for Twitter, Instagram, YouTube. 100% private, no signup.';
+    }
+    if (tool.id === 'love-calculator') {
+      return 'Free love calculator online! Test relationship compatibility with fun romantic messages, zodiac bonus, and one-click sharing. 100% private, no data stored.';
     }
     return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, no registration required. Process files instantly in your browser.`;
   };
@@ -491,6 +504,13 @@ const ToolPage = () => {
               {tool.id === 'word-counter' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <WordCounterSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Love Calculator Tool */}
+              {tool.id === 'love-calculator' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <LoveCalculatorSeoContent />
                 </Suspense>
               )}
 
