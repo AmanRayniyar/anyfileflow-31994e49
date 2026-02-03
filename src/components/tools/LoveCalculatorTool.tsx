@@ -1,13 +1,81 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
-import { Heart, Sparkles, Share2, Copy, RefreshCw, Zap, Star, MessageCircle, Users, Calendar, Smile } from "lucide-react";
+import { Heart, Sparkles, Share2, Copy, RefreshCw, Zap, Star, MessageCircle, Users, Calendar, Smile, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 
+// Marriage prediction messages based on love percentage
+const getMarriagePrediction = (percentage: number, name1: string, name2: string) => {
+  const predictions = {
+    high: [
+      { year: "2025-2026", message: `The stars align perfectly! 💫 ${name1} and ${name2} could hear wedding bells as early as next year. Your bond is that strong!`, confidence: "Very High" },
+      { year: "Within 2 years", message: `${name1} & ${name2}, the universe has already written your love story. A beautiful ceremony awaits you soon! 💒`, confidence: "Very High" },
+      { year: "Soon!", message: `Soulmates don't wait! ${name1} and ${name2}, your wedding could be the talk of the town very soon! 👰🤵`, confidence: "Extremely High" },
+      { year: "2025-2027", message: `The cosmic energy suggests ${name1} and ${name2} will make it official! Start planning your dream wedding! ✨`, confidence: "Very High" },
+    ],
+    medium: [
+      { year: "2026-2028", message: `${name1} and ${name2}, with a little more time and nurturing, marriage is definitely in your future! 🌹`, confidence: "Good" },
+      { year: "Within 3-4 years", message: `The crystal ball sees a wedding! ${name1} & ${name2}, patience will lead to a beautiful union. 💑`, confidence: "Moderate-High" },
+      { year: "2027-2029", message: `${name1} and ${name2}, your love is growing! Keep watering this relationship and marriage will bloom! 🌸`, confidence: "Good" },
+      { year: "A few years ahead", message: `The stars suggest ${name1} & ${name2} have wedding potential! Focus on building your foundation. 🏠`, confidence: "Promising" },
+    ],
+    low: [
+      { year: "When the time is right", message: `${name1} and ${name2}, every great marriage starts with friendship. Build that first! 🤝`, confidence: "Developing" },
+      { year: "The future holds surprises", message: `The crystal ball shows potential for ${name1} & ${name2}! Sometimes the best things take time. ⏳`, confidence: "Possible" },
+      { year: "Love finds a way", message: `${name1} and ${name2}, focus on understanding each other. The universe works in mysterious ways! 🌌`, confidence: "Time will tell" },
+      { year: "Patience is key", message: `${name1} & ${name2}, the journey matters as much as the destination. Keep exploring your connection! 💫`, confidence: "Growing" },
+    ]
+  };
+
+  let category: "high" | "medium" | "low";
+  if (percentage >= 70) category = "high";
+  else if (percentage >= 40) category = "medium";
+  else category = "low";
+
+  const options = predictions[category];
+  return options[Math.floor(Math.random() * options.length)];
+};
+
+// Wedding themes based on zodiac compatibility
+const getWeddingTheme = (zodiac1: string, zodiac2: string) => {
+  const themes = [
+    "Romantic Garden Wedding 🌸",
+    "Beach Sunset Ceremony 🏖️",
+    "Elegant Ballroom Affair 💃",
+    "Rustic Barn Celebration 🌾",
+    "Destination Wedding Adventure ✈️",
+    "Classic Church Wedding ⛪",
+    "Bohemian Forest Wedding 🌲",
+    "Modern City Rooftop 🌃",
+    "Fairytale Castle Wedding 🏰",
+    "Intimate Backyard Gathering 🏡"
+  ];
+  
+  // Use zodiac signs to pick a theme if available
+  if (zodiac1 && zodiac2) {
+    const combined = (zodiac1 + zodiac2).length;
+    return themes[combined % themes.length];
+  }
+  
+  return themes[Math.floor(Math.random() * themes.length)];
+};
+
+// Lucky wedding dates
+const getLuckyWeddingDate = (percentage: number) => {
+  const luckyMonths = ["February", "May", "June", "September", "December"];
+  const luckyDays = [7, 11, 14, 21, 28];
+  const years = percentage >= 70 ? ["2025", "2026"] : percentage >= 40 ? ["2026", "2027", "2028"] : ["2027", "2028", "2029"];
+  
+  const month = luckyMonths[Math.floor(Math.random() * luckyMonths.length)];
+  const day = luckyDays[Math.floor(Math.random() * luckyDays.length)];
+  const year = years[Math.floor(Math.random() * years.length)];
+  
+  return `${month} ${day}, ${year}`;
+};
 // Zodiac signs for optional selection
 const zodiacSigns = [
   "Aries ♈", "Taurus ♉", "Gemini ♊", "Cancer ♋", "Leo ♌", "Virgo ♍",
@@ -169,6 +237,18 @@ const LoveCalculatorTool = () => {
   const [animatedPercentage, setAnimatedPercentage] = useState(0);
   const [resultStyle, setResultStyle] = useState<ResultStyle>("romantic");
   const resultRef = useRef<HTMLDivElement>(null);
+  
+  // Marriage Prediction states
+  const [showMarriagePrediction, setShowMarriagePrediction] = useState(false);
+  const [isGazingCrystalBall, setIsGazingCrystalBall] = useState(false);
+  const [marriagePrediction, setMarriagePrediction] = useState<{
+    year: string;
+    message: string;
+    confidence: string;
+    theme: string;
+    luckyDate: string;
+  } | null>(null);
+  const marriageRef = useRef<HTMLDivElement>(null);
 
   // Calculate love percentage (deterministic based on names)
   const calculateLove = useCallback(() => {
@@ -277,7 +357,37 @@ const LoveCalculatorTool = () => {
     setResult(null);
     setAnimatedPercentage(0);
     setShowAdvanced(false);
+    setShowMarriagePrediction(false);
+    setMarriagePrediction(null);
   };
+
+  // Future Marriage Prediction
+  const gazeCrystalBall = useCallback(() => {
+    if (!result) return;
+    
+    setIsGazingCrystalBall(true);
+    setMarriagePrediction(null);
+    
+    // Simulate mystical gazing animation
+    setTimeout(() => {
+      const prediction = getMarriagePrediction(result.percentage, partner1, partner2);
+      const theme = getWeddingTheme(zodiac1, zodiac2);
+      const luckyDate = getLuckyWeddingDate(result.percentage);
+      
+      setMarriagePrediction({
+        ...prediction,
+        theme,
+        luckyDate
+      });
+      setIsGazingCrystalBall(false);
+      setShowMarriagePrediction(true);
+      
+      // Scroll to prediction
+      setTimeout(() => {
+        marriageRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }, 100);
+    }, 3000);
+  }, [result, partner1, partner2, zodiac1, zodiac2]);
 
   const tryWithNicknames = () => {
     setShowAdvanced(true);
@@ -594,12 +704,197 @@ const LoveCalculatorTool = () => {
                 </Button>
               </div>
 
-              {/* Coming Soon Teaser */}
-              <div className="text-center p-4 bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-950/30 dark:to-indigo-950/30 rounded-xl border border-purple-200 dark:border-purple-800">
-                <p className="text-sm text-muted-foreground">
-                  🔮 <strong>Coming Soon:</strong> Future Marriage Prediction & Birthday Love Calculator!
-                </p>
-              </div>
+              {/* Future Marriage Prediction Button */}
+              {!showMarriagePrediction && !isGazingCrystalBall && (
+                <div className="text-center">
+                  <Button
+                    onClick={gazeCrystalBall}
+                    className={cn(
+                      "h-14 px-8 text-lg font-bold",
+                      "bg-gradient-to-r from-purple-500 via-indigo-500 to-violet-600",
+                      "hover:from-purple-600 hover:via-indigo-600 hover:to-violet-700",
+                      "text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                    )}
+                  >
+                    <Eye className="h-5 w-5 mr-2" />
+                    🔮 Reveal Future Marriage Prediction
+                  </Button>
+                </div>
+              )}
+
+              {/* Crystal Ball Gazing Animation */}
+              {isGazingCrystalBall && (
+                <div className="text-center py-8 space-y-6 animate-fade-in">
+                  {/* Animated Crystal Ball */}
+                  <div className="relative inline-block">
+                    <div className={cn(
+                      "w-40 h-40 rounded-full mx-auto relative",
+                      "bg-gradient-to-br from-purple-400 via-indigo-500 to-violet-600",
+                      "shadow-[0_0_60px_15px_rgba(139,92,246,0.5)]",
+                      "animate-pulse"
+                    )}>
+                      {/* Inner glow */}
+                      <div className={cn(
+                        "absolute inset-4 rounded-full",
+                        "bg-gradient-to-br from-white/30 via-purple-300/20 to-transparent",
+                        "animate-spin",
+                        "transition-all duration-1000"
+                      )} style={{ animationDuration: "3s" }} />
+                      
+                      {/* Mystical sparkles */}
+                      <div className="absolute inset-0">
+                        {[...Array(8)].map((_, i) => (
+                          <Sparkles
+                            key={i}
+                            className={cn(
+                              "absolute text-white/70",
+                              "animate-pulse"
+                            )}
+                            style={{
+                              left: `${20 + (i % 4) * 20}%`,
+                              top: `${15 + Math.floor(i / 4) * 50}%`,
+                              width: `${12 + (i % 3) * 4}px`,
+                              height: `${12 + (i % 3) * 4}px`,
+                              animationDelay: `${i * 0.2}s`
+                            }}
+                          />
+                        ))}
+                      </div>
+                      
+                      {/* Center eye */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Eye className="h-12 w-12 text-white/80 animate-pulse" />
+                      </div>
+                    </div>
+                    
+                    {/* Base stand */}
+                    <div className="w-24 h-6 mx-auto -mt-2 rounded-b-full bg-gradient-to-b from-gray-400 to-gray-600 shadow-lg" />
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Progress value={65} className="w-3/4 mx-auto h-2 bg-purple-100" />
+                    <p className="text-lg font-medium text-purple-600 dark:text-purple-400 animate-pulse">
+                      🔮 Gazing into your future...
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      The crystal ball is revealing your destiny... ✨
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Marriage Prediction Result */}
+              {showMarriagePrediction && marriagePrediction && (
+                <div ref={marriageRef} className="animate-scale-in space-y-4">
+                  <Card className="border-2 border-purple-300 dark:border-purple-800 overflow-hidden">
+                    {/* Header */}
+                    <div className={cn(
+                      "py-6 text-center relative overflow-hidden",
+                      "bg-gradient-to-br from-purple-500 via-indigo-500 to-violet-600"
+                    )}>
+                      {/* Background decorations */}
+                      <div className="absolute inset-0 overflow-hidden">
+                        {[...Array(10)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className="absolute text-white/20"
+                            style={{
+                              left: `${5 + i * 10}%`,
+                              top: `${10 + (i % 3) * 30}%`,
+                              width: `${10 + i * 2}px`,
+                              height: `${10 + i * 2}px`,
+                              animation: `pulse ${1 + i * 0.2}s ease-in-out infinite`
+                            }}
+                            fill="currentColor"
+                          />
+                        ))}
+                      </div>
+                      
+                      <div className="relative z-10">
+                        <div className="text-5xl mb-2">🔮</div>
+                        <h3 className="text-2xl font-bold text-white mb-1">
+                          Future Marriage Prediction
+                        </h3>
+                        <p className="text-white/80">
+                          {partner1} & {partner2}
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <CardContent className="pt-6 space-y-4">
+                      {/* Prediction Timeline */}
+                      <div className="text-center p-4 bg-purple-50 dark:bg-purple-950/30 rounded-xl">
+                        <p className="text-sm text-muted-foreground mb-1">Predicted Wedding Timeline</p>
+                        <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+                          {marriagePrediction.year}
+                        </p>
+                        <div className="inline-flex items-center gap-1 mt-2 px-3 py-1 bg-purple-100 dark:bg-purple-900/50 rounded-full">
+                          <Star className="h-3 w-3 text-purple-500" fill="currentColor" />
+                          <span className="text-xs font-medium text-purple-700 dark:text-purple-300">
+                            Confidence: {marriagePrediction.confidence}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      {/* Main Message */}
+                      <div className="p-4 bg-indigo-50 dark:bg-indigo-950/30 rounded-xl">
+                        <p className="text-center leading-relaxed">
+                          {marriagePrediction.message}
+                        </p>
+                      </div>
+                      
+                      {/* Wedding Details Grid */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="p-4 bg-violet-50 dark:bg-violet-950/30 rounded-xl text-center">
+                          <p className="text-sm text-muted-foreground mb-1">💒 Ideal Wedding Theme</p>
+                          <p className="font-semibold text-violet-700 dark:text-violet-300">
+                            {marriagePrediction.theme}
+                          </p>
+                        </div>
+                        <div className="p-4 bg-pink-50 dark:bg-pink-950/30 rounded-xl text-center">
+                          <p className="text-sm text-muted-foreground mb-1">📅 Lucky Wedding Date</p>
+                          <p className="font-semibold text-pink-700 dark:text-pink-300">
+                            {marriagePrediction.luckyDate}
+                          </p>
+                        </div>
+                      </div>
+                      
+                      {/* Fun Stats */}
+                      <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl">
+                        <p className="text-center text-sm text-muted-foreground mb-3">
+                          🎊 Your Wedding Fortune
+                        </p>
+                        <div className="grid grid-cols-3 gap-2 text-center">
+                          <div>
+                            <p className="text-2xl">💍</p>
+                            <p className="text-xs text-muted-foreground">Beautiful Ring</p>
+                          </div>
+                          <div>
+                            <p className="text-2xl">🎂</p>
+                            <p className="text-xs text-muted-foreground">5-Tier Cake</p>
+                          </div>
+                          <div>
+                            <p className="text-2xl">🕊️</p>
+                            <p className="text-xs text-muted-foreground">Eternal Love</p>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Re-gaze button */}
+                      <div className="text-center pt-2">
+                        <Button
+                          onClick={gazeCrystalBall}
+                          variant="outline"
+                          className="gap-2 border-purple-300 text-purple-600 hover:bg-purple-50 dark:border-purple-700 dark:text-purple-400"
+                        >
+                          <Eye className="h-4 w-4" />
+                          Gaze Again for New Prediction
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
