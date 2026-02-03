@@ -22,6 +22,9 @@ const TermsPage = lazy(() => import("./pages/TermsPage"));
 const DisclaimerPage = lazy(() => import("./pages/DisclaimerPage"));
 const BrandPage = lazy(() => import("./pages/BrandPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const SmallPDFAlternativePage = lazy(() => import("./pages/SmallPDFAlternativePage"));
+const ILovePDFAlternativePage = lazy(() => import("./pages/ILovePDFAlternativePage"));
+const BestFreeFileConverterPage = lazy(() => import("./pages/BestFreeFileConverterPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,6 +64,9 @@ const AppRoutes = () => (
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/disclaimer" element={<DisclaimerPage />} />
         <Route path="/brand" element={<BrandPage />} />
+        <Route path="/smallpdf-alternative" element={<SmallPDFAlternativePage />} />
+        <Route path="/ilovepdf-alternative" element={<ILovePDFAlternativePage />} />
+        <Route path="/best-free-file-converter" element={<BestFreeFileConverterPage />} />
         
         {/* Language-prefixed routes (hi, es, pt, ar) */}
         <Route path="/:lang" element={<Index />} />
