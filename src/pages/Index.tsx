@@ -22,6 +22,9 @@ const AIToolRecommender = lazy(() => import("@/components/home/AIToolRecommender
 const TrustBadges = lazy(() => import("@/components/home/TrustBadges"));
 const HomeFAQ = lazy(() => import("@/components/home/HomeFAQ"));
 const UserTestimonials = lazy(() => import("@/components/home/UserTestimonials"));
+const AboutAnyFileFlow = lazy(() => import("@/components/home/AboutAnyFileFlow"));
+const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
+const FounderSection = lazy(() => import("@/components/home/FounderSection"));
 
 // Optimized skeleton
 const SectionSkeleton = memo(({ height = "h-48" }: { height?: string }) => (
@@ -72,13 +75,25 @@ const Index = memo(() => {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "AnyFile Flow",
+      "alternateName": ["AnyFileFlow", "Any File Flow"],
       "url": "https://anyfileflow.com/",
       "logo": "https://anyfileflow.com/logo.png",
+      "description": "AnyFile Flow is a free, browser-based file conversion platform offering 1000+ online tools for image, PDF, audio, video, text, data, and developer tasks. Files are processed locally with zero server storage.",
+      "founder": {
+        "@type": "Person",
+        "name": "Aman Rauniyar",
+        "url": "https://anyfileflow.com/about"
+      },
       "sameAs": [
         "https://www.facebook.com/aman.rauniyar.980",
         "https://github.com/AmanRayniyar",
         "https://www.instagram.com/amanrauniyar2064/"
-      ]
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "anyfileflow@gmail.com",
+        "contactType": "customer support"
+      }
     },
     softwareApp: {
       "@context": "https://schema.org",
@@ -124,7 +139,7 @@ const Index = memo(() => {
           "name": "What is AnyFile Flow?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "AnyFile Flow is a free online platform with 1000+ tools for file conversion, image editing, PDF manipulation, audio/video processing, and more. All tools work directly in your browser with no registration required."
+            "text": "AnyFile Flow is a free, browser-based file conversion platform offering 1000+ online tools for image, PDF, audio, video, text, data, and developer tasks."
           }
         },
         {
@@ -132,15 +147,31 @@ const Index = memo(() => {
           "name": "Is AnyFile Flow free to use?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes, AnyFile Flow is completely free to use. There are no hidden costs, no registration required, and no limits on the number of conversions you can perform."
+            "text": "Yes. AnyFile Flow is completely free with unlimited usage. There are no hidden costs, no premium tiers, and no registration required."
           }
         },
         {
           "@type": "Question",
-          "name": "Are my files secure on AnyFile Flow?",
+          "name": "Are my files uploaded to servers?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Absolutely. All file processing happens directly in your browser. Your files never leave your device and are never uploaded to any server, ensuring complete privacy and security."
+            "text": "No. Files are processed locally in your browser using WebAssembly technology and are never uploaded or stored on any server."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does AnyFile Flow add watermarks?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. All converted and processed files are watermark-free."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use AnyFile Flow for commercial work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. All tools are free for personal, educational, professional, and commercial use without any restrictions."
           }
         }
       ]
@@ -267,6 +298,21 @@ const Index = memo(() => {
           {/* Comparison Section */}
           <Suspense fallback={<SectionSkeleton height="h-96" />}>
             <ComparisonSection />
+          </Suspense>
+          
+          {/* About AnyFile Flow - AI-Readable Authority Section */}
+          <Suspense fallback={<SectionSkeleton height="h-96" />}>
+            <AboutAnyFileFlow />
+          </Suspense>
+          
+          {/* How It Works - Step by Step */}
+          <Suspense fallback={<SectionSkeleton height="h-64" />}>
+            <HowItWorks />
+          </Suspense>
+          
+          {/* Founder Section */}
+          <Suspense fallback={<SectionSkeleton height="h-64" />}>
+            <FounderSection />
           </Suspense>
           
           <Suspense fallback={<BlogPreviewSkeleton />}>

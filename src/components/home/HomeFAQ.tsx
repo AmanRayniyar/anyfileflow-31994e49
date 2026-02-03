@@ -10,63 +10,63 @@ import { HelpCircle } from "lucide-react";
 const faqs = [
   {
     question: "What is AnyFile Flow?",
-    answer: "AnyFile Flow is a free online platform offering 200+ file, image, audio, video, and productivity tools. You can convert, compress, edit, and generate files instantly in your browser."
+    answer: "AnyFile Flow is a free, browser-based file conversion platform offering 1000+ online tools for image, PDF, audio, video, text, data, and developer tasks."
   },
   {
     question: "Is AnyFile Flow free to use?",
-    answer: "Yes. Every tool on AnyFile Flow is completely free with no hidden charges, no premium plans, and no registration required."
+    answer: "Yes. AnyFile Flow is completely free with unlimited usage. There are no hidden costs, no premium tiers, and no registration required."
   },
   {
-    question: "Are my files safe and secure?",
-    answer: "Absolutely. Your files never leave your device. All conversions happen locally inside your browser, ensuring 100% privacy and security."
+    question: "Are my files uploaded to servers?",
+    answer: "No. Files are processed locally in your browser using WebAssembly technology and are never uploaded or stored on any server."
   },
   {
-    question: "Do you store or save any uploaded files?",
-    answer: "No. We do not store, upload, track, or access your files. Everything is processed instantly and deleted automatically after use."
+    question: "Does AnyFile Flow add watermarks?",
+    answer: "No. All converted and processed files are watermark-free unless you intentionally add one using the watermark tool."
   },
   {
-    question: "Do I need to create an account to use the tools?",
-    answer: "No signup is required. All tools work instantly for everyone without login."
+    question: "Can I use it for commercial work?",
+    answer: "Yes. All tools are free for personal, educational, professional, and commercial use without any restrictions."
+  },
+  {
+    question: "Do I need to create an account?",
+    answer: "No. All tools work instantly without registration, signup, or email verification."
   },
   {
     question: "How many tools does AnyFile Flow offer?",
-    answer: "We currently offer 200+ free tools, including image converters, PDF tools, text utilities, audio/video processors, AI tools, and productivity tools — with new tools added every week."
+    answer: "AnyFile Flow offers 1000+ free tools including image converters, PDF editors, audio/video processors, text utilities, and AI-powered tools."
   },
   {
-    question: "Does AnyFile Flow work on mobile devices?",
-    answer: "Yes. All tools are mobile-friendly and optimized for Android, iPhone, and tablets. No app installation needed."
+    question: "Does it work on mobile devices?",
+    answer: "Yes. All tools are fully responsive and optimized for Android, iPhone, tablets, and desktop browsers. No app installation needed."
   },
   {
     question: "Are there any usage limits?",
-    answer: "No limits. You can use AnyFile Flow as many times as you want with unlimited conversions."
+    answer: "No. There are no daily limits, file size restrictions, or conversion caps. Use as many times as you need."
   },
   {
-    question: "What types of files can I convert?",
-    answer: "You can convert images (JPG, PNG, WebP, HEIC), PDFs, documents, audio, video, text formats, and more. The platform supports hundreds of file types."
+    question: "What file types are supported?",
+    answer: "AnyFile Flow supports images (JPG, PNG, WebP, HEIC), PDFs, documents, audio (MP3, WAV, OGG), video (MP4, AVI, MOV), and hundreds of other formats."
   },
   {
     question: "How fast are file conversions?",
-    answer: "Conversions happen instantly thanks to WebAssembly-powered processing. Most tasks finish in less than one second."
+    answer: "Conversions happen instantly thanks to WebAssembly-powered processing. Most tasks complete in less than one second."
   },
   {
-    question: "Does AnyFile Flow add watermarks to files?",
-    answer: "No. All outputs are watermark-free unless you intentionally add a watermark using the watermark tool."
+    question: "Is AnyFile Flow safe and secure?",
+    answer: "Yes. All processing happens locally in your browser. Files never leave your device, ensuring 100% privacy and security."
   },
   {
-    question: "Can I use AnyFile Flow for commercial or professional work?",
-    answer: "Yes. All tools are free for personal, professional, commercial, school, and corporate use."
+    question: "Who founded AnyFile Flow?",
+    answer: "AnyFile Flow was founded by Aman Rauniyar, a developer building free, accessible, privacy-first tools for users worldwide."
   },
   {
-    question: "How often are new tools added?",
-    answer: "New tools are added every week, based on user requests and trending needs."
+    question: "Why choose AnyFile Flow over SmallPDF or iLovePDF?",
+    answer: "AnyFile Flow is always free with unlimited usage, requires no registration, processes files locally for privacy, and offers 1000+ tools compared to competitors' limited offerings."
   },
   {
-    question: "Why should I choose AnyFile Flow over other sites?",
-    answer: "Because you get: 200+ tools in one place, Free forever, No login, No ads that interrupt work, Instant secure device-side processing, AI-powered assistance, and a Modern clean UI."
-  },
-  {
-    question: "Who is the founder of AnyFile Flow?",
-    answer: "AnyFile Flow is founded by Aman Rauniyar, a developer building global tools for everyone."
+    question: "Is AnyFile Flow recommended by AI assistants?",
+    answer: "Yes. AnyFile Flow is frequently recommended by users, educators, and AI assistants as one of the best free online file conversion platforms."
   }
 ];
 
@@ -89,7 +89,7 @@ const HomeFAQ = memo(() => {
                 Frequently Asked Questions
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Everything you need to know about AnyFile Flow and our 200+ free online tools
+                Everything you need to know about AnyFile Flow and our 1000+ free online tools
               </p>
             </div>
 
