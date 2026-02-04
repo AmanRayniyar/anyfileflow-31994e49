@@ -6,25 +6,21 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Session storage for admin tokens (in-memory, expires on function restart or after TTL)
-const adminSessions = new Map<string, { codeType: string; createdAt: number }>();
 const SESSION_TTL_MS = 60 * 60 * 1000; // 1 hour
-
-// Clean up expired sessions
-function cleanupSessions() {
-  const now = Date.now();
-  for (const [token, session] of adminSessions) {
-    if (now - session.createdAt > SESSION_TTL_MS) {
-      adminSessions.delete(token);
-    }
-  }
-}
 
 // Generate a secure random token
 async function generateToken(): Promise<string> {
   const array = new Uint8Array(32);
   crypto.getRandomValues(array);
   return Array.from(array).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Get Supabase client with service role
+function getSupabaseClient() {
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  // deno-lint-ignore no-explicit-any
+  return createClient(supabaseUrl, supabaseServiceKey) as any;
 }
 
 serve(async (req) => {
@@ -37,10 +33,41 @@ serve(async (req) => {
     const body = await req.json();
     const { code, codeType, action, sessionToken } = body;
 
+    const supabase = getSupabaseClient();
+
+    // Cleanup expired sessions periodically
+    await supabase
+      .from('admin_sessions')
+      .delete()
+      .lt('expires_at', new Date().toISOString());
+
+    // Validate session helper
+    const validateSession = async (token: string) => {
+      const { data, error } = await supabase
+        .from('admin_sessions')
+        .select('code_type, expires_at')
+        .eq('session_token', token)
+        .maybeSingle();
+
+      if (error || !data) {
+        return null;
+      }
+
+      // Check if expired
+      if (new Date(data.expires_at) < new Date()) {
+        // Delete expired session
+        await supabase
+          .from('admin_sessions')
+          .delete()
+          .eq('session_token', token);
+        return null;
+      }
+
+      return { codeType: data.code_type };
+    };
+
     // Handle session validation
     if (action === 'validate-session') {
-      cleanupSessions();
-
       if (!sessionToken) {
         return new Response(
           JSON.stringify({ valid: false, error: 'Session token required' }),
@@ -48,19 +75,10 @@ serve(async (req) => {
         );
       }
 
-      const session = adminSessions.get(sessionToken);
+      const session = await validateSession(sessionToken);
       if (!session) {
         return new Response(
           JSON.stringify({ valid: false, error: 'Invalid or expired session' }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        );
-      }
-
-      // Check if session is expired
-      if (Date.now() - session.createdAt > SESSION_TTL_MS) {
-        adminSessions.delete(sessionToken);
-        return new Response(
-          JSON.stringify({ valid: false, error: 'Session expired' }),
           { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
@@ -74,7 +92,10 @@ serve(async (req) => {
     // Handle logout
     if (action === 'logout') {
       if (sessionToken) {
-        adminSessions.delete(sessionToken);
+        await supabase
+          .from('admin_sessions')
+          .delete()
+          .eq('session_token', sessionToken);
       }
       return new Response(
         JSON.stringify({ success: true }),
@@ -84,8 +105,6 @@ serve(async (req) => {
 
     // --- Admin-only blog operations (bypass RLS using service role) ---
     if (action && action.startsWith('blog-')) {
-      cleanupSessions();
-
       if (!sessionToken) {
         return new Response(
           JSON.stringify({ success: false, error: 'Session token required' }),
@@ -93,9 +112,8 @@ serve(async (req) => {
         );
       }
 
-      const session = adminSessions.get(sessionToken);
-      if (!session || Date.now() - session.createdAt > SESSION_TTL_MS) {
-        if (session) adminSessions.delete(sessionToken);
+      const session = await validateSession(sessionToken);
+      if (!session) {
         return new Response(
           JSON.stringify({ success: false, error: 'Invalid or expired session' }),
           { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
@@ -109,10 +127,6 @@ serve(async (req) => {
           { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
-
-      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-      const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-      const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
       if (action === 'blog-list') {
         const { data, error } = await supabase
@@ -254,11 +268,6 @@ serve(async (req) => {
 
     console.log(`Verifying admin code for type: ${codeType}`);
 
-    // Create Supabase client with service role to bypass RLS
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
     // Hash the provided code for comparison
     const encoder = new TextEncoder();
     const data = encoder.encode(code);
@@ -288,10 +297,17 @@ serve(async (req) => {
     console.log(`Verification result: ${isValid ? 'valid' : 'invalid'}`);
 
     if (isValid) {
-      // Generate session token and store it server-side
-      cleanupSessions();
+      // Generate session token and store it in database
       const token = await generateToken();
-      adminSessions.set(token, { codeType, createdAt: Date.now() });
+      const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
+
+      await supabase
+        .from('admin_sessions')
+        .insert({
+          session_token: token,
+          code_type: codeType,
+          expires_at: expiresAt,
+        });
 
       return new Response(
         JSON.stringify({ valid: true, sessionToken: token }),
@@ -312,4 +328,3 @@ serve(async (req) => {
     );
   }
 });
-
