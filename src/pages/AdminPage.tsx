@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useBlogPosts, BlogPost } from "@/hooks/useBlog";
 import { useToolsAdmin, DbTool } from "@/hooks/useTools";
 import { Plus, Edit, Trash2, Eye, EyeOff, Save, Lock, Loader2, Star, StarOff, Settings, FileText, Code, ChevronDown, ChevronUp, ExternalLink, Monitor, Sparkles, Play, RefreshCw, Layout, ToggleLeft, ToggleRight } from "lucide-react";
@@ -16,6 +15,8 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BlogImageUpload } from "@/components/admin/BlogImageUpload";
 import { BlogLayoutTemplates } from "@/components/admin/BlogLayoutTemplates";
+import { RichTextEditor } from "@/components/admin/RichTextEditor";
+import { Textarea } from "@/components/ui/textarea";
 
 const SESSION_TOKEN_KEY = "anyfileflow_admin_session";
 const SESSION_TYPE_KEY = "anyfileflow_admin_type";
@@ -523,13 +524,10 @@ const AdminPage = () => {
               </div>
 
               <div>
-                <label htmlFor="content" className="block text-sm font-medium mb-1">Content (HTML)</label>
-                <Textarea
-                  id="content"
+                <label className="block text-sm font-medium mb-1">Content (Rich Text & HTML)</label>
+                <RichTextEditor
                   value={formData.content}
-                  onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                  rows={10}
-                  required
+                  onChange={(content) => setFormData({ ...formData, content })}
                 />
               </div>
 

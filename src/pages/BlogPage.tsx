@@ -6,6 +6,7 @@ import { useBlogPosts } from "@/hooks/useBlog";
 import { Skeleton } from "@/components/ui/skeleton";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateSimpleBreadcrumbs } from "@/components/SEOBreadcrumb";
+import { BlogSidebar } from "@/components/blog/BlogSidebar";
 
 const BlogPostSkeleton = () => (
   <article className="bg-card border border-border rounded-xl overflow-hidden">
@@ -44,82 +45,90 @@ const BlogPage = () => {
           {/* SEO-Optimized Breadcrumb */}
           <SEOBreadcrumb items={generateSimpleBreadcrumbs("Blog")} />
           
-          <div className="max-w-4xl mx-auto">
-            <header className="mb-12 text-center">
-              <h1 className="text-4xl font-bold text-foreground mb-4">Blog</h1>
-              <p className="text-lg text-muted-foreground">
-                Tips, tutorials, and updates from AnyFile Flow
-              </p>
-            </header>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            {/* Main Content */}
+            <div className="lg:col-span-3">
+              <header className="mb-12">
+                <h1 className="text-4xl font-bold text-foreground mb-4">Blog</h1>
+                <p className="text-lg text-muted-foreground">
+                  Tips, tutorials, and updates from AnyFile Flow
+                </p>
+              </header>
 
-            {loading ? (
-              <div className="space-y-8">
-                <BlogPostSkeleton />
-                <BlogPostSkeleton />
-                <BlogPostSkeleton />
-              </div>
-            ) : posts.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-muted-foreground">No blog posts yet. Check back soon!</p>
-              </div>
-            ) : (
-              <div className="space-y-8">
-                {posts.map((post) => (
-                  <article key={post.id} className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
-                    <div className="md:flex">
-                      {post.image && (
-                        <div className="md:w-1/3">
-                          <img 
-                            src={post.image} 
-                            alt={post.title}
-                            className="w-full h-48 md:h-full object-cover"
-                            loading="lazy"
-                          />
-                        </div>
-                      )}
-                      <div className={`p-6 ${post.image ? 'md:w-2/3' : 'w-full'}`}>
-                        <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground mb-3">
-                          <span className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3" />
-                            {new Date(post.createdAt).toLocaleDateString('en-US', { 
-                              year: 'numeric', 
-                              month: 'long', 
-                              day: 'numeric' 
-                            })}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <User className="h-3 w-3" />
-                            {post.author}
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <Tag className="h-3 w-3" />
-                            {post.category}
-                          </span>
-                        </div>
-                        <h2 className="text-xl font-semibold text-foreground mb-3">
+              {loading ? (
+                <div className="space-y-8">
+                  <BlogPostSkeleton />
+                  <BlogPostSkeleton />
+                  <BlogPostSkeleton />
+                </div>
+              ) : posts.length === 0 ? (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground">No blog posts yet. Check back soon!</p>
+                </div>
+              ) : (
+                <div className="space-y-8">
+                  {posts.map((post) => (
+                    <article key={post.id} className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+                      <div className="md:flex">
+                        {post.image && (
+                          <div className="md:w-1/3">
+                            <img 
+                              src={post.image} 
+                              alt={post.title}
+                              className="w-full h-48 md:h-full object-cover"
+                              loading="lazy"
+                            />
+                          </div>
+                        )}
+                        <div className={`p-6 ${post.image ? 'md:w-2/3' : 'w-full'}`}>
+                          <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground mb-3">
+                            <span className="flex items-center gap-1">
+                              <Calendar className="h-3 w-3" />
+                              {new Date(post.createdAt).toLocaleDateString('en-US', { 
+                                year: 'numeric', 
+                                month: 'long', 
+                                day: 'numeric' 
+                              })}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <User className="h-3 w-3" />
+                              {post.author}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Tag className="h-3 w-3" />
+                              {post.category}
+                            </span>
+                          </div>
+                          <h2 className="text-xl font-semibold text-foreground mb-3">
+                            <Link 
+                              to={`/blog/${post.slug}`} 
+                              className="hover:text-primary transition-colors focus:text-primary"
+                              aria-label={`Read full article: ${post.title}`}
+                            >
+                              {post.title}
+                            </Link>
+                          </h2>
+                          <p className="text-muted-foreground mb-4 line-clamp-2">{post.excerpt}</p>
                           <Link 
-                            to={`/blog/${post.slug}`} 
-                            className="hover:text-primary transition-colors focus:text-primary"
-                            aria-label={`Read full article: ${post.title}`}
+                            to={`/blog/${post.slug}`}
+                            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus:underline"
+                            aria-label={`Continue reading: ${post.title}`}
                           >
-                            {post.title}
+                            Read full article: {post.title.length > 25 ? post.title.substring(0, 25) + '...' : post.title}
+                            <ArrowRight className="h-4 w-4" aria-hidden="true" />
                           </Link>
-                        </h2>
-                        <p className="text-muted-foreground mb-4 line-clamp-2">{post.excerpt}</p>
-                        <Link 
-                          to={`/blog/${post.slug}`}
-                          className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline focus:underline"
-                          aria-label={`Continue reading: ${post.title}`}
-                        >
-                          Read full article: {post.title.length > 25 ? post.title.substring(0, 25) + '...' : post.title}
-                          <ArrowRight className="h-4 w-4" aria-hidden="true" />
-                        </Link>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
-            )}
+                    </article>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Sidebar */}
+            <div className="lg:col-span-1">
+              <BlogSidebar />
+            </div>
           </div>
         </main>
         <Footer />

@@ -10,6 +10,8 @@ interface BlogImageUploadProps {
   onChange: (url: string) => void;
 }
 
+const SESSION_TOKEN_KEY = "anyfileflow_admin_session";
+
 export function BlogImageUpload({ value, onChange }: BlogImageUploadProps) {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string>(value || "");
@@ -34,32 +36,51 @@ export function BlogImageUpload({ value, onChange }: BlogImageUploadProps) {
     setUploading(true);
 
     try {
+      // Get session token
+      const sessionToken = sessionStorage.getItem(SESSION_TOKEN_KEY);
+      if (!sessionToken) {
+        toast.error("Admin session expired. Please login again.");
+        return;
+      }
+
       // Generate unique filename
       const fileExt = file.name.split(".").pop();
       const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const filePath = `blog/${fileName}`;
 
-      // Upload to Supabase Storage
-      const { error: uploadError } = await supabase.storage
-        .from("blog-images")
-        .upload(filePath, file);
+      // Read file as base64
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64Data = reader.result as string;
+        const base64Content = base64Data.split(",")[1]; // Remove data:image/xxx;base64, prefix
 
-      if (uploadError) {
-        throw uploadError;
-      }
+        // Upload via edge function
+        const { data, error } = await supabase.functions.invoke("verify-admin", {
+          body: {
+            action: "upload-image",
+            sessionToken,
+            fileName,
+            fileData: base64Content,
+            contentType: file.type,
+          },
+        });
 
-      // Get public URL
-      const { data: urlData } = supabase.storage
-        .from("blog-images")
-        .getPublicUrl(filePath);
+        if (error || !data?.success) {
+          throw new Error(data?.error || error?.message || "Upload failed");
+        }
 
-      const publicUrl = urlData.publicUrl;
-      setPreview(publicUrl);
-      onChange(publicUrl);
-      toast.success("Image uploaded successfully!");
+        setPreview(data.url);
+        onChange(data.url);
+        toast.success("Image uploaded successfully!");
+      };
+
+      reader.onerror = () => {
+        throw new Error("Failed to read file");
+      };
+
+      reader.readAsDataURL(file);
     } catch (error) {
       console.error("Upload error:", error);
-      toast.error("Failed to upload image. Make sure you're logged in as admin.");
+      toast.error(error instanceof Error ? error.message : "Failed to upload image");
     } finally {
       setUploading(false);
       if (fileInputRef.current) {

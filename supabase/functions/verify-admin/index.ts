@@ -245,11 +245,86 @@ serve(async (req) => {
           );
         }
 
+      return new Response(
+        JSON.stringify({ success: true }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Handle image upload
+    if (action === 'upload-image') {
+      if (!sessionToken) {
         return new Response(
-          JSON.stringify({ success: true }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          JSON.stringify({ success: false, error: 'Session token required' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
         );
       }
+
+      const session = await validateSession(sessionToken);
+      if (!session) {
+        return new Response(
+          JSON.stringify({ success: false, error: 'Invalid or expired session' }),
+          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const canUpload = session.codeType === 'blog' || session.codeType === 'master';
+      if (!canUpload) {
+        return new Response(
+          JSON.stringify({ success: false, error: 'Insufficient permissions' }),
+          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      const { fileName, fileData, contentType } = body;
+      if (!fileName || !fileData || !contentType) {
+        return new Response(
+          JSON.stringify({ success: false, error: 'fileName, fileData, and contentType are required' }),
+          { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+
+      try {
+        // Decode base64 file data
+        const binaryString = atob(fileData);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        const filePath = `blog/${fileName}`;
+        
+        const { error: uploadError } = await supabase.storage
+          .from('blog-images')
+          .upload(filePath, bytes.buffer, {
+            contentType: contentType,
+            upsert: true
+          });
+
+        if (uploadError) {
+          console.error('Upload error:', uploadError);
+          return new Response(
+            JSON.stringify({ success: false, error: uploadError.message }),
+            { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+
+        const { data: urlData } = supabase.storage
+          .from('blog-images')
+          .getPublicUrl(filePath);
+
+        return new Response(
+          JSON.stringify({ success: true, url: urlData.publicUrl }),
+          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      } catch (uploadErr) {
+        console.error('Upload processing error:', uploadErr);
+        return new Response(
+          JSON.stringify({ success: false, error: 'Failed to process upload' }),
+          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        );
+      }
+    }
 
       return new Response(
         JSON.stringify({ success: false, error: 'Unknown action' }),
