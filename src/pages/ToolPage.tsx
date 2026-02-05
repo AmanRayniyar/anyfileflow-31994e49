@@ -45,6 +45,7 @@ const AudioPitchChangerTool = lazy(() => import("@/components/tools/AudioPitchCh
 const BoomerangVideoTool = lazy(() => import("@/components/tools/BoomerangVideoTool"));
 const WordCounterTool = lazy(() => import("@/components/tools/WordCounterTool"));
 const LoveCalculatorTool = lazy(() => import("@/components/tools/LoveCalculatorTool"));
+ const AdvancedBmiCalculator = lazy(() => import("@/components/tools/AdvancedBmiCalculator"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -232,6 +233,11 @@ const ToolPage = () => {
     if (tool.id === 'love-calculator') {
       return <LoveCalculatorTool />;
     }
+     
+     // Special case for BMI Calculator - use ultra advanced version
+     if (tool.id === 'bmi-calculator') {
+       return <AdvancedBmiCalculator />;
+     }
     
     switch (tool.toolType) {
       case 'image-convert':
@@ -258,6 +264,9 @@ const ToolPage = () => {
     if (tool.id === 'jpg-to-png') {
       return 'JPG to PNG Converter Online – Free & Lossless | AnyFile Flow';
     }
+     if (tool.id === 'bmi-calculator') {
+       return 'BMI Calculator Online – Free Advanced Body Mass Index Calculator | AnyFile Flow';
+     }
     if (tool.id === 'word-counter') {
       return 'Word Counter Online – Free Character, Sentence & Reading Time Calculator | AnyFile Flow';
     }
@@ -271,6 +280,9 @@ const ToolPage = () => {
     if (tool.id === 'jpg-to-png') {
       return 'Free JPG to PNG converter online. Convert JPEG images to PNG format with transparency support and lossless quality. No signup, browser-based, up to 20 images at once.';
     }
+     if (tool.id === 'bmi-calculator') {
+       return 'Free advanced BMI calculator with smart personalization, goal tracking, health insights, and lifestyle tips. Supports metric & imperial units. 100% private, no signup.';
+     }
     if (tool.id === 'word-counter') {
       return 'Free online word counter with character count, reading time, readability score, keyword density, and platform limits for Twitter, Instagram, YouTube. 100% private, no signup.';
     }
