@@ -45,7 +45,8 @@ const AudioPitchChangerTool = lazy(() => import("@/components/tools/AudioPitchCh
 const BoomerangVideoTool = lazy(() => import("@/components/tools/BoomerangVideoTool"));
 const WordCounterTool = lazy(() => import("@/components/tools/WordCounterTool"));
 const LoveCalculatorTool = lazy(() => import("@/components/tools/LoveCalculatorTool"));
- const AdvancedBmiCalculator = lazy(() => import("@/components/tools/AdvancedBmiCalculator"));
+const AdvancedBmiCalculator = lazy(() => import("@/components/tools/AdvancedBmiCalculator"));
+const AdvancedJpgToPngConverter = lazy(() => import("@/components/tools/jpgToPng"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -129,6 +130,11 @@ const ToolPage = () => {
   const Icon = tool.icon;
 
   const renderToolComponent = () => {
+    // Special case for JPG to PNG - use ultra advanced version
+    if (tool.id === 'jpg-to-png') {
+      return <AdvancedJpgToPngConverter />;
+    }
+    
     // Special case for typing test tool
     if (tool.id === 'typing-test') {
       return <TypingTestTool tool={tool} />;
@@ -262,7 +268,7 @@ const ToolPage = () => {
   // SEO-optimized meta for specific tools
   const getPageTitle = () => {
     if (tool.id === 'jpg-to-png') {
-      return 'JPG to PNG Converter Online – Free & Lossless | AnyFile Flow';
+      return 'JPG to PNG Converter Online – Free with AI Background Removal | AnyFile Flow';
     }
      if (tool.id === 'bmi-calculator') {
        return 'BMI Calculator Online – Free Advanced Body Mass Index Calculator | AnyFile Flow';
@@ -278,7 +284,7 @@ const ToolPage = () => {
 
   const getPageDescription = () => {
     if (tool.id === 'jpg-to-png') {
-      return 'Free JPG to PNG converter online. Convert JPEG images to PNG format with transparency support and lossless quality. No signup, browser-based, up to 20 images at once.';
+      return 'Free JPG to PNG converter with AI background removal, bulk conversion (100+ files), PNG type selection, and live preview. 100% client-side, no uploads, works offline.';
     }
      if (tool.id === 'bmi-calculator') {
        return 'Free advanced BMI calculator with smart personalization, goal tracking, health insights, and lifestyle tips. Supports metric & imperial units. 100% private, no signup.';
@@ -341,12 +347,16 @@ const ToolPage = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-1 sm:mb-2">
+                    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-1 sm:mb-2">
                           {tool.id === 'jpg-to-png' 
-                            ? 'JPG to PNG Converter Online – Free & Lossless' 
+                            ? 'JPG to PNG Converter – Free with AI Background Removal' 
                             : tool.name}
                         </h1>
-                        <p className="text-sm sm:text-base text-muted-foreground">{tool.description}</p>
+                        <p className="text-sm sm:text-base text-muted-foreground">
+                          {tool.id === 'jpg-to-png' 
+                            ? 'Convert JPG to PNG with AI background removal, bulk conversion, and advanced features. 100% free, no upload.'
+                            : tool.description}
+                        </p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <ShareButton 
