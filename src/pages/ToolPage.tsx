@@ -8,6 +8,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateToolBreadcrumbs } from "@/components/SEOBreadcrumb";
+import ToolUniqueContent from "@/components/ToolUniqueContent";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -362,7 +363,7 @@ const ToolPage = () => {
                         <ShareButton 
                           title={`${tool.name} - AnyFile Flow`}
                           description={tool.description}
-                          url={`https://anyfileflow.lovable.app/tool/${tool.id}`}
+                          url={`https://anyfileflow.com/tool/${tool.id}`}
                         />
                       </div>
                     </div>
@@ -536,13 +537,23 @@ const ToolPage = () => {
                 </Suspense>
               )}
 
+              {/* Unique SEO Content for ALL tools - prevents low-value content */}
+              <ToolUniqueContent
+                toolId={tool.id}
+                toolName={tool.name}
+                toolDescription={tool.description}
+                toolFrom={tool.from}
+                toolTo={tool.to}
+                categoryName={category?.name || "Online Tools"}
+              />
+
               <section className="bg-secondary/30 rounded-2xl p-4 sm:p-6 mt-6" aria-labelledby="brand-section">
                 <h3 id="brand-section" className="font-semibold text-foreground mb-3">
                   More from AnyFile Flow
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   This tool is part of <strong>AnyFile Flow</strong> — also known as <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
-                  We offer 200+ free online tools to help you convert, edit, and transform your files.
+                  We offer 1000+ free online tools to help you convert, edit, and transform your files.
                 </p>
                 <nav className="flex flex-wrap gap-2" aria-label="Brand navigation">
                   <Link to="/brand" className="text-xs text-primary hover:underline">
