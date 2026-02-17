@@ -8,7 +8,6 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateToolBreadcrumbs } from "@/components/SEOBreadcrumb";
-import ToolUniqueContent from "@/components/ToolUniqueContent";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -46,8 +45,7 @@ const AudioPitchChangerTool = lazy(() => import("@/components/tools/AudioPitchCh
 const BoomerangVideoTool = lazy(() => import("@/components/tools/BoomerangVideoTool"));
 const WordCounterTool = lazy(() => import("@/components/tools/WordCounterTool"));
 const LoveCalculatorTool = lazy(() => import("@/components/tools/LoveCalculatorTool"));
-const AdvancedBmiCalculator = lazy(() => import("@/components/tools/AdvancedBmiCalculator"));
-const AdvancedJpgToPngConverter = lazy(() => import("@/components/tools/jpgToPng"));
+ const AdvancedBmiCalculator = lazy(() => import("@/components/tools/AdvancedBmiCalculator"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -131,11 +129,6 @@ const ToolPage = () => {
   const Icon = tool.icon;
 
   const renderToolComponent = () => {
-    // Special case for JPG to PNG - use ultra advanced version
-    if (tool.id === 'jpg-to-png') {
-      return <AdvancedJpgToPngConverter />;
-    }
-    
     // Special case for typing test tool
     if (tool.id === 'typing-test') {
       return <TypingTestTool tool={tool} />;
@@ -269,7 +262,7 @@ const ToolPage = () => {
   // SEO-optimized meta for specific tools
   const getPageTitle = () => {
     if (tool.id === 'jpg-to-png') {
-      return 'JPG to PNG Converter Online – Free with AI Background Removal | AnyFile Flow';
+      return 'JPG to PNG Converter Online – Free & Lossless | AnyFile Flow';
     }
      if (tool.id === 'bmi-calculator') {
        return 'BMI Calculator Online – Free Advanced Body Mass Index Calculator | AnyFile Flow';
@@ -285,7 +278,7 @@ const ToolPage = () => {
 
   const getPageDescription = () => {
     if (tool.id === 'jpg-to-png') {
-      return 'Free JPG to PNG converter with AI background removal, bulk conversion (100+ files), PNG type selection, and live preview. 100% client-side, no uploads, works offline.';
+      return 'Free JPG to PNG converter online. Convert JPEG images to PNG format with transparency support and lossless quality. No signup, browser-based, up to 20 images at once.';
     }
      if (tool.id === 'bmi-calculator') {
        return 'Free advanced BMI calculator with smart personalization, goal tracking, health insights, and lifestyle tips. Supports metric & imperial units. 100% private, no signup.';
@@ -348,22 +341,18 @@ const ToolPage = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-3">
                       <div>
-                    <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-1 sm:mb-2">
+                        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground mb-1 sm:mb-2">
                           {tool.id === 'jpg-to-png' 
-                            ? 'JPG to PNG Converter – Free with AI Background Removal' 
+                            ? 'JPG to PNG Converter Online – Free & Lossless' 
                             : tool.name}
                         </h1>
-                        <p className="text-sm sm:text-base text-muted-foreground">
-                          {tool.id === 'jpg-to-png' 
-                            ? 'Convert JPG to PNG with AI background removal, bulk conversion, and advanced features. 100% free, no upload.'
-                            : tool.description}
-                        </p>
+                        <p className="text-sm sm:text-base text-muted-foreground">{tool.description}</p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <ShareButton 
                           title={`${tool.name} - AnyFile Flow`}
                           description={tool.description}
-                          url={`https://anyfileflow.com/tool/${tool.id}`}
+                          url={`https://anyfileflow.lovable.app/tool/${tool.id}`}
                         />
                       </div>
                     </div>
@@ -537,23 +526,13 @@ const ToolPage = () => {
                 </Suspense>
               )}
 
-              {/* Unique SEO Content for ALL tools - prevents low-value content */}
-              <ToolUniqueContent
-                toolId={tool.id}
-                toolName={tool.name}
-                toolDescription={tool.description}
-                toolFrom={tool.from}
-                toolTo={tool.to}
-                categoryName={category?.name || "Online Tools"}
-              />
-
               <section className="bg-secondary/30 rounded-2xl p-4 sm:p-6 mt-6" aria-labelledby="brand-section">
                 <h3 id="brand-section" className="font-semibold text-foreground mb-3">
                   More from AnyFile Flow
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   This tool is part of <strong>AnyFile Flow</strong> — also known as <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
-                  We offer 1000+ free online tools to help you convert, edit, and transform your files.
+                  We offer 200+ free online tools to help you convert, edit, and transform your files.
                 </p>
                 <nav className="flex flex-wrap gap-2" aria-label="Brand navigation">
                   <Link to="/brand" className="text-xs text-primary hover:underline">
