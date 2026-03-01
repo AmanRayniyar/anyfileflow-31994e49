@@ -111,12 +111,14 @@ const Footer = () => {
           </nav>
 
           {/* Legal */}
-          <nav aria-label="Legal">
-            <h2 className="font-semibold text-foreground text-sm mb-2">Legal</h2>
+          <nav aria-label="Legal & Trust">
+            <h2 className="font-semibold text-foreground text-sm mb-2">Legal & Trust</h2>
             <ul className="space-y-1">
               <li><Link to="/privacy-policy" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Privacy Policy</Link></li>
               <li><Link to="/terms" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Terms of Service</Link></li>
               <li><Link to="/disclaimer" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Disclaimer</Link></li>
+              <li><Link to="/editorial-policy" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Editorial Policy</Link></li>
+              <li><Link to="/review-methodology" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Review Methodology</Link></li>
             </ul>
           </nav>
         </div>

@@ -25,6 +25,8 @@ const UserTestimonials = lazy(() => import("@/components/home/UserTestimonials")
 const AboutAnyFileFlow = lazy(() => import("@/components/home/AboutAnyFileFlow"));
 const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
 const FounderSection = lazy(() => import("@/components/home/FounderSection"));
+const NewsletterSignup = lazy(() => import("@/components/NewsletterSignup"));
+const StickyCTA = lazy(() => import("@/components/StickyCTA"));
 
 // Optimized skeleton
 const SectionSkeleton = memo(({ height = "h-48" }: { height?: string }) => (
@@ -324,8 +326,18 @@ const Index = memo(() => {
             <HomeFAQ />
           </Suspense>
           
+          {/* Newsletter Signup */}
+          <Suspense fallback={<SectionSkeleton height="h-32" />}>
+            <NewsletterSignup />
+          </Suspense>
+          
         </main>
         <Footer />
+        
+        {/* Sticky CTA */}
+        <Suspense fallback={null}>
+          <StickyCTA />
+        </Suspense>
       </div>
     </>
   );

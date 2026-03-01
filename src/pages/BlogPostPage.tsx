@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateBlogBreadcrumbs } from "@/components/SEOBreadcrumb";
 import { BlogSidebar } from "@/components/blog/BlogSidebar";
+import BlogTableOfContents from "@/components/blog/BlogTableOfContents";
 
 const BlogPostSkeleton = () => {
   const [progress, setProgress] = useState(0);
@@ -181,6 +182,9 @@ const BlogPostPage = () => {
                   </span>
                 </div>
               </header>
+
+              {/* Auto Table of Contents */}
+              <BlogTableOfContents content={post.content} />
 
               <div 
                 className="prose prose-lg max-w-none dark:prose-invert prose-headings:text-foreground prose-p:text-muted-foreground prose-a:text-primary prose-strong:text-foreground"

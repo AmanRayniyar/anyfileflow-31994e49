@@ -25,6 +25,8 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const SmallPDFAlternativePage = lazy(() => import("./pages/SmallPDFAlternativePage"));
 const ILovePDFAlternativePage = lazy(() => import("./pages/ILovePDFAlternativePage"));
 const BestFreeFileConverterPage = lazy(() => import("./pages/BestFreeFileConverterPage"));
+const EditorialPolicyPage = lazy(() => import("./pages/EditorialPolicyPage"));
+const ReviewMethodologyPage = lazy(() => import("./pages/ReviewMethodologyPage"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -67,6 +69,8 @@ const AppRoutes = () => (
         <Route path="/smallpdf-alternative" element={<SmallPDFAlternativePage />} />
         <Route path="/ilovepdf-alternative" element={<ILovePDFAlternativePage />} />
         <Route path="/best-free-file-converter" element={<BestFreeFileConverterPage />} />
+        <Route path="/editorial-policy" element={<EditorialPolicyPage />} />
+        <Route path="/review-methodology" element={<ReviewMethodologyPage />} />
         
         {/* Language-prefixed routes (hi, es, pt, ar) */}
         <Route path="/:lang" element={<Index />} />
