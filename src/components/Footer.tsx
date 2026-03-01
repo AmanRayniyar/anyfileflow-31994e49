@@ -55,7 +55,7 @@ const Footer = () => {
               <div className="relative">
                 <img src={founderImg} alt="" className="h-8 w-8 rounded-full object-cover" width="32" height="32" loading="lazy" decoding="async" />
                 {/* Blue Verified Badge */}
-                <div className="absolute -bottom-0.5 -right-0.5 bg-[#1DA1F2] rounded-full p-0.5 shadow-sm border border-white dark:border-background">
+                <div className="absolute -bottom-0.5 -right-0.5 bg-primary rounded-full p-0.5 shadow-sm border border-background">
                   <svg className="w-2.5 h-2.5 text-white" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                   </svg>
