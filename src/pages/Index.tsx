@@ -198,7 +198,7 @@ const Index = memo(() => {
       <div className="min-h-screen bg-background">
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <Header />
-        <main id="main-content" role="main" aria-label="Main content">
+        <main id="main-content" aria-label="Main content">
           <Hero />
           
           {/* Trust Badges - Right under hero */}
