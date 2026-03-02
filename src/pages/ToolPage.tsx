@@ -65,6 +65,7 @@ const AudioPitchChangerSeoContent = lazy(() => import("@/components/tools/AudioP
 const BoomerangVideoSeoContent = lazy(() => import("@/components/tools/BoomerangVideoSeoContent"));
 const WordCounterSeoContent = lazy(() => import("@/components/tools/WordCounterSeoContent"));
 const LoveCalculatorSeoContent = lazy(() => import("@/components/tools/LoveCalculatorSeoContent"));
+const FaviconGeneratorSeoContent = lazy(() => import("@/components/tools/FaviconGeneratorSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -535,6 +536,13 @@ const ToolPage = () => {
               {tool.id === 'love-calculator' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <LoveCalculatorSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Favicon Generator Tool */}
+              {tool.id === 'favicon-generator' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <FaviconGeneratorSeoContent />
                 </Suspense>
               )}
 
