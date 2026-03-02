@@ -46,6 +46,7 @@ const BoomerangVideoTool = lazy(() => import("@/components/tools/BoomerangVideoT
 const WordCounterTool = lazy(() => import("@/components/tools/WordCounterTool"));
 const LoveCalculatorTool = lazy(() => import("@/components/tools/LoveCalculatorTool"));
  const AdvancedBmiCalculator = lazy(() => import("@/components/tools/AdvancedBmiCalculator"));
+const FaviconGeneratorTool = lazy(() => import("@/components/tools/FaviconGeneratorTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -234,10 +235,15 @@ const ToolPage = () => {
       return <LoveCalculatorTool />;
     }
      
-     // Special case for BMI Calculator - use ultra advanced version
+      // Special case for BMI Calculator - use ultra advanced version
      if (tool.id === 'bmi-calculator') {
        return <AdvancedBmiCalculator />;
      }
+    
+    // Special case for Favicon Generator
+    if (tool.id === 'favicon-generator') {
+      return <FaviconGeneratorTool />;
+    }
     
     switch (tool.toolType) {
       case 'image-convert':
@@ -273,6 +279,9 @@ const ToolPage = () => {
     if (tool.id === 'love-calculator') {
       return 'Love Calculator Online – Free Couple Compatibility Test & Relationship Score | AnyFile Flow';
     }
+    if (tool.id === 'favicon-generator') {
+      return 'Favicon Generator Online – Free Icon Maker for Websites | AnyFile Flow';
+    }
     return `${tool.name} - Free Online Tool | AnyFile Flow`;
   };
 
@@ -288,6 +297,9 @@ const ToolPage = () => {
     }
     if (tool.id === 'love-calculator') {
       return 'Free love calculator online! Test relationship compatibility with fun romantic messages, zodiac bonus, and one-click sharing. 100% private, no data stored.';
+    }
+    if (tool.id === 'favicon-generator') {
+      return 'Free favicon generator: create favicons from text, emoji, or image. Export PNG, ICO, SVG in all sizes. No signup, 100% browser-based.';
     }
     return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, no registration required. Process files instantly in your browser.`;
   };
