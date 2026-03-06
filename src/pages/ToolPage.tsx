@@ -47,6 +47,7 @@ const WordCounterTool = lazy(() => import("@/components/tools/WordCounterTool"))
 const LoveCalculatorTool = lazy(() => import("@/components/tools/LoveCalculatorTool"));
  const AdvancedBmiCalculator = lazy(() => import("@/components/tools/AdvancedBmiCalculator"));
 const FaviconGeneratorTool = lazy(() => import("@/components/tools/FaviconGeneratorTool"));
+const PDFSplitterTool = lazy(() => import("@/components/tools/PDFSplitterTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
@@ -66,6 +67,7 @@ const BoomerangVideoSeoContent = lazy(() => import("@/components/tools/Boomerang
 const WordCounterSeoContent = lazy(() => import("@/components/tools/WordCounterSeoContent"));
 const LoveCalculatorSeoContent = lazy(() => import("@/components/tools/LoveCalculatorSeoContent"));
 const FaviconGeneratorSeoContent = lazy(() => import("@/components/tools/FaviconGeneratorSeoContent"));
+const PDFSplitterSeoContent = lazy(() => import("@/components/tools/PDFSplitterSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -246,6 +248,11 @@ const ToolPage = () => {
       return <FaviconGeneratorTool />;
     }
     
+    // Special case for PDF Splitter
+    if (tool.id === 'pdf-splitter') {
+      return <PDFSplitterTool />;
+    }
+    
     switch (tool.toolType) {
       case 'image-convert':
       case 'image-edit':
@@ -283,6 +290,9 @@ const ToolPage = () => {
     if (tool.id === 'favicon-generator') {
       return 'Favicon Generator Online – Free Icon Maker for Websites | AnyFile Flow';
     }
+    if (tool.id === 'pdf-splitter') {
+      return 'PDF Splitter Online – Free PDF Page Splitter & Extractor | AnyFile Flow';
+    }
     return `${tool.name} - Free Online Tool | AnyFile Flow`;
   };
 
@@ -301,6 +311,9 @@ const ToolPage = () => {
     }
     if (tool.id === 'favicon-generator') {
       return 'Free favicon generator: create favicons from text, emoji, or image. Export PNG, ICO, SVG in all sizes. No signup, 100% browser-based.';
+    }
+    if (tool.id === 'pdf-splitter') {
+      return 'Free online PDF splitter: split by page range, every N pages, extract pages, or split by size. 100% browser-based, no upload, no signup.';
     }
     return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, no registration required. Process files instantly in your browser.`;
   };
@@ -543,6 +556,13 @@ const ToolPage = () => {
               {tool.id === 'favicon-generator' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <FaviconGeneratorSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for PDF Splitter Tool */}
+              {tool.id === 'pdf-splitter' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <PDFSplitterSeoContent />
                 </Suspense>
               )}
 
