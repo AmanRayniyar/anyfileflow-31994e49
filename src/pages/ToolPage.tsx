@@ -68,6 +68,7 @@ const WordCounterSeoContent = lazy(() => import("@/components/tools/WordCounterS
 const LoveCalculatorSeoContent = lazy(() => import("@/components/tools/LoveCalculatorSeoContent"));
 const FaviconGeneratorSeoContent = lazy(() => import("@/components/tools/FaviconGeneratorSeoContent"));
 const PDFSplitterSeoContent = lazy(() => import("@/components/tools/PDFSplitterSeoContent"));
+const PDFProtectSeoContent = lazy(() => import("@/components/tools/PDFProtectSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -293,6 +294,9 @@ const ToolPage = () => {
     if (tool.id === 'pdf-splitter') {
       return 'PDF Splitter Online – Free PDF Page Splitter & Extractor | AnyFile Flow';
     }
+    if (tool.id === 'pdf-protect') {
+      return 'PDF Protect Online – Free PDF Encryption & Password Protection | AnyFile Flow';
+    }
     return `${tool.name} - Free Online Tool | AnyFile Flow`;
   };
 
@@ -314,6 +318,9 @@ const ToolPage = () => {
     }
     if (tool.id === 'pdf-splitter') {
       return 'Free online PDF splitter: split by page range, every N pages, extract pages, or split by size. 100% browser-based, no upload, no signup.';
+    }
+    if (tool.id === 'pdf-protect') {
+      return 'Free online PDF encryption tool with 256-bit AES, batch processing, granular permissions, security presets. 100% browser-based, no upload, no signup required.';
     }
     return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, no registration required. Process files instantly in your browser.`;
   };
@@ -563,6 +570,13 @@ const ToolPage = () => {
               {tool.id === 'pdf-splitter' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <PDFSplitterSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for PDF Protect Tool */}
+              {tool.id === 'pdf-protect' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <PDFProtectSeoContent />
                 </Suspense>
               )}
 
