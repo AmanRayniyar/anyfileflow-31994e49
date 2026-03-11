@@ -69,6 +69,7 @@ const LoveCalculatorSeoContent = lazy(() => import("@/components/tools/LoveCalcu
 const FaviconGeneratorSeoContent = lazy(() => import("@/components/tools/FaviconGeneratorSeoContent"));
 const PDFSplitterSeoContent = lazy(() => import("@/components/tools/PDFSplitterSeoContent"));
 const PDFProtectSeoContent = lazy(() => import("@/components/tools/PDFProtectSeoContent"));
+const MemeGeneratorSeoContent = lazy(() => import("@/components/tools/MemeGeneratorSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
