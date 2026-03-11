@@ -298,6 +298,9 @@ const ToolPage = () => {
     if (tool.id === 'pdf-protect') {
       return 'PDF Protect Online – Free PDF Encryption & Password Protection | AnyFile Flow';
     }
+    if (tool.id === 'meme-generator') {
+      return 'Meme Generator Online – Free AI Meme Maker, No Watermark | AnyFile Flow';
+    }
     return `${tool.name} - Free Online Tool | AnyFile Flow`;
   };
 
