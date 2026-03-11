@@ -326,6 +326,9 @@ const ToolPage = () => {
     if (tool.id === 'pdf-protect') {
       return 'Free online PDF encryption tool with 256-bit AES, batch processing, granular permissions, security presets. 100% browser-based, no upload, no signup required.';
     }
+    if (tool.id === 'meme-generator') {
+      return 'Free online meme generator with AI text generation, 20+ templates, image filters, drag-and-drop text, no watermark. 100% browser-based, no signup required.';
+    }
     return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, no registration required. Process files instantly in your browser.`;
   };
 
