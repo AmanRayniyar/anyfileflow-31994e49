@@ -69,6 +69,7 @@ const LoveCalculatorSeoContent = lazy(() => import("@/components/tools/LoveCalcu
 const FaviconGeneratorSeoContent = lazy(() => import("@/components/tools/FaviconGeneratorSeoContent"));
 const PDFSplitterSeoContent = lazy(() => import("@/components/tools/PDFSplitterSeoContent"));
 const PDFProtectSeoContent = lazy(() => import("@/components/tools/PDFProtectSeoContent"));
+const MemeGeneratorSeoContent = lazy(() => import("@/components/tools/MemeGeneratorSeoContent"));
 
 // Tool loading skeleton
 const ToolLoader = () => (
@@ -297,6 +298,9 @@ const ToolPage = () => {
     if (tool.id === 'pdf-protect') {
       return 'PDF Protect Online – Free PDF Encryption & Password Protection | AnyFile Flow';
     }
+    if (tool.id === 'meme-generator') {
+      return 'Meme Generator Online – Free AI Meme Maker, No Watermark | AnyFile Flow';
+    }
     return `${tool.name} - Free Online Tool | AnyFile Flow`;
   };
 
@@ -321,6 +325,9 @@ const ToolPage = () => {
     }
     if (tool.id === 'pdf-protect') {
       return 'Free online PDF encryption tool with 256-bit AES, batch processing, granular permissions, security presets. 100% browser-based, no upload, no signup required.';
+    }
+    if (tool.id === 'meme-generator') {
+      return 'Free online meme generator with AI text generation, 20+ templates, image filters, drag-and-drop text, no watermark. 100% browser-based, no signup required.';
     }
     return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, no registration required. Process files instantly in your browser.`;
   };
@@ -577,6 +584,13 @@ const ToolPage = () => {
               {tool.id === 'pdf-protect' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <PDFProtectSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Meme Generator Tool */}
+              {tool.id === 'meme-generator' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <MemeGeneratorSeoContent />
                 </Suspense>
               )}
 
