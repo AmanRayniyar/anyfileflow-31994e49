@@ -8,13 +8,10 @@ type DbToolRow = {
   name: string;
   description: string;
   category: string;
-  icon: string;
   from_type: string;
   to_type: string;
   popular: boolean;
-  enabled: boolean;
   tool_type: string;
-  custom_content: string | null;
 };
 
 const PAGE_SIZE = 1000;
