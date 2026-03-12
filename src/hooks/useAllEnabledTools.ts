@@ -75,7 +75,7 @@ export function useAllEnabledTools() {
         while (true) {
           const { data, error } = await supabase
             .from("tools")
-            .select("id,name,description,category,icon,from_type,to_type,popular,enabled,tool_type,custom_content")
+            .select("id,name,description,category,from_type,to_type,popular,tool_type")
             .eq("enabled", true)
             .order("category", { ascending: true })
             .order("name", { ascending: true })

@@ -29,6 +29,7 @@ const FounderSection = memo(() => {
                   height="128"
                   loading="lazy"
                   decoding="async"
+                  fetchPriority="low"
                 />
                 {/* Verified Badge */}
                 <div className="absolute -bottom-1 -right-1 bg-[#1DA1F2] rounded-full p-1.5 shadow-lg border-2 border-background">
