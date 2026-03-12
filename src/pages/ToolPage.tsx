@@ -442,6 +442,16 @@ const ToolPage = () => {
                 </div>
               </section>
 
+              {/* Universal SEO Content - auto-generated for ALL tools */}
+              <ToolUniqueContent
+                toolId={tool.id}
+                toolName={tool.name}
+                toolDescription={tool.description}
+                toolFrom={tool.from}
+                toolTo={tool.to}
+                toolCategory={tool.category}
+              />
+
               {/* AI Help Section - Available on ALL tools */}
               <div className="mt-6">
                 <ToolAIHelp toolName={tool.name} toolDescription={tool.description} />
