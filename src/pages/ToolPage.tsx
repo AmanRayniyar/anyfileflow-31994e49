@@ -330,7 +330,7 @@ const ToolPage = () => {
     if (tool.id === 'meme-generator') {
       return 'Free online meme generator with AI text generation, 20+ templates, image filters, drag-and-drop text, no watermark. 100% browser-based, no signup required.';
     }
-    return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, no registration required. Process files instantly in your browser.`;
+    return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, browser-based, no registration. Process files instantly online.`;
   };
 
   return (
