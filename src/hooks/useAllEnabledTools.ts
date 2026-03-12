@@ -8,13 +8,10 @@ type DbToolRow = {
   name: string;
   description: string;
   category: string;
-  icon: string;
   from_type: string;
   to_type: string;
   popular: boolean;
-  enabled: boolean;
   tool_type: string;
-  custom_content: string | null;
 };
 
 const PAGE_SIZE = 1000;
@@ -75,7 +72,7 @@ export function useAllEnabledTools() {
         while (true) {
           const { data, error } = await supabase
             .from("tools")
-            .select("id,name,description,category,icon,from_type,to_type,popular,enabled,tool_type,custom_content")
+            .select("id,name,description,category,from_type,to_type,popular,tool_type")
             .eq("enabled", true)
             .order("category", { ascending: true })
             .order("name", { ascending: true })

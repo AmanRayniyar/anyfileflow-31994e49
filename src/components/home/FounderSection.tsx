@@ -1,6 +1,8 @@
 import { memo } from "react";
 import { User, ExternalLink } from "lucide-react";
-import founderImg from "@/assets/founder.png";
+
+// Optimized: ~80KB webp instead of 522KB png
+import founderImg from "@/assets/founder-optimized.webp";
 
 const FounderSection = memo(() => {
   return (
@@ -19,7 +21,7 @@ const FounderSection = memo(() => {
 
           <div className="bg-card border border-border rounded-2xl p-6 md:p-8">
             <div className="flex flex-col md:flex-row items-center gap-6">
-              {/* Founder Image */}
+              {/* Founder Image - optimized with small webp */}
               <div className="relative flex-shrink-0">
                 <img 
                   src={founderImg} 
@@ -29,8 +31,8 @@ const FounderSection = memo(() => {
                   height="128"
                   loading="lazy"
                   decoding="async"
+                  fetchPriority="low"
                 />
-                {/* Verified Badge */}
                 <div className="absolute -bottom-1 -right-1 bg-[#1DA1F2] rounded-full p-1.5 shadow-lg border-2 border-background">
                   <svg className="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor" aria-label="Verified">
                     <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
@@ -38,7 +40,6 @@ const FounderSection = memo(() => {
                 </div>
               </div>
 
-              {/* Content */}
               <div className="text-center md:text-left flex-1">
                 <h3 className="text-xl font-bold text-foreground mb-1">Aman Rauniyar</h3>
                 <p className="text-sm text-primary font-medium mb-3">Founder & Developer</p>
@@ -54,37 +55,21 @@ const FounderSection = memo(() => {
                   from everyday digital tools, making powerful file conversion accessible to everyone.
                 </p>
 
-                {/* Social Links */}
                 <div className="flex items-center justify-center md:justify-start gap-3">
-                  <a 
-                    href="https://www.facebook.com/aman.rauniyar.980" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                  <a href="https://www.facebook.com/aman.rauniyar.980" target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="Aman Rauniyar on Facebook"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                    Facebook
+                    aria-label="Aman Rauniyar on Facebook">
+                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />Facebook
                   </a>
-                  <a 
-                    href="https://github.com/AmanRayniyar" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                  <a href="https://github.com/AmanRayniyar" target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="Aman Rauniyar on GitHub"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                    GitHub
+                    aria-label="Aman Rauniyar on GitHub">
+                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />GitHub
                   </a>
-                  <a 
-                    href="https://www.instagram.com/amanrauniyar2064/" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                  <a href="https://www.instagram.com/amanrauniyar2064/" target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
-                    aria-label="Aman Rauniyar on Instagram"
-                  >
-                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />
-                    Instagram
+                    aria-label="Aman Rauniyar on Instagram">
+                    <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" />Instagram
                   </a>
                 </div>
               </div>
