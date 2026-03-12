@@ -8,6 +8,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateToolBreadcrumbs } from "@/components/SEOBreadcrumb";
+import ToolUniqueContent from "@/components/ToolUniqueContent";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -301,7 +302,7 @@ const ToolPage = () => {
     if (tool.id === 'meme-generator') {
       return 'Meme Generator Online – Free AI Meme Maker, No Watermark | AnyFile Flow';
     }
-    return `${tool.name} - Free Online Tool | AnyFile Flow`;
+    return `${tool.name} – Free, Fast & Secure | AnyFile Flow`;
   };
 
   const getPageDescription = () => {
@@ -329,7 +330,7 @@ const ToolPage = () => {
     if (tool.id === 'meme-generator') {
       return 'Free online meme generator with AI text generation, 20+ templates, image filters, drag-and-drop text, no watermark. 100% browser-based, no signup required.';
     }
-    return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, no registration required. Process files instantly in your browser.`;
+    return `${tool.description}. Free ${tool.name} by AnyFile Flow. Fast, secure, browser-based, no registration. Process files instantly online.`;
   };
 
   return (
@@ -440,6 +441,16 @@ const ToolPage = () => {
                   </ul>
                 </div>
               </section>
+
+              {/* Universal SEO Content - auto-generated for ALL tools */}
+              <ToolUniqueContent
+                toolId={tool.id}
+                toolName={tool.name}
+                toolDescription={tool.description}
+                toolFrom={tool.from}
+                toolTo={tool.to}
+                toolCategory={tool.category}
+              />
 
               {/* AI Help Section - Available on ALL tools */}
               <div className="mt-6">
@@ -600,7 +611,7 @@ const ToolPage = () => {
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   This tool is part of <strong>AnyFile Flow</strong> — also known as <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
-                  We offer 200+ free online tools to help you convert, edit, and transform your files.
+                  We offer 1000+ free online tools to help you convert, edit, and transform your files.
                 </p>
                 <nav className="flex flex-wrap gap-2" aria-label="Brand navigation">
                   <Link to="/brand" className="text-xs text-primary hover:underline">
