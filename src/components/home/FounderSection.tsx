@@ -1,8 +1,8 @@
 import { memo } from "react";
 import { User, ExternalLink } from "lucide-react";
 
-// Optimized: use lazy-loaded smaller image instead of 522KB founder.png
-const founderImg = "https://storage.googleapis.com/gpt-engineer-file-uploads/nFHi4tXsNpTAZh1K4XzsCObEP113/uploads/1769377488356-1000077412.webp";
+// Optimized: ~80KB webp instead of 522KB png
+import founderImg from "@/assets/founder-optimized.webp";
 
 const FounderSection = memo(() => {
   return (
