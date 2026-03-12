@@ -8,6 +8,7 @@ import { LanguageSelector } from "@/components/LanguageSelector";
 import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateToolBreadcrumbs } from "@/components/SEOBreadcrumb";
+import ToolUniqueContent from "@/components/ToolUniqueContent";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
