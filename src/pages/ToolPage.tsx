@@ -84,12 +84,45 @@ const ToolLoader = () => (
 
 const ToolPage = () => {
   const { toolId } = useParams<{ toolId: string }>();
+  const navigate = useNavigate();
+  const [showBackAd, setShowBackAd] = useState(false);
+  const [pendingBack, setPendingBack] = useState(false);
 
   // Prefer DB tool (so newly-added tools work), but keep static fallback for existing curated tools.
   const staticTool = toolId ? getToolById(toolId) : undefined;
   const { tool: dbTool, loading: dbLoading } = useToolById(toolId);
 
   const tool = useMemo(() => staticTool ?? dbTool ?? undefined, [staticTool, dbTool]);
+
+  // Intercept browser back button
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      // Push state back so user stays on page
+      window.history.pushState(null, "", window.location.href);
+      setShowBackAd(true);
+      setPendingBack(true);
+    };
+
+    // Push an extra history entry so we can intercept back
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  const handleBackAdComplete = useCallback(() => {
+    setShowBackAd(false);
+    setPendingBack(false);
+    // Now actually go back
+    window.history.go(-2);
+  }, []);
+
+  const handleBackAdCancel = useCallback(() => {
+    setShowBackAd(false);
+    setPendingBack(false);
+  }, []);
 
   // Scroll to top on mount and track recently used
   useEffect(() => {
