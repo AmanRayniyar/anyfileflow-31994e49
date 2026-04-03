@@ -275,12 +275,7 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
         </div>
       )}
     </div>
-  );
-
-  return (
-    <>
-      {ui}
-      {adElement}
+    {adElement}
     </>
   );
 };
