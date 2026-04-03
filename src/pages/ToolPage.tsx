@@ -688,6 +688,9 @@ const ToolPage = () => {
         </main>
         <Footer />
       </div>
+      {showBackAd && (
+        <InterstitialAd onComplete={handleBackAdComplete} onCancel={handleBackAdCancel} />
+      )}
     </>
   );
 };
