@@ -109,7 +109,7 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
     }
   };
 
-  const downloadFile = (file: ConvertedFile) => {
+  const doDownload = (file: ConvertedFile) => {
     const link = document.createElement("a");
     link.href = file.url;
     link.download = file.name;
@@ -118,8 +118,12 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
     document.body.removeChild(link);
   };
 
+  const downloadFile = (file: ConvertedFile) => {
+    triggerWithAd(() => doDownload(file));
+  };
+
   const downloadAll = () => {
-    convertedFiles.forEach((file) => downloadFile(file));
+    triggerWithAd(() => convertedFiles.forEach((file) => doDownload(file)));
   };
 
   const formatFileSize = (bytes: number) => {
