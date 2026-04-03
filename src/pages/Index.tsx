@@ -27,6 +27,7 @@ const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
 const FounderSection = lazy(() => import("@/components/home/FounderSection"));
 const NewsletterSignup = lazy(() => import("@/components/NewsletterSignup"));
 const StickyCTA = lazy(() => import("@/components/StickyCTA"));
+const InlineAd = lazy(() => import("@/components/InlineAd"));
 
 // Optimized skeleton
 const SectionSkeleton = memo(({ height = "h-48" }: { height?: string }) => (
