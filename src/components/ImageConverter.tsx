@@ -138,6 +138,7 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
   };
 
   return (
+    <>
     <div className="space-y-6">
       {/* Drop Zone */}
       <div
