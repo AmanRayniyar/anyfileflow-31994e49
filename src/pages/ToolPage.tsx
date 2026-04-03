@@ -50,6 +50,7 @@ const LoveCalculatorTool = lazy(() => import("@/components/tools/LoveCalculatorT
 const FaviconGeneratorTool = lazy(() => import("@/components/tools/FaviconGeneratorTool"));
 const PDFSplitterTool = lazy(() => import("@/components/tools/PDFSplitterTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
+const StickyToolAd = lazy(() => import("@/components/StickyToolAd"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
