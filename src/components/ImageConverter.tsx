@@ -275,6 +275,13 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
       )}
     </div>
   );
+
+  return (
+    <>
+      {content}
+      {adElement}
+    </>
+  );
 };
 
 export default ImageConverter;
