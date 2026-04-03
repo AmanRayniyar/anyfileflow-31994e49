@@ -633,6 +633,11 @@ const ToolPage = () => {
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
 
+                {/* Sticky Ad */}
+                <Suspense fallback={<div className="h-20 bg-muted rounded-xl animate-pulse" />}>
+                  <StickyToolAd />
+                </Suspense>
+
                 {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
                   <h3 id="related-tools" className="font-bold text-foreground mb-4">Related Tools</h3>
