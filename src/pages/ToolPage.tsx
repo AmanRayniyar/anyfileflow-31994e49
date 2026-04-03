@@ -1,5 +1,5 @@
-import { useParams, Link } from "react-router-dom";
-import { useEffect, lazy, Suspense, useMemo } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useEffect, lazy, Suspense, useMemo, useState, useCallback } from "react";
 import ShareButton from "@/components/ShareButton";
 import ToolAIHelp from "@/components/ToolAIHelp";
 import ToolSEOSchemas from "@/components/ToolSEOSchemas";
@@ -9,6 +9,7 @@ import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateToolBreadcrumbs } from "@/components/SEOBreadcrumb";
 import ToolUniqueContent from "@/components/ToolUniqueContent";
+import InterstitialAd from "@/components/InterstitialAd";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -84,12 +85,45 @@ const ToolLoader = () => (
 
 const ToolPage = () => {
   const { toolId } = useParams<{ toolId: string }>();
+  const navigate = useNavigate();
+  const [showBackAd, setShowBackAd] = useState(false);
+  const [pendingBack, setPendingBack] = useState(false);
 
   // Prefer DB tool (so newly-added tools work), but keep static fallback for existing curated tools.
   const staticTool = toolId ? getToolById(toolId) : undefined;
   const { tool: dbTool, loading: dbLoading } = useToolById(toolId);
 
   const tool = useMemo(() => staticTool ?? dbTool ?? undefined, [staticTool, dbTool]);
+
+  // Intercept browser back button
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      // Push state back so user stays on page
+      window.history.pushState(null, "", window.location.href);
+      setShowBackAd(true);
+      setPendingBack(true);
+    };
+
+    // Push an extra history entry so we can intercept back
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  const handleBackAdComplete = useCallback(() => {
+    setShowBackAd(false);
+    setPendingBack(false);
+    // Now actually go back
+    window.history.go(-2);
+  }, []);
+
+  const handleBackAdCancel = useCallback(() => {
+    setShowBackAd(false);
+    setPendingBack(false);
+  }, []);
 
   // Scroll to top on mount and track recently used
   useEffect(() => {
@@ -654,6 +688,9 @@ const ToolPage = () => {
         </main>
         <Footer />
       </div>
+      {showBackAd && (
+        <InterstitialAd onComplete={handleBackAdComplete} onCancel={handleBackAdCancel} />
+      )}
     </>
   );
 };

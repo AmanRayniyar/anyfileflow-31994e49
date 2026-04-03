@@ -4,6 +4,7 @@ import { Upload, Download, X, Image as ImageIcon, RefreshCw, Check } from "lucid
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useInterstitialAd } from "@/components/InterstitialAd";
 
 interface ImageConverterProps {
   fromFormat: string;
@@ -22,6 +23,7 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
   const [files, setFiles] = useState<File[]>([]);
   const [converting, setConverting] = useState(false);
   const [convertedFiles, setConvertedFiles] = useState<ConvertedFile[]>([]);
+  const { triggerWithAd, adElement } = useInterstitialAd();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles((prev) => [...prev, ...acceptedFiles]);
@@ -107,7 +109,7 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
     }
   };
 
-  const downloadFile = (file: ConvertedFile) => {
+  const doDownload = (file: ConvertedFile) => {
     const link = document.createElement("a");
     link.href = file.url;
     link.download = file.name;
@@ -116,8 +118,12 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
     document.body.removeChild(link);
   };
 
+  const downloadFile = (file: ConvertedFile) => {
+    triggerWithAd(() => doDownload(file));
+  };
+
   const downloadAll = () => {
-    convertedFiles.forEach((file) => downloadFile(file));
+    triggerWithAd(() => convertedFiles.forEach((file) => doDownload(file)));
   };
 
   const formatFileSize = (bytes: number) => {
@@ -132,6 +138,7 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
   };
 
   return (
+    <>
     <div className="space-y-6">
       {/* Drop Zone */}
       <div
@@ -268,6 +275,8 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
         </div>
       )}
     </div>
+    {adElement}
+    </>
   );
 };
 
