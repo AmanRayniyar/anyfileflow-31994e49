@@ -50,6 +50,7 @@ const LoveCalculatorTool = lazy(() => import("@/components/tools/LoveCalculatorT
 const FaviconGeneratorTool = lazy(() => import("@/components/tools/FaviconGeneratorTool"));
 const PDFSplitterTool = lazy(() => import("@/components/tools/PDFSplitterTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
+const StickyToolAd = lazy(() => import("@/components/StickyToolAd"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
@@ -632,6 +633,11 @@ const ToolPage = () => {
             {/* Sidebar */}
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
+
+                {/* Sticky Ad */}
+                <Suspense fallback={<div className="h-20 bg-muted rounded-xl animate-pulse" />}>
+                  <StickyToolAd />
+                </Suspense>
 
                 {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
