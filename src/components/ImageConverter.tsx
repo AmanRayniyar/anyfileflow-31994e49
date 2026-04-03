@@ -23,6 +23,7 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
   const [files, setFiles] = useState<File[]>([]);
   const [converting, setConverting] = useState(false);
   const [convertedFiles, setConvertedFiles] = useState<ConvertedFile[]>([]);
+  const { triggerWithAd, adElement } = useInterstitialAd();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles((prev) => [...prev, ...acceptedFiles]);
