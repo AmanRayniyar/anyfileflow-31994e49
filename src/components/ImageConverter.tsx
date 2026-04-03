@@ -4,6 +4,7 @@ import { Upload, Download, X, Image as ImageIcon, RefreshCw, Check } from "lucid
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useInterstitialAd } from "@/components/InterstitialAd";
 
 interface ImageConverterProps {
   fromFormat: string;
