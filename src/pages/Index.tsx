@@ -292,6 +292,11 @@ const Index = memo(() => {
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
             <RecentlyAddedTools />
           </Suspense>
+
+          {/* Inline Ad */}
+          <Suspense fallback={null}>
+            <InlineAd />
+          </Suspense>
           
           {/* User Testimonials */}
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
