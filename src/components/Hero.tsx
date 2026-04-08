@@ -1,6 +1,4 @@
-import { memo, Suspense, lazy } from "react";
-
-const GlobalUsersCounter = lazy(() => import("@/components/home/GlobalUsersCounter"));
+import { memo } from "react";
 
 // Inline SVG Icons
 const ZapIcon = ({ className }: { className?: string }) => (
@@ -53,12 +51,7 @@ const Hero = memo(() => {
             The ultimate toolkit for all your file conversions. Fast, free, and secure. No registration required.
           </p>
 
-          {/* Global Users Counter */}
-          <div className="mb-8 md:mb-12">
-            <Suspense fallback={<div className="h-16" />}>
-              <GlobalUsersCounter />
-            </Suspense>
-          </div>
+          <div className="mb-8 md:mb-12" />
 
           {/* Features */}
           <ul className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
