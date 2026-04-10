@@ -119,6 +119,11 @@ const Footer = () => {
                   ✅ AdSense Eligibility Checker
                 </a>
               </li>
+              <li>
+                <a href="https://zanexatech.com/" target="_blank" rel="dofollow" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center gap-1">
+                  🚀 ZanexaTech — Tech Solutions & Services
+                </a>
+              </li>
             </ul>
 
             <h2 className="font-semibold text-foreground text-sm mb-2">Legal & Trust</h2>
