@@ -186,6 +186,19 @@ const ToolsPage = () => {
               <p className="text-muted-foreground">No tools found in this category.</p>
             </div>
           )}
+
+          {/* Recommended External Tools */}
+          <aside className="mt-8 p-5 bg-card border border-border rounded-xl">
+            <h2 className="font-semibold text-foreground text-sm mb-3">🔗 Recommended by AnyFile Flow</h2>
+            <a
+              href="https://adsenseeligibilitychecker.lovable.app/"
+              target="_blank"
+              rel="dofollow"
+              className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"
+            >
+              ✅ AdSense Eligibility Checker — Check if your site qualifies for Google AdSense
+            </a>
+          </aside>
         </main>
         <Footer />
       </div>
