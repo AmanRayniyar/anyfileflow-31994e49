@@ -129,7 +129,7 @@ const Footer = () => {
               <li><Link to="/editorial-policy" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Editorial Policy</Link></li>
               <li><Link to="/review-methodology" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Review Methodology</Link></li>
             </ul>
-          </nav>
+          </div>
         </div>
 
         {/* Brand SEO Section */}
