@@ -198,6 +198,15 @@ const ToolsPage = () => {
             >
               ✅ AdSense Eligibility Checker — Check if your site qualifies for Google AdSense
             </a>
+            <span className="mx-2 text-border">|</span>
+            <a
+              href="https://zanexatech.com/"
+              target="_blank"
+              rel="dofollow"
+              className="inline-flex items-center gap-2 text-sm text-primary hover:underline font-medium"
+            >
+              🚀 ZanexaTech — Tech Solutions & Services
+            </a>
           </aside>
         </main>
         <Footer />
