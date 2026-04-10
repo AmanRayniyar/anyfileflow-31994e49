@@ -110,8 +110,17 @@ const Footer = () => {
             </ul>
           </nav>
 
-          {/* Legal */}
-          <nav aria-label="Legal & Trust">
+          {/* Recommended Tools */}
+          <div>
+            <h2 className="font-semibold text-foreground text-sm mb-2">Recommended Tools</h2>
+            <ul className="space-y-1 mb-4">
+              <li>
+                <a href="https://adsenseeligibilitychecker.lovable.app/" target="_blank" rel="dofollow" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center gap-1">
+                  ✅ AdSense Eligibility Checker
+                </a>
+              </li>
+            </ul>
+
             <h2 className="font-semibold text-foreground text-sm mb-2">Legal & Trust</h2>
             <ul className="space-y-1">
               <li><Link to="/privacy-policy" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center">Privacy Policy</Link></li>
