@@ -481,36 +481,130 @@ const FrequencyDetectorSeoContent: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Frequency Reference Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Music className="h-5 w-5 text-primary" />
-            Common Frequency Reference
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b">
-                  <th className="text-left p-2 font-semibold">Note</th>
-                  <th className="text-left p-2 font-semibold">Frequency (Hz)</th>
-                  <th className="text-left p-2 font-semibold">Description</th>
-                </tr>
-              </thead>
-              <tbody className="text-muted-foreground">
-                <tr className="border-b"><td className="p-2">C4 (Middle C)</td><td className="p-2">261.63 Hz</td><td className="p-2">Center of piano keyboard</td></tr>
-                <tr className="border-b"><td className="p-2">A4</td><td className="p-2">440 Hz</td><td className="p-2">Standard tuning reference</td></tr>
-                <tr className="border-b"><td className="p-2">E2 (Guitar Low E)</td><td className="p-2">82.41 Hz</td><td className="p-2">Lowest guitar string</td></tr>
-                <tr className="border-b"><td className="p-2">E4 (Guitar High E)</td><td className="p-2">329.63 Hz</td><td className="p-2">Highest guitar string</td></tr>
-                <tr className="border-b"><td className="p-2">C0</td><td className="p-2">16.35 Hz</td><td className="p-2">Near human hearing limit</td></tr>
-                <tr><td className="p-2">C8</td><td className="p-2">4186 Hz</td><td className="p-2">Highest piano note</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Standard Tuning Frequency Chart */}
+      <section id="tuning-chart">
+        <h2 className="text-2xl font-bold text-foreground mb-2 flex items-center gap-2">
+          <Music className="h-6 w-6 text-primary" />
+          Standard Tuning Frequency Chart
+        </h2>
+        <p className="text-muted-foreground mb-6">
+          Scientific frequency guide (A4 = 440 Hz) for common instruments. Use our <strong>Sound Frequency Detector</strong> to match these exact Hertz values.
+        </p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Guitar */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">🎸 Guitar (Standard E)</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <table className="w-full text-sm">
+                <thead><tr className="border-b bg-secondary/30"><th className="p-2 text-left">String</th><th className="p-2 text-left">Note</th><th className="p-2 text-left">Frequency</th></tr></thead>
+                <tbody className="text-muted-foreground">
+                  <tr className="border-b"><td className="p-2">1 (High)</td><td className="p-2 font-medium text-foreground">E4</td><td className="p-2">329.63 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">2</td><td className="p-2 font-medium text-foreground">B3</td><td className="p-2">246.94 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">3</td><td className="p-2 font-medium text-foreground">G3</td><td className="p-2">196.00 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">4</td><td className="p-2 font-medium text-foreground">D3</td><td className="p-2">146.83 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">5</td><td className="p-2 font-medium text-foreground">A2</td><td className="p-2">110.00 Hz</td></tr>
+                  <tr><td className="p-2">6 (Low)</td><td className="p-2 font-medium text-foreground">E2</td><td className="p-2">82.41 Hz</td></tr>
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+
+          {/* Ukulele */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">🏖️ Ukulele (Standard)</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <table className="w-full text-sm">
+                <thead><tr className="border-b bg-secondary/30"><th className="p-2 text-left">String</th><th className="p-2 text-left">Note</th><th className="p-2 text-left">Frequency</th></tr></thead>
+                <tbody className="text-muted-foreground">
+                  <tr className="border-b"><td className="p-2">1 (A)</td><td className="p-2 font-medium text-foreground">A4</td><td className="p-2">440.00 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">2 (E)</td><td className="p-2 font-medium text-foreground">E4</td><td className="p-2">329.63 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">3 (C)</td><td className="p-2 font-medium text-foreground">C4</td><td className="p-2">261.63 Hz</td></tr>
+                  <tr><td className="p-2">4 (G)</td><td className="p-2 font-medium text-foreground">G4</td><td className="p-2">392.00 Hz</td></tr>
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+
+          {/* Violin */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">🎻 Violin</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <table className="w-full text-sm">
+                <thead><tr className="border-b bg-secondary/30"><th className="p-2 text-left">String</th><th className="p-2 text-left">Note</th><th className="p-2 text-left">Frequency</th></tr></thead>
+                <tbody className="text-muted-foreground">
+                  <tr className="border-b"><td className="p-2">1 (E)</td><td className="p-2 font-medium text-foreground">E5</td><td className="p-2">659.25 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">2 (A)</td><td className="p-2 font-medium text-foreground">A4</td><td className="p-2">440.00 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">3 (D)</td><td className="p-2 font-medium text-foreground">D4</td><td className="p-2">293.66 Hz</td></tr>
+                  <tr><td className="p-2">4 (G)</td><td className="p-2 font-medium text-foreground">G3</td><td className="p-2">196.00 Hz</td></tr>
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+
+          {/* Bass Guitar */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">🎸 Bass Guitar (4-String)</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <table className="w-full text-sm">
+                <thead><tr className="border-b bg-secondary/30"><th className="p-2 text-left">String</th><th className="p-2 text-left">Note</th><th className="p-2 text-left">Frequency</th></tr></thead>
+                <tbody className="text-muted-foreground">
+                  <tr className="border-b"><td className="p-2">1 (G)</td><td className="p-2 font-medium text-foreground">G2</td><td className="p-2">98.00 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">2 (D)</td><td className="p-2 font-medium text-foreground">D2</td><td className="p-2">73.42 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">3 (A)</td><td className="p-2 font-medium text-foreground">A1</td><td className="p-2">55.00 Hz</td></tr>
+                  <tr><td className="p-2">4 (E)</td><td className="p-2 font-medium text-foreground">E1</td><td className="p-2">41.20 Hz</td></tr>
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+
+          {/* Cello */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">🎻 Cello</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <table className="w-full text-sm">
+                <thead><tr className="border-b bg-secondary/30"><th className="p-2 text-left">String</th><th className="p-2 text-left">Note</th><th className="p-2 text-left">Frequency</th></tr></thead>
+                <tbody className="text-muted-foreground">
+                  <tr className="border-b"><td className="p-2">1 (A)</td><td className="p-2 font-medium text-foreground">A3</td><td className="p-2">220.00 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">2 (D)</td><td className="p-2 font-medium text-foreground">D3</td><td className="p-2">146.83 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">3 (G)</td><td className="p-2 font-medium text-foreground">G2</td><td className="p-2">98.00 Hz</td></tr>
+                  <tr><td className="p-2">4 (C)</td><td className="p-2 font-medium text-foreground">C2</td><td className="p-2">65.41 Hz</td></tr>
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+
+          {/* Reference Tones */}
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center gap-2">🎼 Reference Tones</CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <table className="w-full text-sm">
+                <thead><tr className="border-b bg-secondary/30"><th className="p-2 text-left">Name</th><th className="p-2 text-left">Note</th><th className="p-2 text-left">Frequency</th></tr></thead>
+                <tbody className="text-muted-foreground">
+                  <tr className="border-b"><td className="p-2">High C</td><td className="p-2 font-medium text-foreground">C6</td><td className="p-2">1046.50 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">Concert A</td><td className="p-2 font-medium text-foreground">A4</td><td className="p-2">440.00 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">Middle C</td><td className="p-2 font-medium text-foreground">C4</td><td className="p-2">261.63 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">Tenor C</td><td className="p-2 font-medium text-foreground">C3</td><td className="p-2">130.81 Hz</td></tr>
+                  <tr className="border-b"><td className="p-2">Low A</td><td className="p-2 font-medium text-foreground">A2</td><td className="p-2">110.00 Hz</td></tr>
+                  <tr><td className="p-2">Low E</td><td className="p-2 font-medium text-foreground">E2</td><td className="p-2">82.41 Hz</td></tr>
+                </tbody>
+              </table>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
 
       {/* FAQ Section */}
       <section>
