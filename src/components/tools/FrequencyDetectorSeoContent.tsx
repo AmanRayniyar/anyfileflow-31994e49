@@ -481,7 +481,100 @@ const FrequencyDetectorSeoContent: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Standard Tuning Frequency Chart */}
+      {/* Online Pitch Detector & Note Detector Section */}
+      <section id="pitch-detector">
+        <Card className="bg-gradient-to-br from-indigo-500/10 via-violet-500/10 to-fuchsia-500/10 border-0">
+          <CardContent className="p-6 md:p-8 space-y-6">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="p-3 bg-indigo-500/20 rounded-xl">
+                <Target className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
+              </div>
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+                  Online Pitch Detector &amp; Note Detector
+                </h2>
+                <p className="text-muted-foreground">
+                  Instant <strong>pitch identifier</strong> &amp; <strong>pitch checker</strong> — detect any musical note in real time
+                </p>
+              </div>
+            </div>
+
+            <p className="text-muted-foreground leading-relaxed">
+              Our <strong>online pitch detector</strong> uses advanced autocorrelation and FFT algorithms to accurately 
+              identify the pitch of any sound captured by your microphone. Whether you're a vocalist checking intonation, 
+              a musician tuning by ear, or a music teacher verifying student accuracy, this <strong>pitch detector online</strong> delivers 
+              lab-grade precision directly in your browser—no app install, no signup, completely free.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="p-4 bg-background/60 rounded-xl border">
+                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Music className="h-4 w-4 text-primary" /> Note Detector
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Instantly identifies the closest musical <strong>note</strong> (C, D, E, F, G, A, B) with octave number and 
+                  shows how many <strong>cents</strong> sharp or flat you are from perfect pitch. The ultimate <strong>note detector</strong> for 
+                  singers, guitarists, and all musicians.
+                </p>
+              </div>
+
+              <div className="p-4 bg-background/60 rounded-xl border">
+                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Activity className="h-4 w-4 text-primary" /> Pitch Identifier
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Our <strong>pitch identifier</strong> analyzes complex audio waveforms to extract the fundamental frequency, 
+                  filtering out harmonics and background noise. It works with voice, instruments, and ambient sounds—making 
+                  it the most versatile <strong>pitch checker</strong> available online.
+                </p>
+              </div>
+
+              <div className="p-4 bg-background/60 rounded-xl border">
+                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Waves className="h-4 w-4 text-primary" /> Pitch Checker
+                </h3>
+                <p className="text-sm text-muted-foreground">
+                  Use the visual <strong>pitch checker</strong> gauge to see if you're in tune at a glance. The color-coded 
+                  indicator turns green when you're within ±5 cents of the target note—perfect for live performance 
+                  and vocal warm-ups with our <strong>pitch detector online</strong>.
+                </p>
+              </div>
+            </div>
+
+            <div className="p-4 bg-background/60 rounded-xl border">
+              <h3 className="font-semibold text-foreground mb-3">Why Use Our Online Pitch Detector?</h3>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" /> <span><strong>Real-time note detection</strong> — see your pitch update live as you sing or play</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" /> <span><strong>±1 cent accuracy</strong> — professional-grade <strong>pitch identifier</strong> precision</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" /> <span><strong>Works with any instrument</strong> — guitar, piano, violin, voice, ukulele, and more</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" /> <span><strong>Adjustable reference pitch</strong> — switch between A4 = 440 Hz, 432 Hz, 442 Hz</span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" /> <span><strong>Zero latency display</strong> — instant visual feedback for <strong>pitch checking</strong></span></li>
+                <li className="flex items-start gap-2"><CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" /> <span><strong>100% browser-based</strong> — no downloads, no accounts, fully private</span></li>
+              </ul>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="p-4 bg-background/60 rounded-xl border">
+                <h4 className="font-semibold text-foreground mb-2">🎤 For Vocalists</h4>
+                <p className="text-sm text-muted-foreground">
+                  Warm up with our <strong>pitch detector online</strong> to ensure you hit every note. 
+                  The <strong>note detector</strong> shows your exact pitch in real time, helping you train your ear 
+                  and build muscle memory for accurate singing.
+                </p>
+              </div>
+              <div className="p-4 bg-background/60 rounded-xl border">
+                <h4 className="font-semibold text-foreground mb-2">🎵 For Instrumentalists</h4>
+                <p className="text-sm text-muted-foreground">
+                  Tune your instrument with ±1 cent accuracy using our <strong>online pitch detector</strong>. 
+                  The <strong>pitch checker</strong> works as a chromatic tuner that supports every instrument 
+                  from guitar and bass to violin, cello, and wind instruments.
+                </p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
       <section id="tuning-chart">
         <h2 className="text-2xl font-bold text-foreground mb-2 flex items-center gap-2">
           <Music className="h-6 w-6 text-primary" />
