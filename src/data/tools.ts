@@ -150,7 +150,7 @@ export const tools: Tool[] = [
   { id: "remove-silence", name: "Remove Silence from Audio", description: "Remove silent parts from audio", category: "audio", icon: VolumeX, from: "Audio", to: "Clean", toolType: 'audio' },
   { id: "mp3-tag-editor", name: "MP3 Tag Editor", description: "Edit ID3 tags for MP3 files", category: "audio", icon: FileAudio, from: "MP3", to: "Tagged", toolType: 'audio' },
   { id: "audio-recorder", name: "Audio Recorder", description: "Record audio from microphone", category: "audio", icon: Mic, from: "Mic", to: "Audio", popular: true, toolType: 'audio' },
-  { id: "frequency-detector", name: "Sound Frequency Detector", description: "Detect audio frequencies", category: "audio", icon: AudioLines, from: "Audio", to: "Hz", toolType: 'audio' },
+  { id: "frequency-detector", name: "Sound Frequency Detector", description: "Free online sound frequency detector & Hz meter – measure, identify, and analyze audio frequencies in real time with our browser-based frequency analyzer", category: "audio", icon: AudioLines, from: "Audio", to: "Hz", toolType: 'audio' },
   { id: "noise-meter", name: "Noise Meter Tool", description: "Measure ambient noise levels", category: "audio", icon: Gauge, from: "Mic", to: "dB", toolType: 'audio' },
   { id: "white-noise", name: "White Noise Generator", description: "Generate white, pink, or brown noise", category: "audio", icon: Radio, from: "Type", to: "Noise", toolType: 'audio' },
 
