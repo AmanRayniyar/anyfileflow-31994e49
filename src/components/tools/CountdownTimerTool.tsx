@@ -499,10 +499,13 @@ const CountdownTimerTool: React.FC = () => {
 
   return (
     <div ref={containerRef} className="space-y-6">
+      {/* Event/Date Countdown — counts down to any future date */}
+      <EventCountdown />
+
       {/* Add Timer Section */}
       <div className="p-6 bg-secondary/30 rounded-xl space-y-4">
         <h3 className="font-semibold text-foreground flex items-center gap-2">
-          <Clock className="h-5 w-5" /> Set Timer
+          <Clock className="h-5 w-5" /> Duration Timer (Hours / Minutes / Seconds)
         </h3>
         
         <div className="flex flex-wrap items-end gap-4">
