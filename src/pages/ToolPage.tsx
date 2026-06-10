@@ -68,6 +68,7 @@ const PregnancyDueDateSeoContent = lazy(() => import("@/components/tools/Pregnan
 const AudioPitchChangerSeoContent = lazy(() => import("@/components/tools/AudioPitchChangerSeoContent"));
 const BoomerangVideoSeoContent = lazy(() => import("@/components/tools/BoomerangVideoSeoContent"));
 const WordCounterSeoContent = lazy(() => import("@/components/tools/WordCounterSeoContent"));
+const CountdownTimerSeoContent = lazy(() => import("@/components/tools/CountdownTimerSeoContent"));
 const LoveCalculatorSeoContent = lazy(() => import("@/components/tools/LoveCalculatorSeoContent"));
 const FaviconGeneratorSeoContent = lazy(() => import("@/components/tools/FaviconGeneratorSeoContent"));
 const PDFSplitterSeoContent = lazy(() => import("@/components/tools/PDFSplitterSeoContent"));
@@ -602,6 +603,13 @@ const ToolPage = () => {
               {tool.id === 'word-counter' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <WordCounterSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for Countdown Timer Tool */}
+              {tool.id === 'countdown-timer' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <CountdownTimerSeoContent />
                 </Suspense>
               )}
 

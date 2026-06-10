@@ -237,7 +237,7 @@ export const tools: Tool[] = [
   { id: "todo-list", name: "To-Do List App", description: "Simple to-do list manager", category: "text", icon: Check, from: "Tasks", to: "List", toolType: 'text' },
   { id: "pomodoro-timer", name: "Pomodoro Timer", description: "Advanced productivity timer with tasks, stats and themes", category: "text", icon: Timer, from: "Settings", to: "Timer", popular: true, toolType: 'text' },
   { id: "stopwatch", name: "Stopwatch", description: "Online stopwatch with lap times", category: "text", icon: Clock, from: "Start", to: "Time", toolType: 'text' },
-  { id: "countdown-timer", name: "Countdown Timer", description: "Countdown to any date or time", category: "text", icon: Timer, from: "Target", to: "Countdown", toolType: 'text' },
+  { id: "countdown-timer", name: "Countdown Timer", description: "Free online countdown timer & date countdown – count down to any date, event, New Year, wedding, birthday, exam or set custom minute/hour timers with alarm, fullscreen mode & shareable links", category: "text", icon: Timer, from: "Target", to: "Countdown", toolType: 'text' },
   { id: "typing-test", name: "Typing Speed Test", description: "Test your typing speed", category: "text", icon: TypeIcon, from: "Test", to: "WPM", popular: true, toolType: 'text' },
   { id: "paragraph-formatter", name: "Paragraph Formatter", description: "Format and clean up paragraphs", category: "text", icon: AlignLeft, from: "Text", to: "Formatted", toolType: 'text' },
   { id: "quote-generator", name: "Random Quote Generator", description: "Generate inspirational quotes", category: "text", icon: Quote, from: "Category", to: "Quote", toolType: 'generator' },
