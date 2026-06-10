@@ -606,6 +606,13 @@ const ToolPage = () => {
                 </Suspense>
               )}
 
+              {/* SEO Content for Countdown Timer Tool */}
+              {tool.id === 'countdown-timer' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <CountdownTimerSeoContent />
+                </Suspense>
+              )}
+
               {/* SEO Content for Love Calculator Tool */}
               {tool.id === 'love-calculator' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
