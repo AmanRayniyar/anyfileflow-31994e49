@@ -204,20 +204,14 @@ const Index = memo(() => {
         <main id="main-content" aria-label="Main content">
           <Hero />
           
-          {/* Trust Badges - Right under hero */}
-          <Suspense fallback={<SectionSkeleton height="h-16" />}>
-            <TrustBadges />
-          </Suspense>
-          
-          {/* Why AnyFile Flow - Above the fold */}
-          <Suspense fallback={<SectionSkeleton height="h-64" />}>
-            <WhyAnyFileFlow />
-          </Suspense>
-          
-          {/* Quick Actions CTA Grid */}
-          <Suspense fallback={<SectionSkeleton height="h-48" />}>
-            <QuickActionsCTA />
-          </Suspense>
+          {/* Trust Badges - Right under hero (eager to prevent CLS) */}
+          <TrustBadges />
+
+          {/* Why AnyFile Flow - Above the fold (eager to prevent CLS) */}
+          <WhyAnyFileFlow />
+
+          {/* Quick Actions CTA Grid (eager to prevent CLS) */}
+          <QuickActionsCTA />
 
           {/* Advanced Search Bar Section */}
           <section className="container mx-auto px-4 py-8" aria-label="Search tools">
