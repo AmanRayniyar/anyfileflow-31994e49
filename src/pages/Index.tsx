@@ -9,17 +9,19 @@ import { cn } from "@/lib/utils";
 import SEOHead from "@/components/SEOHead";
 import { Helmet } from "react-helmet-async";
 
+// Eager-load above-the-fold sections to prevent CLS
+import TrustBadges from "@/components/home/TrustBadges";
+import WhyAnyFileFlow from "@/components/home/WhyAnyFileFlow";
+import QuickActionsCTA from "@/components/home/QuickActionsCTA";
+
 // Lazy load below-fold components
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
-const WhyAnyFileFlow = lazy(() => import("@/components/home/WhyAnyFileFlow"));
-const QuickActionsCTA = lazy(() => import("@/components/home/QuickActionsCTA"));
 const ComparisonSection = lazy(() => import("@/components/home/ComparisonSection"));
 const TrendingTools = lazy(() => import("@/components/home/TrendingTools"));
 const MostPopularToday = lazy(() => import("@/components/home/MostPopularToday"));
 const RecentlyUsedTools = lazy(() => import("@/components/home/RecentlyUsedTools"));
 const RecentlyAddedTools = lazy(() => import("@/components/home/RecentlyAddedTools"));
 const AIToolRecommender = lazy(() => import("@/components/home/AIToolRecommender"));
-const TrustBadges = lazy(() => import("@/components/home/TrustBadges"));
 const HomeFAQ = lazy(() => import("@/components/home/HomeFAQ"));
 const UserTestimonials = lazy(() => import("@/components/home/UserTestimonials"));
 const AboutAnyFileFlow = lazy(() => import("@/components/home/AboutAnyFileFlow"));
@@ -202,20 +204,14 @@ const Index = memo(() => {
         <main id="main-content" aria-label="Main content">
           <Hero />
           
-          {/* Trust Badges - Right under hero */}
-          <Suspense fallback={<SectionSkeleton height="h-16" />}>
-            <TrustBadges />
-          </Suspense>
-          
-          {/* Why AnyFile Flow - Above the fold */}
-          <Suspense fallback={<SectionSkeleton height="h-64" />}>
-            <WhyAnyFileFlow />
-          </Suspense>
-          
-          {/* Quick Actions CTA Grid */}
-          <Suspense fallback={<SectionSkeleton height="h-48" />}>
-            <QuickActionsCTA />
-          </Suspense>
+          {/* Trust Badges - Right under hero (eager to prevent CLS) */}
+          <TrustBadges />
+
+          {/* Why AnyFile Flow - Above the fold (eager to prevent CLS) */}
+          <WhyAnyFileFlow />
+
+          {/* Quick Actions CTA Grid (eager to prevent CLS) */}
+          <QuickActionsCTA />
 
           {/* Advanced Search Bar Section */}
           <section className="container mx-auto px-4 py-8" aria-label="Search tools">
