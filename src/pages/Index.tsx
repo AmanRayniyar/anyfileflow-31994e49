@@ -9,17 +9,19 @@ import { cn } from "@/lib/utils";
 import SEOHead from "@/components/SEOHead";
 import { Helmet } from "react-helmet-async";
 
+// Eager-load above-the-fold sections to prevent CLS
+import TrustBadges from "@/components/home/TrustBadges";
+import WhyAnyFileFlow from "@/components/home/WhyAnyFileFlow";
+import QuickActionsCTA from "@/components/home/QuickActionsCTA";
+
 // Lazy load below-fold components
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
-const WhyAnyFileFlow = lazy(() => import("@/components/home/WhyAnyFileFlow"));
-const QuickActionsCTA = lazy(() => import("@/components/home/QuickActionsCTA"));
 const ComparisonSection = lazy(() => import("@/components/home/ComparisonSection"));
 const TrendingTools = lazy(() => import("@/components/home/TrendingTools"));
 const MostPopularToday = lazy(() => import("@/components/home/MostPopularToday"));
 const RecentlyUsedTools = lazy(() => import("@/components/home/RecentlyUsedTools"));
 const RecentlyAddedTools = lazy(() => import("@/components/home/RecentlyAddedTools"));
 const AIToolRecommender = lazy(() => import("@/components/home/AIToolRecommender"));
-const TrustBadges = lazy(() => import("@/components/home/TrustBadges"));
 const HomeFAQ = lazy(() => import("@/components/home/HomeFAQ"));
 const UserTestimonials = lazy(() => import("@/components/home/UserTestimonials"));
 const AboutAnyFileFlow = lazy(() => import("@/components/home/AboutAnyFileFlow"));
