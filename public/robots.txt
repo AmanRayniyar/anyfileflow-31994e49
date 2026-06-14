@@ -32,8 +32,8 @@ Disallow: /admin
 Disallow: /api/
 Crawl-delay: 2
 
-# Dynamic Sitemap - auto-generated with all 1000+ tools
-Sitemap: https://cmcvkmttlrjahpxsotyr.supabase.co/functions/v1/sitemap
+# Sitemap - all 1000+ tools (regenerated on every build)
+Sitemap: https://anyfileflow.lovable.app/sitemap.xml
 
 # Host
-Host: https://anyfileflow.com
+Host: https://anyfileflow.lovable.app
