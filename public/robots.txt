@@ -1,5 +1,5 @@
 # Robots.txt for AnyFile Flow
-# https://anyfileflow.com
+# https://anyfileflow.lovable.app
 
 User-agent: Googlebot
 Allow: /
