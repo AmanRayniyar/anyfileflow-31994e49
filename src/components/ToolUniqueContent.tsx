@@ -37,7 +37,7 @@ const ToolUniqueContent = memo(({
 
     const categoryLabel = isConverter ? "File Conversion" : isPDF ? "PDF Processing" : isAudio ? "Audio Editing" : isVideo ? "Video Editing" : isText ? "Text Processing" : isHealth ? "Health & Wellness" : isFinance ? "Finance & Money" : isGenerator ? "Generator" : "Utility";
 
-    const categoryLabel = isConverter ? "File Conversion" : isPDF ? "PDF Processing" : isAudio ? "Audio Editing" : isVideo ? "Video Editing" : isText ? "Text Processing" : isHealth ? "Health & Wellness" : isGenerator ? "Generator" : "Utility";
+    
 
     const useCases = isConverter
       ? [
