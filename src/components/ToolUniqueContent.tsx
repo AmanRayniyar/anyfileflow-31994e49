@@ -32,7 +32,10 @@ const ToolUniqueContent = memo(({
     const isVideo = toolCategory === "video" || toolId.includes("video");
     const isText = toolCategory === "text";
     const isHealth = toolCategory === "health";
+    const isFinance = toolCategory === "finance";
     const isGenerator = toolCategory === "generator";
+
+    const categoryLabel = isConverter ? "File Conversion" : isPDF ? "PDF Processing" : isAudio ? "Audio Editing" : isVideo ? "Video Editing" : isText ? "Text Processing" : isHealth ? "Health & Wellness" : isFinance ? "Finance & Money" : isGenerator ? "Generator" : "Utility";
 
     const categoryLabel = isConverter ? "File Conversion" : isPDF ? "PDF Processing" : isAudio ? "Audio Editing" : isVideo ? "Video Editing" : isText ? "Text Processing" : isHealth ? "Health & Wellness" : isGenerator ? "Generator" : "Utility";
 
