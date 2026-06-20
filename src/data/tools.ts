@@ -34,7 +34,7 @@ export interface Tool {
   from: string;
   to: string;
   popular?: boolean;
-  toolType?: 'image-convert' | 'image-edit' | 'pdf' | 'audio' | 'video' | 'text' | 'data' | 'health' | 'generator';
+  toolType?: 'image-convert' | 'image-edit' | 'pdf' | 'audio' | 'video' | 'text' | 'data' | 'health' | 'generator' | 'finance';
 }
 
 export type ToolCategory = 
@@ -46,7 +46,8 @@ export type ToolCategory =
   | "code" 
   | "data" 
   | "text"
-  | "health";
+  | "health"
+  | "finance";
 
 export interface CategoryInfo {
   id: ToolCategory;
@@ -64,6 +65,7 @@ export const categories: CategoryInfo[] = [
   { id: "text", name: "Text & Writing Tools", description: "Text manipulation and writing utilities", icon: Type, colorClass: "text-tool-text", bgClass: "bg-tool-text/10" },
   { id: "data", name: "Data & Dev Tools", description: "Data conversion and developer utilities", icon: Code, colorClass: "text-tool-code", bgClass: "bg-tool-code/10" },
   { id: "health", name: "Health & Fitness", description: "Health calculators and fitness tools", icon: Heart, colorClass: "text-tool-archive", bgClass: "bg-tool-archive/10" },
+  { id: "finance", name: "Finance Calculators", description: "Loan, tax, investment, savings & business calculators", icon: DollarSign, colorClass: "text-tool-code", bgClass: "bg-tool-code/10" },
 ];
 
 export const tools: Tool[] = [
