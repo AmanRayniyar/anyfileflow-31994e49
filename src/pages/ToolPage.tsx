@@ -25,6 +25,7 @@ const TextTool = lazy(() => import("@/components/tools/TextTool"));
 const HealthTool = lazy(() => import("@/components/tools/HealthTool"));
 const DataTool = lazy(() => import("@/components/tools/DataTool"));
 const GeneratorTool = lazy(() => import("@/components/tools/GeneratorTool"));
+const FinanceTool = lazy(() => import("@/components/tools/FinanceTool"));
 const AudioVideoTool = lazy(() => import("@/components/tools/AudioVideoTool"));
 const TypingTestTool = lazy(() => import("@/components/tools/TypingTestTool"));
 const ImageCropperTool = lazy(() => import("@/components/tools/ImageCropperTool"));
@@ -304,6 +305,8 @@ const ToolPage = () => {
         return <DataTool tool={tool} />;
       case 'generator':
         return <GeneratorTool tool={tool} />;
+      case 'finance':
+        return <FinanceTool tool={tool} />;
       case 'audio':
       case 'video':
         return <AudioVideoTool tool={tool} />;
