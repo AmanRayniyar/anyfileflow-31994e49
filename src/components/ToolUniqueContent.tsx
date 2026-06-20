@@ -67,6 +67,13 @@ const ToolUniqueContent = memo(({
           "Prepare video for different platforms with optimized settings.",
           "Process video files quickly for time-sensitive content delivery.",
         ]
+      : isFinance
+      ? [
+          `Use ${toolName} to plan loans, EMIs, taxes, savings, retirement & investments accurately.`,
+          `Compare scenarios — different rates, tenures, or contributions — in seconds.`,
+          `Run unlimited what-if calculations for personal finance, business or trading decisions.`,
+          `Get instant, formula-grade results with zero spreadsheet setup.`,
+        ]
       : [
           `Use ${toolName} for personal, professional, or educational projects.`,
           `Access ${toolName} from any device without downloading software.`,
