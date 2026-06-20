@@ -296,6 +296,144 @@ export const tools: Tool[] = [
   { id: "step-calorie", name: "Step-to-Calorie Calculator", description: "Convert steps to calories burned", category: "health", icon: Footprints, from: "Steps", to: "Calories", toolType: 'health' },
   { id: "blood-pressure", name: "Blood Pressure Checker Guide", description: "Understand blood pressure readings", category: "health", icon: HeartPulse, from: "BP", to: "Guide", toolType: 'health' },
   { id: "waist-height", name: "Waist-to-Height Ratio Calculator", description: "Calculate waist-to-height ratio", category: "health", icon: Ruler, from: "Measurements", to: "Ratio", toolType: 'health' },
+
+  // ============================================
+  // 💰 FINANCE TOOLS (100 calculators)
+  // ============================================
+
+  // Loans & Mortgages (1-10)
+  { id: "loan-emi", name: "EMI Calculator", description: "Calculate loan EMI, interest & total payment instantly", category: "finance", icon: Calculator, from: "Loan", to: "EMI", popular: true, toolType: 'finance' },
+  { id: "mortgage-calculator", name: "Mortgage Calculator", description: "Estimate full mortgage PITI: principal, interest, tax & insurance", category: "finance", icon: Calculator, from: "Home", to: "PITI", popular: true, toolType: 'finance' },
+  { id: "home-loan-emi", name: "Home Loan EMI Calculator", description: "Calculate home loan EMI with total interest & repayment", category: "finance", icon: Calculator, from: "Loan", to: "EMI", popular: true, toolType: 'finance' },
+  { id: "car-loan-emi", name: "Car Loan EMI Calculator", description: "Auto loan monthly payment calculator", category: "finance", icon: Calculator, from: "Loan", to: "EMI", toolType: 'finance' },
+  { id: "personal-loan-emi", name: "Personal Loan EMI Calculator", description: "Personal loan EMI & total interest calculator", category: "finance", icon: Calculator, from: "Loan", to: "EMI", toolType: 'finance' },
+  { id: "student-loan-calculator", name: "Student Loan Calculator", description: "Calculate student loan monthly payments & interest", category: "finance", icon: Calculator, from: "Loan", to: "EMI", toolType: 'finance' },
+  { id: "credit-card-payoff", name: "Credit Card Payoff Calculator", description: "Find how fast you can pay off credit card debt", category: "finance", icon: Calculator, from: "Balance", to: "Months", popular: true, toolType: 'finance' },
+  { id: "credit-card-min-payment", name: "Credit Card Min Payment Calculator", description: "Calculate minimum payment & true payoff time", category: "finance", icon: Calculator, from: "Balance", to: "Min Pay", toolType: 'finance' },
+  { id: "simple-interest", name: "Simple Interest Calculator", description: "Calculate simple interest on principal", category: "finance", icon: Percent, from: "Principal", to: "Interest", popular: true, toolType: 'finance' },
+  { id: "compound-interest", name: "Compound Interest Calculator", description: "Calculate compound interest & future value", category: "finance", icon: TrendingUp, from: "Principal", to: "Future Value", popular: true, toolType: 'finance' },
+
+  // Rates & Returns (11-16)
+  { id: "apr-calculator", name: "APR Calculator", description: "Calculate true Annual Percentage Rate with fees", category: "finance", icon: Percent, from: "Loan", to: "APR", toolType: 'finance' },
+  { id: "apy-calculator", name: "APY Calculator", description: "Calculate Annual Percentage Yield from nominal rate", category: "finance", icon: Percent, from: "APR", to: "APY", toolType: 'finance' },
+  { id: "cagr-calculator", name: "CAGR Calculator", description: "Compound Annual Growth Rate calculator", category: "finance", icon: TrendingUp, from: "Returns", to: "CAGR", popular: true, toolType: 'finance' },
+  { id: "roi-calculator", name: "ROI Calculator", description: "Return on Investment calculator with profit", category: "finance", icon: TrendingUp, from: "Investment", to: "ROI", popular: true, toolType: 'finance' },
+  { id: "irr-calculator", name: "IRR Calculator", description: "Internal Rate of Return from cash flows", category: "finance", icon: TrendingUp, from: "Cash Flows", to: "IRR", toolType: 'finance' },
+  { id: "npv-calculator", name: "NPV Calculator", description: "Net Present Value from cash flow stream", category: "finance", icon: Calculator, from: "Cash Flows", to: "NPV", toolType: 'finance' },
+
+  // Deposits & Savings (17-19)
+  { id: "fd-calculator", name: "FD Calculator", description: "Fixed Deposit maturity & interest calculator", category: "finance", icon: Calculator, from: "Deposit", to: "Maturity", popular: true, toolType: 'finance' },
+  { id: "rd-calculator", name: "RD Calculator", description: "Recurring Deposit maturity calculator", category: "finance", icon: Calculator, from: "Monthly", to: "Maturity", toolType: 'finance' },
+  { id: "ppf-calculator", name: "PPF Calculator", description: "Public Provident Fund 15-year maturity calculator", category: "finance", icon: Calculator, from: "Deposit", to: "Maturity", toolType: 'finance' },
+
+  // Investments (20-25)
+  { id: "sip-calculator", name: "SIP Calculator", description: "Mutual Fund SIP future value & wealth gain", category: "finance", icon: TrendingUp, from: "Monthly", to: "Future Value", popular: true, toolType: 'finance' },
+  { id: "lumpsum-calculator", name: "Lumpsum Calculator", description: "One-time investment future value calculator", category: "finance", icon: TrendingUp, from: "Lumpsum", to: "Future Value", toolType: 'finance' },
+  { id: "mutual-fund-returns", name: "Mutual Fund Returns Calculator", description: "Track mutual fund profit/loss from NAV", category: "finance", icon: TrendingUp, from: "NAV", to: "Returns", toolType: 'finance' },
+  { id: "swp-calculator", name: "SWP Calculator", description: "Systematic Withdrawal Plan remaining corpus", category: "finance", icon: Calculator, from: "Corpus", to: "Withdrawal", toolType: 'finance' },
+  { id: "step-up-sip", name: "Step-up SIP Calculator", description: "SIP with yearly increment future value", category: "finance", icon: TrendingUp, from: "SIP", to: "Future Value", toolType: 'finance' },
+  { id: "nps-calculator", name: "NPS Calculator", description: "National Pension Scheme corpus & pension", category: "finance", icon: Calculator, from: "Contribution", to: "Pension", toolType: 'finance' },
+
+  // Retirement (26-29)
+  { id: "epf-calculator", name: "EPF Calculator", description: "Employee Provident Fund maturity calculator", category: "finance", icon: Calculator, from: "Salary", to: "EPF", toolType: 'finance' },
+  { id: "gratuity-calculator", name: "Gratuity Calculator", description: "End-of-service gratuity payment calculator", category: "finance", icon: Calculator, from: "Salary", to: "Gratuity", toolType: 'finance' },
+  { id: "retirement-corpus", name: "Retirement Corpus Calculator", description: "How much you need to retire comfortably", category: "finance", icon: Calculator, from: "Expense", to: "Corpus", popular: true, toolType: 'finance' },
+  { id: "inflation-calculator", name: "Inflation Calculator", description: "See future cost & buying power of money", category: "finance", icon: TrendingUp, from: "Today", to: "Future", toolType: 'finance' },
+
+  // Time Value of Money (30-33)
+  { id: "future-value", name: "Future Value Calculator", description: "Calculate future value of money over time", category: "finance", icon: TrendingUp, from: "PV", to: "FV", toolType: 'finance' },
+  { id: "present-value", name: "Present Value Calculator", description: "Discount future cash to today's value", category: "finance", icon: Calculator, from: "FV", to: "PV", toolType: 'finance' },
+  { id: "annuity-calculator", name: "Annuity Calculator", description: "Annuity present value & future value", category: "finance", icon: Calculator, from: "Payment", to: "PV/FV", toolType: 'finance' },
+  { id: "perpetuity-calculator", name: "Perpetuity Calculator", description: "Calculate present value of perpetual cash flow", category: "finance", icon: Calculator, from: "Cash Flow", to: "PV", toolType: 'finance' },
+
+  // Bonds (34-37)
+  { id: "bond-price", name: "Bond Price Calculator", description: "Calculate fair bond price from YTM", category: "finance", icon: Calculator, from: "YTM", to: "Price", toolType: 'finance' },
+  { id: "bond-yield", name: "Bond Yield Calculator", description: "Current yield from coupon & price", category: "finance", icon: Percent, from: "Price", to: "Yield", toolType: 'finance' },
+  { id: "ytm-calculator", name: "YTM Calculator", description: "Yield to Maturity approximate calculator", category: "finance", icon: Percent, from: "Bond", to: "YTM", toolType: 'finance' },
+  { id: "dividend-yield", name: "Dividend Yield Calculator", description: "Calculate stock dividend yield percentage", category: "finance", icon: Percent, from: "Dividend", to: "Yield", toolType: 'finance' },
+
+  // Stocks (38-46)
+  { id: "dividend-discount-model", name: "Dividend Discount Model Calculator", description: "Gordon Growth Model fair price of stock", category: "finance", icon: Calculator, from: "Dividend", to: "Price", toolType: 'finance' },
+  { id: "stock-profit", name: "Stock Profit Calculator", description: "Calculate stock trade profit, loss & return", category: "finance", icon: TrendingUp, from: "Trade", to: "P&L", popular: true, toolType: 'finance' },
+  { id: "stock-average", name: "Stock Average Calculator", description: "Calculate average buy price after multiple buys", category: "finance", icon: Calculator, from: "Buys", to: "Average", toolType: 'finance' },
+  { id: "stock-target-price", name: "Stock Target Price Calculator", description: "Target price from EPS and PE multiple", category: "finance", icon: Calculator, from: "EPS", to: "Target", toolType: 'finance' },
+  { id: "pe-ratio", name: "P/E Ratio Calculator", description: "Price to Earnings ratio of a stock", category: "finance", icon: Calculator, from: "Price/EPS", to: "PE", toolType: 'finance' },
+  { id: "pb-ratio", name: "P/B Ratio Calculator", description: "Price to Book ratio calculator", category: "finance", icon: Calculator, from: "Price/Book", to: "PB", toolType: 'finance' },
+  { id: "eps-calculator", name: "EPS Calculator", description: "Earnings Per Share calculator", category: "finance", icon: Calculator, from: "Income", to: "EPS", toolType: 'finance' },
+  { id: "market-cap", name: "Market Cap Calculator", description: "Calculate company market capitalization", category: "finance", icon: Calculator, from: "Shares", to: "Cap", toolType: 'finance' },
+  { id: "book-value", name: "Book Value Per Share Calculator", description: "Equity book value per share calculator", category: "finance", icon: Calculator, from: "Equity", to: "BVPS", toolType: 'finance' },
+
+  // Financial Ratios (47-53)
+  { id: "debt-to-equity", name: "Debt to Equity Ratio Calculator", description: "D/E ratio leverage calculator", category: "finance", icon: Calculator, from: "Debt", to: "D/E", toolType: 'finance' },
+  { id: "current-ratio", name: "Current Ratio Calculator", description: "Liquidity current ratio calculator", category: "finance", icon: Calculator, from: "CA/CL", to: "Ratio", toolType: 'finance' },
+  { id: "quick-ratio", name: "Quick Ratio Calculator", description: "Acid-test quick ratio liquidity calculator", category: "finance", icon: Calculator, from: "Assets", to: "Quick", toolType: 'finance' },
+  { id: "working-capital", name: "Working Capital Calculator", description: "Net working capital calculator", category: "finance", icon: Calculator, from: "CA−CL", to: "WC", toolType: 'finance' },
+  { id: "gross-margin", name: "Gross Margin Calculator", description: "Gross profit margin percentage", category: "finance", icon: Percent, from: "Rev−COGS", to: "Margin", toolType: 'finance' },
+  { id: "operating-margin", name: "Operating Margin Calculator", description: "Operating profit margin percentage", category: "finance", icon: Percent, from: "OpInc/Rev", to: "Margin", toolType: 'finance' },
+  { id: "net-margin", name: "Net Profit Margin Calculator", description: "Net profit margin percentage", category: "finance", icon: Percent, from: "NI/Rev", to: "Margin", toolType: 'finance' },
+
+  // Business (54-60)
+  { id: "break-even", name: "Break-Even Calculator", description: "Break-even units & revenue calculator", category: "finance", icon: Calculator, from: "Costs", to: "BE Units", popular: true, toolType: 'finance' },
+  { id: "markup-calculator", name: "Markup Calculator", description: "Selling price from cost and markup", category: "finance", icon: Percent, from: "Cost", to: "Price", toolType: 'finance' },
+  { id: "discount-calculator", name: "Discount Calculator", description: "Sale price and savings calculator", category: "finance", icon: Percent, from: "Price", to: "Final", popular: true, toolType: 'finance' },
+  { id: "tip-calculator", name: "Tip Calculator", description: "Restaurant tip & bill split calculator", category: "finance", icon: Calculator, from: "Bill", to: "Tip", popular: true, toolType: 'finance' },
+  { id: "sales-tax", name: "Sales Tax Calculator", description: "Sales tax & total amount calculator", category: "finance", icon: Percent, from: "Amount", to: "Tax", toolType: 'finance' },
+  { id: "vat-calculator", name: "VAT Calculator", description: "Value Added Tax calculator", category: "finance", icon: Percent, from: "Amount", to: "VAT", toolType: 'finance' },
+  { id: "gst-calculator", name: "GST Calculator", description: "GST add or remove calculator", category: "finance", icon: Percent, from: "Amount", to: "GST", popular: true, toolType: 'finance' },
+
+  // Income Tax (61-63)
+  { id: "income-tax-india", name: "Income Tax Calculator India", description: "Indian income tax (new regime FY24-25)", category: "finance", icon: Calculator, from: "Income", to: "Tax", popular: true, toolType: 'finance' },
+  { id: "income-tax-us", name: "Income Tax Calculator USA", description: "US federal income tax 2024 brackets", category: "finance", icon: Calculator, from: "Income", to: "Tax", toolType: 'finance' },
+  { id: "capital-gains-tax", name: "Capital Gains Tax Calculator", description: "Capital gains tax on trade calculator", category: "finance", icon: Calculator, from: "Gain", to: "Tax", toolType: 'finance' },
+
+  // Salary & Payroll (64-72)
+  { id: "paycheck-calculator", name: "Paycheck Calculator", description: "Net pay after federal, state & FICA", category: "finance", icon: DollarSign, from: "Gross", to: "Net", popular: true, toolType: 'finance' },
+  { id: "salary-hike", name: "Salary Hike Calculator", description: "Calculate salary hike percentage", category: "finance", icon: Percent, from: "Old/New", to: "Hike", toolType: 'finance' },
+  { id: "hourly-to-salary", name: "Hourly to Salary Calculator", description: "Convert hourly wage to annual salary", category: "finance", icon: Calculator, from: "Hourly", to: "Salary", toolType: 'finance' },
+  { id: "salary-to-hourly", name: "Salary to Hourly Calculator", description: "Convert annual salary to hourly rate", category: "finance", icon: Calculator, from: "Salary", to: "Hourly", toolType: 'finance' },
+  { id: "overtime-pay", name: "Overtime Pay Calculator", description: "Calculate overtime wage with multiplier", category: "finance", icon: Calculator, from: "Hours", to: "OT Pay", toolType: 'finance' },
+  { id: "take-home-salary", name: "Take-Home Salary Calculator", description: "In-hand salary after PF & tax deductions", category: "finance", icon: DollarSign, from: "CTC", to: "In-Hand", popular: true, toolType: 'finance' },
+  { id: "tax-bracket-us", name: "US Tax Bracket Calculator", description: "Find your marginal US tax bracket", category: "finance", icon: Calculator, from: "Income", to: "Bracket", toolType: 'finance' },
+  { id: "social-security-tax", name: "Social Security Tax Calculator", description: "Social Security tax (6.2%) calculator", category: "finance", icon: Calculator, from: "Wage", to: "SS Tax", toolType: 'finance' },
+  { id: "medicare-tax", name: "Medicare Tax Calculator", description: "Medicare tax with additional 0.9% threshold", category: "finance", icon: Calculator, from: "Wage", to: "Tax", toolType: 'finance' },
+  { id: "fica-calculator", name: "FICA Tax Calculator", description: "FICA: Social Security + Medicare calculator", category: "finance", icon: Calculator, from: "Wage", to: "FICA", toolType: 'finance' },
+  { id: "self-employment-tax", name: "Self-Employment Tax Calculator", description: "SE tax (15.3%) for freelancers calculator", category: "finance", icon: Calculator, from: "Net Inc", to: "SE Tax", toolType: 'finance' },
+  { id: "property-tax", name: "Property Tax Calculator", description: "Annual property tax calculator", category: "finance", icon: Calculator, from: "Value", to: "Tax", toolType: 'finance' },
+
+  // Real Estate (76-80)
+  { id: "rent-vs-buy", name: "Rent vs Buy Calculator", description: "Compare renting vs buying a home", category: "finance", icon: Calculator, from: "Rent/Buy", to: "Verdict", popular: true, toolType: 'finance' },
+  { id: "rental-yield", name: "Rental Yield Calculator", description: "Gross rental yield percentage calculator", category: "finance", icon: Percent, from: "Rent", to: "Yield", toolType: 'finance' },
+  { id: "cap-rate", name: "Cap Rate Calculator", description: "Real estate capitalization rate calculator", category: "finance", icon: Percent, from: "NOI", to: "Cap Rate", toolType: 'finance' },
+  { id: "cash-on-cash-return", name: "Cash-on-Cash Return Calculator", description: "Real estate cash-on-cash ROI calculator", category: "finance", icon: Percent, from: "Cash", to: "CoC", toolType: 'finance' },
+  { id: "gross-rent-multiplier", name: "Gross Rent Multiplier Calculator", description: "GRM real estate valuation calculator", category: "finance", icon: Calculator, from: "Price", to: "GRM", toolType: 'finance' },
+
+  // Debt Strategy (81-86)
+  { id: "mortgage-refinance", name: "Mortgage Refinance Calculator", description: "Refinance savings & break-even calculator", category: "finance", icon: Calculator, from: "Old/New", to: "Savings", toolType: 'finance' },
+  { id: "loan-prepayment", name: "Loan Prepayment Calculator", description: "Extra payment payoff time saver", category: "finance", icon: Calculator, from: "Extra", to: "Months Saved", toolType: 'finance' },
+  { id: "loan-amortization", name: "Loan Amortization Calculator", description: "EMI, year-1 interest & total interest calculator", category: "finance", icon: Calculator, from: "Loan", to: "Schedule", toolType: 'finance' },
+  { id: "debt-snowball", name: "Debt Snowball Calculator", description: "Smallest-balance-first payoff strategy", category: "finance", icon: Calculator, from: "Debts", to: "Order", toolType: 'finance' },
+  { id: "debt-avalanche", name: "Debt Avalanche Calculator", description: "Highest-APR-first payoff strategy", category: "finance", icon: Calculator, from: "Debts", to: "Order", toolType: 'finance' },
+  { id: "debt-to-income", name: "Debt-to-Income Ratio Calculator", description: "DTI ratio for loan approvals", category: "finance", icon: Percent, from: "Debt/Income", to: "DTI", toolType: 'finance' },
+
+  // Wealth Goals (87-91)
+  { id: "savings-goal", name: "Savings Goal Calculator", description: "Monthly saving needed to hit a goal", category: "finance", icon: Calculator, from: "Goal", to: "Monthly", popular: true, toolType: 'finance' },
+  { id: "emergency-fund", name: "Emergency Fund Calculator", description: "Recommended emergency fund target", category: "finance", icon: Calculator, from: "Expense", to: "Target", toolType: 'finance' },
+  { id: "millionaire-calculator", name: "Millionaire Calculator", description: "Years to reach 1 million dollars", category: "finance", icon: TrendingUp, from: "Save", to: "Years", toolType: 'finance' },
+  { id: "coast-fire", name: "Coast FIRE Calculator", description: "Coast FIRE number for early retirement", category: "finance", icon: Calculator, from: "Expense", to: "Coast", toolType: 'finance' },
+  { id: "fire-number", name: "FIRE Number Calculator", description: "Financial Independence target (25× rule)", category: "finance", icon: Calculator, from: "Expense", to: "FIRE", toolType: 'finance' },
+
+  // Currency & Crypto (92-95)
+  { id: "currency-converter", name: "Currency Converter Calculator", description: "Manual currency converter with custom rate", category: "finance", icon: RefreshCw, from: "Currency", to: "Currency", toolType: 'finance' },
+  { id: "currency-strength", name: "Currency Strength Calculator", description: "Calculate % change between FX rates", category: "finance", icon: TrendingUp, from: "Rates", to: "Change", toolType: 'finance' },
+  { id: "cryptocurrency-profit", name: "Cryptocurrency Profit Calculator", description: "Crypto trade profit, loss & return calculator", category: "finance", icon: TrendingUp, from: "Trade", to: "P&L", popular: true, toolType: 'finance' },
+  { id: "crypto-staking-rewards", name: "Crypto Staking Rewards Calculator", description: "Estimate staking APY rewards", category: "finance", icon: TrendingUp, from: "Stake", to: "Rewards", toolType: 'finance' },
+
+  // Misc (96-100)
+  { id: "tax-deduction", name: "Tax Deduction Savings Calculator", description: "Tax saved from a deduction", category: "finance", icon: Calculator, from: "Deduction", to: "Saved", toolType: 'finance' },
+  { id: "payroll-deduction", name: "Payroll Deduction Calculator", description: "Pre-tax payroll deduction calculator", category: "finance", icon: Calculator, from: "Gross", to: "Taxable", toolType: 'finance' },
+  { id: "tip-split", name: "Tip Split Calculator", description: "Split bill, tip & per-person share", category: "finance", icon: Calculator, from: "Bill", to: "Split", toolType: 'finance' },
+  { id: "cost-of-living-adjustment", name: "Cost of Living Adjustment Calculator", description: "COLA salary adjustment from CPI", category: "finance", icon: Calculator, from: "Salary", to: "COLA", toolType: 'finance' },
+  { id: "inflation-adjusted-return", name: "Inflation-Adjusted Return Calculator", description: "Real return after inflation calculator", category: "finance", icon: Percent, from: "Nominal", to: "Real", toolType: 'finance' },
 ];
 
 export const getToolsByCategory = (category: ToolCategory): Tool[] => {
