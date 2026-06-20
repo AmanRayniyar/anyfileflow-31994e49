@@ -24,6 +24,7 @@ export function normalizeCategory(category: string): ToolCategory {
   if (c === "video" || c === "videos") return "video";
   if (c === "text" || c === "writing") return "text";
   if (c === "health" || c === "fitness") return "health";
+  if (c === "finance" || c === "money" || c === "financial") return "finance";
   if (c === "data" || c === "dev" || c === "code" || c === "developer") return "data";
 
   // Fuzzy mapping
@@ -31,6 +32,7 @@ export function normalizeCategory(category: string): ToolCategory {
   if (c.includes("video")) return "video";
   if (c.includes("health") || c.includes("fitness")) return "health";
   if (c.includes("text") || c.includes("write")) return "text";
+  if (c.includes("finance") || c.includes("money") || c.includes("loan")) return "finance";
   if (c.includes("image") || c.includes("pdf") || c.includes("doc")) return "image";
 
   return "data";

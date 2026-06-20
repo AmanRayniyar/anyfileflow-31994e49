@@ -32,9 +32,12 @@ const ToolUniqueContent = memo(({
     const isVideo = toolCategory === "video" || toolId.includes("video");
     const isText = toolCategory === "text";
     const isHealth = toolCategory === "health";
+    const isFinance = toolCategory === "finance";
     const isGenerator = toolCategory === "generator";
 
-    const categoryLabel = isConverter ? "File Conversion" : isPDF ? "PDF Processing" : isAudio ? "Audio Editing" : isVideo ? "Video Editing" : isText ? "Text Processing" : isHealth ? "Health & Wellness" : isGenerator ? "Generator" : "Utility";
+    const categoryLabel = isConverter ? "File Conversion" : isPDF ? "PDF Processing" : isAudio ? "Audio Editing" : isVideo ? "Video Editing" : isText ? "Text Processing" : isHealth ? "Health & Wellness" : isFinance ? "Finance & Money" : isGenerator ? "Generator" : "Utility";
+
+    
 
     const useCases = isConverter
       ? [
@@ -63,6 +66,13 @@ const ToolUniqueContent = memo(({
           "Edit video clips directly in your browser without heavy software.",
           "Prepare video for different platforms with optimized settings.",
           "Process video files quickly for time-sensitive content delivery.",
+        ]
+      : isFinance
+      ? [
+          `Use ${toolName} to plan loans, EMIs, taxes, savings, retirement & investments accurately.`,
+          `Compare scenarios — different rates, tenures, or contributions — in seconds.`,
+          `Run unlimited what-if calculations for personal finance, business or trading decisions.`,
+          `Get instant, formula-grade results with zero spreadsheet setup.`,
         ]
       : [
           `Use ${toolName} for personal, professional, or educational projects.`,
