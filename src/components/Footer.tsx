@@ -120,11 +120,6 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="https://zanexatech.com/" target="_blank" rel="dofollow" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center gap-1">
-                  🚀 ZanexaTech — Tech Solutions & Services
-                </a>
-              </li>
-              <li>
                 <a href="https://phoneprice360.com/" target="_blank" rel="dofollow" className="text-xs text-muted-foreground hover:text-foreground py-1.5 inline-block min-h-[44px] flex items-center gap-1" title="Compare smartphone prices & specifications">
                   📱 PhonePrice360 — Mobile Prices & Specs
                 </a>
