@@ -347,6 +347,18 @@ const Index = memo(() => {
                 </div>
                 <p className="text-xs text-muted-foreground">Leading tech solutions & services platform. Expert web development, digital marketing & innovative technology services.</p>
               </a>
+              <a
+                href="https://phoneprice360.com/"
+                target="_blank"
+                rel="dofollow"
+                className="bg-card border border-border rounded-xl p-5 hover:shadow-lg hover:border-primary/50 transition-all group"
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <span className="text-2xl">📱</span>
+                  <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">PhonePrice360</h3>
+                </div>
+                <p className="text-xs text-muted-foreground">Compare latest smartphone prices, full specifications & detailed reviews. Find the best mobile phone deals from top brands updated daily.</p>
+              </a>
             </div>
           </section>
           
