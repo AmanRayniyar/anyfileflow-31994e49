@@ -17,7 +17,7 @@ const BannerAd = memo(() => {
     const script = document.createElement("script");
     script.async = true;
     script.setAttribute("data-cfasync", "false");
-    script.src = "//pl28208125.effectivegatecpm.com/c716bd39c57b2028b56b7a3d6f29c01c/invoke.js";
+    script.src = "//pl28208125.effectivecpmnetwork.com/c716bd39c57b2028b56b7a3d6f29c01c/invoke.js";
     
     document.body.appendChild(script);
 
