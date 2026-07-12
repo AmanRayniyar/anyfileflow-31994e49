@@ -151,6 +151,14 @@ const Footer = () => {
           </p>
           <p className="text-center text-xs text-muted-foreground">
             © {currentYear} <Link to="/brand" className="hover:text-primary">AnyFile Flow</Link>. All rights reserved.
+            <span className="mx-2 text-muted-foreground">·</span>
+            <button
+              type="button"
+              onClick={openConsentPrompt}
+              className="hover:text-primary underline-offset-2 hover:underline"
+            >
+              Cookie preferences
+            </button>
           </p>
         </div>
       </div>
