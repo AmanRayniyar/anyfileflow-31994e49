@@ -53,6 +53,7 @@ const FaviconGeneratorTool = lazy(() => import("@/components/tools/FaviconGenera
 const PDFSplitterTool = lazy(() => import("@/components/tools/PDFSplitterTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const StickyToolAd = lazy(() => import("@/components/StickyToolAd"));
+const InlineAd = lazy(() => import("@/components/InlineAd"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
@@ -684,6 +685,11 @@ const ToolPage = () => {
                   <StickyToolAd />
                 </Suspense>
 
+                {/* Extra sidebar ad slot */}
+                <Suspense fallback={null}>
+                  <StickyToolAd />
+                </Suspense>
+
                 {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
                   <h3 id="related-tools" className="font-bold text-foreground mb-4">Related Tools</h3>
@@ -696,6 +702,11 @@ const ToolPage = () => {
               </div>
             </aside>
           </div>
+
+          {/* Inline ad before footer */}
+          <Suspense fallback={null}>
+            <InlineAd />
+          </Suspense>
         </main>
         <Footer />
       </div>

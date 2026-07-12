@@ -238,11 +238,17 @@ const Index = memo(() => {
           <Suspense fallback={<SectionSkeleton height="h-48" />}>
             <TrendingTools />
           </Suspense>
-          
+
+          {/* Inline Ad (after trending) */}
+          <Suspense fallback={null}>
+            <InlineAd />
+          </Suspense>
+
           {/* Most Popular Today */}
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
             <MostPopularToday />
           </Suspense>
+
 
           {/* Category Filter Buttons */}
           <section className="container mx-auto px-4 py-4" aria-label="Category filter">
@@ -353,11 +359,17 @@ const Index = memo(() => {
           <Suspense fallback={<BlogPreviewSkeleton />}>
             <BlogPreview />
           </Suspense>
-          
+
+          {/* Inline Ad (before FAQ) */}
+          <Suspense fallback={null}>
+            <InlineAd />
+          </Suspense>
+
           {/* FAQ Section */}
           <Suspense fallback={<SectionSkeleton height="h-96" />}>
             <HomeFAQ />
           </Suspense>
+
           
           {/* Newsletter Signup */}
           <Suspense fallback={<SectionSkeleton height="h-32" />}>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
+import { useAdConsent } from "@/hooks/useAdConsent";
 
 interface InterstitialAdProps {
   onComplete: () => void;
@@ -10,9 +11,10 @@ const InterstitialAd = ({ onComplete, onCancel }: InterstitialAdProps) => {
   const [countdown, setCountdown] = useState(5);
   const adRef = useRef<HTMLDivElement>(null);
   const loadedRef = useRef(false);
+  const { canShowAds, adSafeMode } = useAdConsent();
 
   useEffect(() => {
-    if (loadedRef.current || !adRef.current) return;
+    if (loadedRef.current || !adRef.current || !canShowAds) return;
     loadedRef.current = true;
 
     (window as any).atOptions = {
@@ -34,10 +36,17 @@ const InterstitialAd = ({ onComplete, onCancel }: InterstitialAdProps) => {
   }, []);
 
   useEffect(() => {
+    if (adSafeMode) {
+      // Skip the ad entirely in ad-safe mode
+      onComplete();
+      return;
+    }
     if (countdown <= 0) return;
     const timer = setTimeout(() => setCountdown(c => c - 1), 1000);
     return () => clearTimeout(timer);
-  }, [countdown]);
+  }, [countdown, adSafeMode, onComplete]);
+
+  if (adSafeMode) return null;
 
   return createPortal(
     <div

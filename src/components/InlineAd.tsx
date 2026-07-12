@@ -1,13 +1,25 @@
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import { useAdConsent } from "@/hooks/useAdConsent";
 
 const InlineAd = memo(() => {
   const containerRef = useRef<HTMLDivElement>(null);
   const loadedRef = useRef(false);
+  const [visible, setVisible] = useState(false);
+  const { canShowAds, adSafeMode } = useAdConsent();
 
   useEffect(() => {
-    if (loadedRef.current || !containerRef.current) return;
-    loadedRef.current = true;
+    if (!containerRef.current) return;
+    const io = new IntersectionObserver(
+      ([e]) => e.isIntersecting && setVisible(true),
+      { rootMargin: "200px" }
+    );
+    io.observe(containerRef.current);
+    return () => io.disconnect();
+  }, []);
 
+  useEffect(() => {
+    if (!visible || !canShowAds || loadedRef.current || !containerRef.current) return;
+    loadedRef.current = true;
     (window as any).atOptions = {
       key: "1c8743d7290c444a41fbe0a881b3fbc5",
       format: "iframe",
@@ -15,16 +27,18 @@ const InlineAd = memo(() => {
       width: 728,
       params: {},
     };
-
     const script = document.createElement("script");
-    script.src = "https://www.highperformanceformat.com/1c8743d7290c444a41fbe0a881b3fbc5/invoke.js";
+    script.src =
+      "https://www.highperformanceformat.com/1c8743d7290c444a41fbe0a881b3fbc5/invoke.js";
     script.async = true;
     containerRef.current.appendChild(script);
-
     return () => {
       try { script.parentNode?.removeChild(script); } catch {}
     };
-  }, []);
+  }, [visible, canShowAds]);
+
+  // Ad-safe mode: render nothing so layout stays clean
+  if (adSafeMode) return null;
 
   return (
     <div className="py-4 bg-secondary/10" aria-label="Advertisement">
