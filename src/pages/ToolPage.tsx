@@ -53,6 +53,7 @@ const FaviconGeneratorTool = lazy(() => import("@/components/tools/FaviconGenera
 const PDFSplitterTool = lazy(() => import("@/components/tools/PDFSplitterTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
 const StickyToolAd = lazy(() => import("@/components/StickyToolAd"));
+const InlineAd = lazy(() => import("@/components/InlineAd"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
@@ -681,6 +682,11 @@ const ToolPage = () => {
 
                 {/* Sticky Ad */}
                 <Suspense fallback={<div className="h-20 bg-muted rounded-xl animate-pulse" />}>
+                  <StickyToolAd />
+                </Suspense>
+
+                {/* Extra sidebar ad slot */}
+                <Suspense fallback={null}>
                   <StickyToolAd />
                 </Suspense>
 
