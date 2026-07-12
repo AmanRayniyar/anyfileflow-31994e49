@@ -97,47 +97,76 @@
           "@type": "Organization",
           "@id": "https://anyfileflow.com/#organization",
           "name": "AnyFile Flow",
+          "legalName": "AnyFile Flow",
           "alternateName": ["AnyFileFlow", "Any File Flow", "anyfileflow", "anyfile", "any file flow"],
           "url": "https://anyfileflow.com",
           "logo": {
             "@type": "ImageObject",
+            "@id": "https://anyfileflow.com/#logo",
             "url": "https://anyfileflow.com/favicon.ico",
+            "contentUrl": "https://anyfileflow.com/favicon.ico",
             "width": 512,
-            "height": 512
+            "height": 512,
+            "caption": "AnyFile Flow Logo"
           },
+          "image": {"@id": "https://anyfileflow.com/#logo"},
+          "email": "anyfileflow@gmail.com",
+          "foundingDate": "2024-01-01",
+          "slogan": "1000+ Free Online Tools — Fast, Secure, Private",
+          "knowsAbout": [
+            "File Conversion", "Image Conversion", "PDF Tools", "Audio Conversion",
+            "Video Conversion", "Document Processing", "Finance Calculators",
+            "SEO Tools", "Web Utilities", "Data Conversion"
+          ],
+          "areaServed": {"@type": "Place", "name": "Worldwide"},
           "sameAs": [
             "https://www.facebook.com/aman.rauniyar.980",
             "https://github.com/AmanRayniyar",
             "https://www.instagram.com/amanrauniyar2064/"
           ],
-          "contactPoint": {
+          "contactPoint": [{
             "@type": "ContactPoint",
             "email": "anyfileflow@gmail.com",
-            "contactType": "customer service"
-          },
-          "founder": {
-            "@type": "Person",
-            "name": "Aman Rauniyar"
-          },
-          "description": "AnyFile Flow (also known as AnyFileFlow, Any File Flow) is a free online file conversion platform with 1000+ tools."
+            "contactType": "customer support",
+            "availableLanguage": ["English", "Hindi", "Spanish", "Portuguese", "Arabic"],
+            "areaServed": "Worldwide"
+          }],
+          "founder": {"@id": "https://anyfileflow.com/#founder"},
+          "employee": {"@id": "https://anyfileflow.com/#founder"},
+          "publishingPrinciples": "https://anyfileflow.com/editorial-policy",
+          "actionableFeedbackPolicy": "https://anyfileflow.com/contact",
+          "diversityPolicy": "https://anyfileflow.com/about",
+          "ethicsPolicy": "https://anyfileflow.com/editorial-policy",
+          "description": "AnyFile Flow (also known as AnyFileFlow, Any File Flow) is a free, privacy-first online file conversion platform offering 1000+ browser-based tools for images, PDFs, audio, video, and finance."
         },
         {
-          "@type": "WebSite",
-          "@id": "https://anyfileflow.com/#website",
-          "url": "https://anyfileflow.com",
-          "name": "AnyFile Flow",
-          "alternateName": ["AnyFileFlow", "Any File Flow", "anyfileflow", "anyfile", "any file flow"],
-          "description": "Free online file conversion tools by AnyFile Flow (AnyFileFlow / Any File Flow)",
-          "publisher": {"@id": "https://anyfileflow.com/#organization"},
-          "inLanguage": "en-US",
-          "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-              "@type": "EntryPoint",
-              "urlTemplate": "https://anyfileflow.com/tools?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-          }
+          "@type": "Person",
+          "@id": "https://anyfileflow.com/#founder",
+          "name": "Aman Rauniyar",
+          "alternateName": "Aman",
+          "url": "https://anyfileflow.com/about",
+          "image": {
+            "@type": "ImageObject",
+            "url": "https://anyfileflow.com/founder.jpg",
+            "caption": "Aman Rauniyar - Founder of AnyFile Flow"
+          },
+          "jobTitle": "Founder & Lead Developer",
+          "description": "Aman Rauniyar is the founder and lead developer of AnyFile Flow. An educator and software developer, he builds free, privacy-first, browser-based tools for students, creators, and professionals worldwide.",
+          "gender": "Male",
+          "nationality": {"@type": "Country", "name": "India"},
+          "knowsAbout": [
+            "Web Development", "React", "TypeScript", "SEO", "File Conversion",
+            "Browser-based Tools", "WebAssembly", "Privacy Engineering",
+            "UI/UX Design", "Search Engine Optimization"
+          ],
+          "knowsLanguage": ["English", "Hindi"],
+          "worksFor": {"@id": "https://anyfileflow.com/#organization"},
+          "affiliation": {"@id": "https://anyfileflow.com/#organization"},
+          "sameAs": [
+            "https://www.facebook.com/aman.rauniyar.980",
+            "https://github.com/AmanRayniyar",
+            "https://www.instagram.com/amanrauniyar2064/"
+          ]
         },
         {
           "@type": "Brand",
