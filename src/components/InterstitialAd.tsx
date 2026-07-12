@@ -16,15 +16,15 @@ const InterstitialAd = ({ onComplete, onCancel }: InterstitialAdProps) => {
     loadedRef.current = true;
 
     (window as any).atOptions = {
-      key: "8ab75cc83387ecf03d2040c7f3e0e455",
+      key: "204ac3e1d66348d2a6d3c4f02054516d",
       format: "iframe",
-      height: 60,
-      width: 468,
+      height: 250,
+      width: 300,
       params: {},
     };
 
     const script = document.createElement("script");
-    script.src = "https://www.highperformanceformat.com/8ab75cc83387ecf03d2040c7f3e0e455/invoke.js";
+    script.src = "https://www.highperformanceformat.com/204ac3e1d66348d2a6d3c4f02054516d/invoke.js";
     script.async = true;
     adRef.current.appendChild(script);
 
@@ -63,8 +63,8 @@ const InterstitialAd = ({ onComplete, onCancel }: InterstitialAdProps) => {
           )}
         </div>
 
-        <div className="flex items-center justify-center p-6" style={{ minHeight: "120px" }}>
-          <div ref={adRef} className="w-full flex items-center justify-center" />
+        <div className="flex items-center justify-center p-6" style={{ minHeight: "270px" }}>
+          <div ref={adRef} className="w-full flex items-center justify-center" style={{ minHeight: "250px" }} />
         </div>
 
         <div className="px-5 py-3 border-t border-border flex justify-between items-center">

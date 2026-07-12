@@ -9,15 +9,15 @@ const InlineAd = memo(() => {
     loadedRef.current = true;
 
     (window as any).atOptions = {
-      key: "8ab75cc83387ecf03d2040c7f3e0e455",
+      key: "1c8743d7290c444a41fbe0a881b3fbc5",
       format: "iframe",
-      height: 60,
-      width: 468,
+      height: 90,
+      width: 728,
       params: {},
     };
 
     const script = document.createElement("script");
-    script.src = "https://www.highperformanceformat.com/8ab75cc83387ecf03d2040c7f3e0e455/invoke.js";
+    script.src = "https://www.highperformanceformat.com/1c8743d7290c444a41fbe0a881b3fbc5/invoke.js";
     script.async = true;
     containerRef.current.appendChild(script);
 
@@ -32,7 +32,7 @@ const InlineAd = memo(() => {
         <div
           ref={containerRef}
           className="overflow-hidden rounded-lg"
-          style={{ minHeight: "60px", maxWidth: "468px", width: "100%" }}
+          style={{ minHeight: "90px", maxWidth: "728px", width: "100%" }}
         />
       </div>
     </div>
