@@ -36,10 +36,17 @@ const InterstitialAd = ({ onComplete, onCancel }: InterstitialAdProps) => {
   }, []);
 
   useEffect(() => {
+    if (adSafeMode) {
+      // Skip the ad entirely in ad-safe mode
+      onComplete();
+      return;
+    }
     if (countdown <= 0) return;
     const timer = setTimeout(() => setCountdown(c => c - 1), 1000);
     return () => clearTimeout(timer);
-  }, [countdown]);
+  }, [countdown, adSafeMode, onComplete]);
+
+  if (adSafeMode) return null;
 
   return createPortal(
     <div
