@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import founderImg from "@/assets/founder.png";
+import { openConsentPrompt } from "@/hooks/useAdConsent";
 
 // Inline SVG Icons
 const MailIcon = ({ className }: { className?: string }) => (
