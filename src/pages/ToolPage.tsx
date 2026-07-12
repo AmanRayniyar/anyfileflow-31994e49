@@ -702,6 +702,11 @@ const ToolPage = () => {
               </div>
             </aside>
           </div>
+
+          {/* Inline ad before footer */}
+          <Suspense fallback={null}>
+            <InlineAd />
+          </Suspense>
         </main>
         <Footer />
       </div>
