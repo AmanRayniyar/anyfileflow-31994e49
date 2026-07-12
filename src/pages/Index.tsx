@@ -359,11 +359,17 @@ const Index = memo(() => {
           <Suspense fallback={<BlogPreviewSkeleton />}>
             <BlogPreview />
           </Suspense>
-          
+
+          {/* Inline Ad (before FAQ) */}
+          <Suspense fallback={null}>
+            <InlineAd />
+          </Suspense>
+
           {/* FAQ Section */}
           <Suspense fallback={<SectionSkeleton height="h-96" />}>
             <HomeFAQ />
           </Suspense>
+
           
           {/* Newsletter Signup */}
           <Suspense fallback={<SectionSkeleton height="h-32" />}>
