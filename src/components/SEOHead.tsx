@@ -58,14 +58,22 @@ const SEOHead = ({
   const defaultOgImage = `${baseUrl}/og-default.png`;
   const finalOgImage = ogImage || defaultOgImage;
 
-  // Supported languages for hreflang
+  // Supported languages for hreflang + og:locale:alternate
   const languages = [
-    { code: 'en', hreflang: 'en' },
-    { code: 'es', hreflang: 'es' },
-    { code: 'hi', hreflang: 'hi' },
-    { code: 'pt', hreflang: 'pt' },
-    { code: 'ar', hreflang: 'ar' },
+    { code: 'en', hreflang: 'en',    locale: 'en_US' },
+    { code: 'es', hreflang: 'es',    locale: 'es_ES' },
+    { code: 'hi', hreflang: 'hi',    locale: 'hi_IN' },
+    { code: 'pt', hreflang: 'pt',    locale: 'pt_BR' },
+    { code: 'ar', hreflang: 'ar',    locale: 'ar_AE' },
   ];
+
+  // Detect the currently-active language from the URL prefix
+  const activeLangCode =
+    (['en', 'es', 'hi', 'pt', 'ar'] as const).find(
+      (c) => location.pathname === `/${c}` || location.pathname.startsWith(`/${c}/`)
+    ) ?? 'en';
+  const activeLocale =
+    languages.find((l) => l.code === activeLangCode)?.locale ?? 'en_US';
 
   return (
     <Helmet>
@@ -101,7 +109,12 @@ const SEOHead = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:site_name" content="AnyFile Flow" />
-      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale" content={activeLocale} />
+      {languages
+        .filter((l) => l.locale !== activeLocale)
+        .map((l) => (
+          <meta key={l.locale} property="og:locale:alternate" content={l.locale} />
+        ))}
       <meta property="og:image" content={finalOgImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
