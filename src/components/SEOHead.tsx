@@ -109,7 +109,12 @@ const SEOHead = ({
       <meta property="og:type" content={ogType} />
       <meta property="og:url" content={canonicalUrl} />
       <meta property="og:site_name" content="AnyFile Flow" />
-      <meta property="og:locale" content="en_US" />
+      <meta property="og:locale" content={activeLocale} />
+      {languages
+        .filter((l) => l.locale !== activeLocale)
+        .map((l) => (
+          <meta key={l.locale} property="og:locale:alternate" content={l.locale} />
+        ))}
       <meta property="og:image" content={finalOgImage} />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
