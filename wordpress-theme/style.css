@@ -1,0 +1,231 @@
+/*
+Theme Name: Onepage Flow
+Theme URI: https://anyfileflow.lovable.app/
+Author: Aman Rauniyar
+Author URI: https://anyfileflow.lovable.app/
+Description: A fast, lightweight, accessible one-page WordPress theme with Customizer-driven Hero, Services, About, and Contact sections. Built for speed, SEO and Core Web Vitals.
+Version: 1.0.0
+Requires at least: 6.0
+Tested up to: 6.8
+Requires PHP: 7.4
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: onepage-flow
+Tags: one-column, custom-colors, custom-logo, custom-menu, featured-images, threaded-comments, translation-ready, blog, portfolio
+*/
+
+/* ---------------------------------------------
+   1. Design tokens
+--------------------------------------------- */
+:root {
+  --of-bg: #ffffff;
+  --of-surface: #f6f8fb;
+  --of-text: #14181f;
+  --of-muted: #5b6672;
+  --of-border: #e3e8ef;
+  --of-primary: #2563eb;
+  --of-primary-contrast: #ffffff;
+  --of-radius: 14px;
+  --of-max: 1140px;
+  --of-shadow: 0 8px 30px rgba(16, 24, 40, 0.08);
+  --of-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------------------------------------------
+   2. Base / reset
+--------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--of-font);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--of-text);
+  background: var(--of-bg);
+  -webkit-font-smoothing: antialiased;
+}
+img, svg, video { max-width: 100%; height: auto; display: block; }
+a { color: var(--of-primary); text-decoration: none; }
+a:hover, a:focus { text-decoration: underline; }
+h1, h2, h3, h4 { line-height: 1.2; margin: 0 0 .5em; font-weight: 700; letter-spacing: -0.02em; }
+h1 { font-size: clamp(2rem, 5vw, 3.25rem); }
+h2 { font-size: clamp(1.6rem, 3.5vw, 2.25rem); }
+h3 { font-size: 1.2rem; }
+p { margin: 0 0 1rem; }
+ul, ol { padding-left: 1.25rem; }
+
+:focus-visible { outline: 3px solid var(--of-primary); outline-offset: 2px; }
+
+.screen-reader-text {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%); white-space: nowrap;
+}
+.skip-link:focus {
+  position: fixed; top: 12px; left: 12px; z-index: 999;
+  width: auto; height: auto; clip: auto; clip-path: none;
+  background: var(--of-primary); color: #fff; padding: 10px 16px; border-radius: 8px;
+}
+
+/* ---------------------------------------------
+   3. Layout helpers
+--------------------------------------------- */
+.of-container { width: 100%; max-width: var(--of-max); margin: 0 auto; padding: 0 20px; }
+.of-section { padding: 84px 0; }
+.of-section--alt { background: var(--of-surface); }
+.of-section__head { max-width: 680px; margin: 0 auto 48px; text-align: center; }
+.of-section__head p { color: var(--of-muted); margin: 0; }
+.of-grid { display: grid; gap: 24px; }
+.of-grid--3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.of-grid--2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+/* ---------------------------------------------
+   4. Buttons
+--------------------------------------------- */
+.of-btn {
+  display: inline-block;
+  padding: 13px 26px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  background: var(--of-primary);
+  color: var(--of-primary-contrast);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+.of-btn:hover { transform: translateY(-1px); box-shadow: var(--of-shadow); text-decoration: none; color: var(--of-primary-contrast); }
+.of-btn--ghost { background: transparent; border-color: var(--of-border); color: var(--of-text); }
+
+/* ---------------------------------------------
+   5. Header / navigation
+--------------------------------------------- */
+.of-header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,.9);
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--of-border);
+}
+.of-header__inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 68px; }
+.of-brand { display: flex; align-items: center; gap: 10px; }
+.of-brand__title { font-weight: 800; font-size: 1.15rem; color: var(--of-text); }
+.of-brand__title:hover { text-decoration: none; }
+.of-brand__tagline { display: block; font-size: .78rem; color: var(--of-muted); font-weight: 400; }
+.of-custom-logo-link img { max-height: 40px; width: auto; }
+
+.of-nav ul { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.of-nav a { display: block; padding: 10px 14px; border-radius: 10px; color: var(--of-text); font-weight: 500; font-size: .95rem; }
+.of-nav a:hover, .of-nav .current-menu-item > a { background: var(--of-surface); text-decoration: none; color: var(--of-primary); }
+
+.of-nav-toggle {
+  display: none; background: none; border: 1px solid var(--of-border);
+  border-radius: 10px; padding: 9px 11px; cursor: pointer;
+}
+.of-nav-toggle span { display: block; width: 20px; height: 2px; background: var(--of-text); margin: 4px 0; border-radius: 2px; }
+
+@media (max-width: 860px) {
+  .of-nav-toggle { display: block; }
+  .of-nav { position: absolute; left: 0; right: 0; top: 100%; background: #fff; border-bottom: 1px solid var(--of-border); display: none; }
+  .of-nav.is-open { display: block; }
+  .of-nav ul { flex-direction: column; padding: 12px 20px 20px; }
+}
+
+/* ---------------------------------------------
+   6. Hero
+--------------------------------------------- */
+.of-hero {
+  padding: 110px 0 96px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--of-surface) 0%, var(--of-bg) 100%);
+  background-size: cover; background-position: center;
+}
+.of-hero--image { color: #fff; position: relative; }
+.of-hero--image::before { content: ""; position: absolute; inset: 0; background: rgba(10, 14, 22, .58); }
+.of-hero--image .of-container { position: relative; }
+.of-hero--image h1, .of-hero--image p { color: #fff; }
+.of-hero__text { max-width: 720px; margin: 0 auto 28px; font-size: 1.15rem; color: var(--of-muted); }
+.of-hero--image .of-hero__text { color: rgba(255,255,255,.9); }
+.of-hero__actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+/* ---------------------------------------------
+   7. Cards / services
+--------------------------------------------- */
+.of-card {
+  background: #fff; border: 1px solid var(--of-border);
+  border-radius: var(--of-radius); padding: 28px;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.of-card:hover { transform: translateY(-3px); box-shadow: var(--of-shadow); }
+.of-card__icon {
+  width: 46px; height: 46px; border-radius: 12px; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--of-primary) 12%, transparent);
+  color: var(--of-primary); font-weight: 800;
+}
+.of-card p { color: var(--of-muted); margin: 0; }
+
+/* ---------------------------------------------
+   8. About
+--------------------------------------------- */
+.of-about { align-items: center; }
+.of-about__media img { border-radius: var(--of-radius); box-shadow: var(--of-shadow); }
+.of-stats { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 24px; }
+.of-stat__value { font-size: 1.9rem; font-weight: 800; color: var(--of-primary); line-height: 1; }
+.of-stat__label { font-size: .85rem; color: var(--of-muted); }
+
+/* ---------------------------------------------
+   9. Contact
+--------------------------------------------- */
+.of-contact { max-width: 720px; margin: 0 auto; text-align: center; }
+.of-contact__links { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
+
+/* ---------------------------------------------
+   10. Blog / posts fallback
+--------------------------------------------- */
+.of-post { border-bottom: 1px solid var(--of-border); padding-bottom: 32px; margin-bottom: 32px; }
+.of-post:last-child { border-bottom: 0; }
+.of-post__meta { color: var(--of-muted); font-size: .88rem; margin-bottom: 10px; }
+.of-post__thumb img { border-radius: var(--of-radius); margin-bottom: 18px; }
+.of-pagination { display: flex; gap: 8px; flex-wrap: wrap; }
+.of-pagination .page-numbers { padding: 8px 14px; border: 1px solid var(--of-border); border-radius: 10px; }
+.of-pagination .current { background: var(--of-primary); color: #fff; border-color: var(--of-primary); }
+
+/* WordPress core alignment classes */
+.alignleft { float: left; margin: 0 1.5em 1em 0; }
+.alignright { float: right; margin: 0 0 1em 1.5em; }
+.aligncenter { display: block; margin-left: auto; margin-right: auto; }
+.wp-caption-text, .sticky, .gallery-caption, .bypostauthor { font-size: .9em; color: var(--of-muted); }
+
+/* ---------------------------------------------
+   11. Footer
+--------------------------------------------- */
+.of-footer { background: var(--of-surface); border-top: 1px solid var(--of-border); padding: 48px 0 28px; }
+.of-footer__widgets { display: grid; gap: 28px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin-bottom: 32px; }
+.of-footer__widgets ul { list-style: none; padding: 0; margin: 0; }
+.of-footer__widgets li { margin-bottom: 8px; }
+.of-footer__bottom {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  border-top: 1px solid var(--of-border); padding-top: 20px;
+  color: var(--of-muted); font-size: .9rem;
+}
+
+/* ---------------------------------------------
+   12. Back to top
+--------------------------------------------- */
+.of-top {
+  position: fixed; right: 20px; bottom: 20px; z-index: 90;
+  width: 44px; height: 44px; border-radius: 50%;
+  border: 1px solid var(--of-border); background: #fff; color: var(--of-text);
+  cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .2s ease;
+  box-shadow: var(--of-shadow);
+}
+.of-top.is-visible { opacity: 1; pointer-events: auto; }
+
+/* ---------------------------------------------
+   13. Motion preferences
+--------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation-duration: .001ms !important; transition-duration: .001ms !important; }
+}
