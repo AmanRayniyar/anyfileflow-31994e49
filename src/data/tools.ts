@@ -284,7 +284,7 @@ export const tools: Tool[] = [
   { id: "bmi-calculator", name: "BMI Calculator", description: "Calculate Body Mass Index", category: "health", icon: Scale, from: "Height/Weight", to: "BMI", popular: true, toolType: 'health' },
   { id: "body-fat", name: "Body Fat Calculator", description: "Estimate body fat percentage", category: "health", icon: Activity, from: "Measurements", to: "Body Fat %", toolType: 'health' },
   { id: "calorie-calculator", name: "Calorie Calculator", description: "Calculate daily calorie needs", category: "health", icon: Cookie, from: "Activity", to: "Calories", popular: true, toolType: 'health' },
-  { id: "bmr-calculator", name: "BMR Calculator", description: "Calculate Basal Metabolic Rate", category: "health", icon: Activity, from: "Stats", to: "BMR", toolType: 'health' },
+  { id: "bmr-calculator", name: "BMR Calculator", description: "Free BMR calculator — find your basal metabolic rate, resting calories and TDEE with the Mifflin-St Jeor formula", category: "health", icon: Activity, from: "Stats", to: "BMR", toolType: 'health' },
   { id: "water-intake", name: "Water Intake Calculator", description: "Calculate daily water intake", category: "health", icon: Droplets, from: "Weight", to: "Liters", toolType: 'health' },
   { id: "ideal-weight", name: "Ideal Weight Calculator", description: "Calculate ideal body weight", category: "health", icon: Scale, from: "Height", to: "Weight", toolType: 'health' },
   { id: "pregnancy-due", name: "Pregnancy Due Date Calculator", description: "Calculate expected due date", category: "health", icon: Baby, from: "LMP", to: "Due Date", toolType: 'health' },

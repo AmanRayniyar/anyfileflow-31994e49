@@ -59,6 +59,7 @@ const TypingTestSeoContent = lazy(() => import("@/components/tools/TypingTestSeo
 const QRCodeGeneratorSeoContent = lazy(() => import("@/components/tools/QRCodeGeneratorSeoContent"));
 const ImageCropperSeoContent = lazy(() => import("@/components/tools/ImageCropperSeoContent"));
 const BmiCalculatorSeoContent = lazy(() => import("@/components/tools/BmiCalculatorSeoContent"));
+const BmrCalculatorSeoContent = lazy(() => import("@/components/tools/BmrCalculatorSeoContent"));
 const WatermarkImageSeoContent = lazy(() => import("@/components/tools/WatermarkImageSeoContent"));
 const FrequencyDetectorSeoContent = lazy(() => import("@/components/tools/FrequencyDetectorSeoContent"));
 const AudioCutterSeoContent = lazy(() => import("@/components/tools/AudioCutterSeoContent"));
@@ -516,6 +517,13 @@ const ToolPage = () => {
               {tool.id === 'bmi-calculator' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
                   <BmiCalculatorSeoContent />
+                </Suspense>
+              )}
+
+              {/* SEO Content for BMR Calculator Tool */}
+              {tool.id === 'bmr-calculator' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <BmrCalculatorSeoContent />
                 </Suspense>
               )}
 
