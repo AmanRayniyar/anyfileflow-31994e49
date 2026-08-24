@@ -9,7 +9,6 @@ import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateToolBreadcrumbs } from "@/components/SEOBreadcrumb";
 import ToolUniqueContent from "@/components/ToolUniqueContent";
-import InterstitialAd from "@/components/InterstitialAd";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -52,8 +51,6 @@ const LoveCalculatorTool = lazy(() => import("@/components/tools/LoveCalculatorT
 const FaviconGeneratorTool = lazy(() => import("@/components/tools/FaviconGeneratorTool"));
 const PDFSplitterTool = lazy(() => import("@/components/tools/PDFSplitterTool"));
 const ToolComments = lazy(() => import("@/components/ToolComments"));
-const StickyToolAd = lazy(() => import("@/components/StickyToolAd"));
-const InlineAd = lazy(() => import("@/components/InlineAd"));
 const ToolFAQSection = lazy(() => import("@/components/ToolFAQSection"));
 
 const PngToJpgSeoContent = lazy(() => import("@/components/tools/PngToJpgSeoContent"));
@@ -62,6 +59,7 @@ const TypingTestSeoContent = lazy(() => import("@/components/tools/TypingTestSeo
 const QRCodeGeneratorSeoContent = lazy(() => import("@/components/tools/QRCodeGeneratorSeoContent"));
 const ImageCropperSeoContent = lazy(() => import("@/components/tools/ImageCropperSeoContent"));
 const BmiCalculatorSeoContent = lazy(() => import("@/components/tools/BmiCalculatorSeoContent"));
+const BmrCalculatorSeoContent = lazy(() => import("@/components/tools/BmrCalculatorSeoContent"));
 const WatermarkImageSeoContent = lazy(() => import("@/components/tools/WatermarkImageSeoContent"));
 const FrequencyDetectorSeoContent = lazy(() => import("@/components/tools/FrequencyDetectorSeoContent"));
 const AudioCutterSeoContent = lazy(() => import("@/components/tools/AudioCutterSeoContent"));
@@ -89,44 +87,12 @@ const ToolLoader = () => (
 const ToolPage = () => {
   const { toolId } = useParams<{ toolId: string }>();
   const navigate = useNavigate();
-  const [showBackAd, setShowBackAd] = useState(false);
-  const [pendingBack, setPendingBack] = useState(false);
 
   // Prefer DB tool (so newly-added tools work), but keep static fallback for existing curated tools.
   const staticTool = toolId ? getToolById(toolId) : undefined;
   const { tool: dbTool, loading: dbLoading } = useToolById(toolId);
 
   const tool = useMemo(() => staticTool ?? dbTool ?? undefined, [staticTool, dbTool]);
-
-  // Intercept browser back button
-  useEffect(() => {
-    const handlePopState = (e: PopStateEvent) => {
-      // Push state back so user stays on page
-      window.history.pushState(null, "", window.location.href);
-      setShowBackAd(true);
-      setPendingBack(true);
-    };
-
-    // Push an extra history entry so we can intercept back
-    window.history.pushState(null, "", window.location.href);
-    window.addEventListener("popstate", handlePopState);
-
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, []);
-
-  const handleBackAdComplete = useCallback(() => {
-    setShowBackAd(false);
-    setPendingBack(false);
-    // Now actually go back
-    window.history.go(-2);
-  }, []);
-
-  const handleBackAdCancel = useCallback(() => {
-    setShowBackAd(false);
-    setPendingBack(false);
-  }, []);
 
   // Scroll to top on mount and track recently used
   useEffect(() => {
@@ -554,6 +520,13 @@ const ToolPage = () => {
                 </Suspense>
               )}
 
+              {/* SEO Content for BMR Calculator Tool */}
+              {tool.id === 'bmr-calculator' && (
+                <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
+                  <BmrCalculatorSeoContent />
+                </Suspense>
+              )}
+
               {/* SEO Content for Watermark Image Tool */}
               {tool.id === 'watermark-image' && (
                 <Suspense fallback={<div className="h-64 bg-muted rounded-xl animate-pulse mt-6" />}>
@@ -680,15 +653,6 @@ const ToolPage = () => {
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
 
-                {/* Sticky Ad */}
-                <Suspense fallback={<div className="h-20 bg-muted rounded-xl animate-pulse" />}>
-                  <StickyToolAd />
-                </Suspense>
-
-                {/* Extra sidebar ad slot */}
-                <Suspense fallback={null}>
-                  <StickyToolAd />
-                </Suspense>
 
                 {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
@@ -703,16 +667,9 @@ const ToolPage = () => {
             </aside>
           </div>
 
-          {/* Inline ad before footer */}
-          <Suspense fallback={null}>
-            <InlineAd />
-          </Suspense>
         </main>
         <Footer />
       </div>
-      {showBackAd && (
-        <InterstitialAd onComplete={handleBackAdComplete} onCancel={handleBackAdCancel} />
-      )}
     </>
   );
 };

@@ -29,7 +29,6 @@ const HowItWorks = lazy(() => import("@/components/home/HowItWorks"));
 const FounderSection = lazy(() => import("@/components/home/FounderSection"));
 const NewsletterSignup = lazy(() => import("@/components/NewsletterSignup"));
 const StickyCTA = lazy(() => import("@/components/StickyCTA"));
-const InlineAd = lazy(() => import("@/components/InlineAd"));
 
 // Optimized skeleton
 const SectionSkeleton = memo(({ height = "h-48" }: { height?: string }) => (
@@ -239,10 +238,6 @@ const Index = memo(() => {
             <TrendingTools />
           </Suspense>
 
-          {/* Inline Ad (after trending) */}
-          <Suspense fallback={null}>
-            <InlineAd />
-          </Suspense>
 
           {/* Most Popular Today */}
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
@@ -295,10 +290,6 @@ const Index = memo(() => {
             <RecentlyAddedTools />
           </Suspense>
 
-          {/* Inline Ad */}
-          <Suspense fallback={null}>
-            <InlineAd />
-          </Suspense>
           
           {/* User Testimonials */}
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
@@ -360,10 +351,6 @@ const Index = memo(() => {
             <BlogPreview />
           </Suspense>
 
-          {/* Inline Ad (before FAQ) */}
-          <Suspense fallback={null}>
-            <InlineAd />
-          </Suspense>
 
           {/* FAQ Section */}
           <Suspense fallback={<SectionSkeleton height="h-96" />}>

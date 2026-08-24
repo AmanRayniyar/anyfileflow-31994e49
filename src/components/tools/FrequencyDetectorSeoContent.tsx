@@ -281,6 +281,21 @@ const FrequencyDetectorSeoContent: React.FC = () => {
 
   return (
     <div className="mt-8 space-y-8">
+      {/* Direct-answer block for featured snippets & AI search */}
+      <section className="bg-card border border-border rounded-2xl p-6" aria-labelledby="freq-answer">
+        <h2 id="freq-answer" className="text-2xl font-bold text-foreground mb-3">
+          Free Sound Frequency Detector — Measure Hz &amp; Detect Musical Notes Online
+        </h2>
+        <p className="text-muted-foreground leading-relaxed">
+          This <strong>sound frequency detector</strong> turns your microphone into a precision <strong>Hz meter</strong>,
+          <strong> online pitch detector</strong> and <strong>real-time spectrum analyzer</strong>. It measures the dominant
+          frequency of any sound from roughly <strong>20 Hz to 20,000 Hz</strong>, names the closest musical note
+          (A4 = 440 Hz standard tuning) and shows cents deviation, so you can use it as a
+          <strong> note detector, frequency meter, chromatic tuner or pitch checker</strong>. Analysis uses the Web Audio
+          API FFT directly in your browser — nothing is uploaded, it is completely free and there are no ads.
+        </p>
+      </section>
+
       {/* Schema.org Structured Data */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{
         __html: JSON.stringify({
