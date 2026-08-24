@@ -4,7 +4,6 @@ import { Upload, Download, X, Image as ImageIcon, RefreshCw, Check } from "lucid
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { useInterstitialAd } from "@/components/InterstitialAd";
 
 interface ImageConverterProps {
   fromFormat: string;
@@ -23,7 +22,6 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
   const [files, setFiles] = useState<File[]>([]);
   const [converting, setConverting] = useState(false);
   const [convertedFiles, setConvertedFiles] = useState<ConvertedFile[]>([]);
-  const { triggerWithAd, adElement } = useInterstitialAd();
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles((prev) => [...prev, ...acceptedFiles]);
@@ -119,11 +117,11 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
   };
 
   const downloadFile = (file: ConvertedFile) => {
-    triggerWithAd(() => doDownload(file));
+    doDownload(file);
   };
 
   const downloadAll = () => {
-    triggerWithAd(() => convertedFiles.forEach((file) => doDownload(file)));
+    convertedFiles.forEach((file) => doDownload(file));
   };
 
   const formatFileSize = (bytes: number) => {
@@ -275,7 +273,6 @@ const ImageConverter = ({ fromFormat, toFormat, toolName }: ImageConverterProps)
         </div>
       )}
     </div>
-    {adElement}
     </>
   );
 };
