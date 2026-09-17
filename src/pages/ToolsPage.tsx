@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useAllEnabledTools } from "@/hooks/useAllEnabledTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateSimpleBreadcrumbs, BreadcrumbItem } from "@/components/SEOBreadcrumb";
+import AdUnit from "@/components/AdUnit";
 
 const ToolsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -86,6 +87,8 @@ const ToolsPage = () => {
               </p>
             )}
           </div>
+
+          <AdUnit size="banner" />
 
           {/* Search */}
           <div className="max-w-2xl mb-8">

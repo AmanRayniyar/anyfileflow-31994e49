@@ -201,10 +201,12 @@ const BlogPostPage = () => {
                   ))}
                 </div>
               </footer>
+              <AdUnit size="banner" />
             </article>
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
+              <AdUnit size="rectangle" />
               <BlogSidebar />
             </div>
           </div>
