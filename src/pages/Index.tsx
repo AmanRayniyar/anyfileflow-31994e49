@@ -8,6 +8,7 @@ import { categories, ToolCategory, tools } from "@/data/tools";
 import { cn } from "@/lib/utils";
 import SEOHead from "@/components/SEOHead";
 import { Helmet } from "react-helmet-async";
+import AdUnit from "@/components/AdUnit";
 
 // Eager-load above-the-fold sections to prevent CLS
 import TrustBadges from "@/components/home/TrustBadges";
