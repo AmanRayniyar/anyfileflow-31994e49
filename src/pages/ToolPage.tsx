@@ -660,7 +660,7 @@ const ToolPage = () => {
             {/* Sidebar */}
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
-
+                <AdUnit size="rectangle" className="my-0" />
 
                 {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
@@ -671,6 +671,8 @@ const ToolPage = () => {
                     ))}
                   </div>
                 </section>
+
+                <AdUnit size="rectangle" className="my-0" />
               </div>
             </aside>
           </div>

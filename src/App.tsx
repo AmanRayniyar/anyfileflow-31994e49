@@ -8,6 +8,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
+import StickyBottomAd from "@/components/StickyBottomAd";
 
 // Lazy load non-critical pages for code splitting
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
@@ -100,6 +101,7 @@ const App = () => (
           <Sonner />
           <BrowserRouter>
             <AppRoutes />
+            <StickyBottomAd />
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>

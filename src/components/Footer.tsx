@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import founderImg from "@/assets/founder.png";
+import AdUnit from "@/components/AdUnit";
 
 // Inline SVG Icons
 const MailIcon = ({ className }: { className?: string }) => (
@@ -37,6 +38,9 @@ const Footer = () => {
   
   return (
     <footer className="bg-card border-t border-border" role="contentinfo">
+      <div className="container mx-auto px-4">
+        <AdUnit size="banner" />
+      </div>
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Brand */}
