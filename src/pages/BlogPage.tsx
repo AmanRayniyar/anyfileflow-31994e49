@@ -56,6 +56,9 @@ const BlogPage = () => {
                 </p>
               </header>
 
+              <AdUnit size="banner" />
+
+
               {loading ? (
                 <div className="space-y-8">
                   <BlogPostSkeleton />
@@ -128,6 +131,7 @@ const BlogPage = () => {
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
+              <AdUnit size="rectangle" className="my-0 mb-6" />
               <BlogSidebar />
             </div>
           </div>
