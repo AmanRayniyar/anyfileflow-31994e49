@@ -190,6 +190,8 @@ const ToolsPage = () => {
             </div>
           )}
 
+          <AdUnit size="rectangle" />
+
           {/* Recommended External Tools */}
           <aside className="mt-8 p-5 bg-card border border-border rounded-xl">
             <h2 className="font-semibold text-foreground text-sm mb-3">🔗 Recommended by AnyFile Flow</h2>
