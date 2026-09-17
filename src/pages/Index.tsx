@@ -8,6 +8,7 @@ import { categories, ToolCategory, tools } from "@/data/tools";
 import { cn } from "@/lib/utils";
 import SEOHead from "@/components/SEOHead";
 import { Helmet } from "react-helmet-async";
+import AdUnit from "@/components/AdUnit";
 
 // Eager-load above-the-fold sections to prevent CLS
 import TrustBadges from "@/components/home/TrustBadges";
@@ -223,6 +224,8 @@ const Index = memo(() => {
             </div>
           </section>
           
+          <div className="container mx-auto px-4"><AdUnit size="banner" /></div>
+
           {/* Recently Used Tools */}
           <Suspense fallback={null}>
             <RecentlyUsedTools />
@@ -285,6 +288,8 @@ const Index = memo(() => {
             )}
           </section>
           
+          <div className="container mx-auto px-4"><AdUnit size="rectangle" /></div>
+
           {/* Recently Added Tools */}
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
             <RecentlyAddedTools />
@@ -311,6 +316,8 @@ const Index = memo(() => {
             <HowItWorks />
           </Suspense>
           
+          <div className="container mx-auto px-4"><AdUnit size="banner" /></div>
+
           {/* Founder Section */}
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
             <FounderSection />
