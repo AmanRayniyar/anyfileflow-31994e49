@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateSimpleBreadcrumbs } from "@/components/SEOBreadcrumb";
 import { BlogSidebar } from "@/components/blog/BlogSidebar";
+import AdUnit from "@/components/AdUnit";
 
 const BlogPostSkeleton = () => (
   <article className="bg-card border border-border rounded-xl overflow-hidden">
