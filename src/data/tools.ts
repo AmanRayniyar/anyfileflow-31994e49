@@ -68,6 +68,7 @@ export const tools: Tool[] = [
   // ============================================
   
   // Image Converters
+  { id: "jpg-to-png", name: "JPG to PNG Converter", description: "Convert JPG images to PNG format with transparency support", category: "image", icon: RefreshCw, from: "JPG", to: "PNG", popular: true, toolType: 'image-convert' },
   { id: "png-to-jpg", name: "PNG to JPG Converter", description: "Convert PNG images to JPG format for smaller file sizes", category: "image", icon: RefreshCw, from: "PNG", to: "JPG", popular: true, toolType: 'image-convert' },
   { id: "webp-to-jpg", name: "WebP to JPG Converter", description: "Convert WebP images to JPG format", category: "image", icon: RefreshCw, from: "WebP", to: "JPG", popular: true, toolType: 'image-convert' },
   { id: "webp-to-png", name: "WebP to PNG Converter", description: "Convert WebP images to PNG format", category: "image", icon: RefreshCw, from: "WebP", to: "PNG", toolType: 'image-convert' },
@@ -116,6 +117,7 @@ export const tools: Tool[] = [
   { id: "remove-spaces", name: "Remove Extra Spaces", description: "Remove extra spaces from text", category: "text", icon: AlignJustify, from: "Text", to: "Clean", toolType: 'text' },
   { id: "remove-duplicates", name: "Remove Duplicate Lines", description: "Remove duplicate lines from text", category: "text", icon: Copy, from: "Text", to: "Unique", toolType: 'text' },
   { id: "sort-text", name: "Sort Text Alphabetically", description: "Sort text lines alphabetically", category: "text", icon: List, from: "Text", to: "Sorted", toolType: 'text' },
+  { id: "text-reverse", name: "Text Reverser", description: "Reverse text characters instantly", category: "text", icon: RotateCcw, from: "Text", to: "Reversed", toolType: 'text' },
   { id: "password-generator", name: "Random Password Generator", description: "Generate secure passwords", category: "text", icon: Key, from: "Options", to: "Password", popular: true, toolType: 'generator' },
   { id: "username-generator", name: "Random Username Generator", description: "Generate unique usernames", category: "text", icon: User, from: "Options", to: "Username", toolType: 'generator' },
   { id: "lorem-ipsum", name: "Lorem Ipsum Generator", description: "Generate Lorem Ipsum placeholder text", category: "text", icon: PilcrowSquare, from: "Options", to: "Lorem", toolType: 'text' },
