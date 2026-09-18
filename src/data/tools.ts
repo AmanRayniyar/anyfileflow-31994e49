@@ -134,11 +134,15 @@ export const tools: Tool[] = [
   { id: "typing-test", name: "Typing Speed Test", description: "Test your typing speed", category: "text", icon: TypeIcon, from: "Test", to: "WPM", popular: true, toolType: 'text' },
   { id: "paragraph-formatter", name: "Paragraph Formatter", description: "Format and clean up paragraphs", category: "text", icon: AlignLeft, from: "Text", to: "Formatted", toolType: 'text' },
   { id: "quote-generator", name: "Random Quote Generator", description: "Generate inspirational quotes", category: "text", icon: Quote, from: "Category", to: "Quote", toolType: 'generator' },
+  { id: "lorem-generator", name: "Lorem Ipsum Generator", description: "Generate placeholder lorem ipsum text", category: "text", icon: AlignLeft, from: "Options", to: "Text", toolType: 'generator' },
+  { id: "word-generator", name: "Random Word Generator", description: "Generate random words for writing and games", category: "text", icon: Shuffle, from: "Options", to: "Words", toolType: 'generator' },
+  { id: "paragraph-generator", name: "Random Paragraph Generator", description: "Generate random paragraphs of text", category: "text", icon: Quote, from: "Options", to: "Paragraphs", toolType: 'generator' },
 
   // ============================================
   // 📊 DATA, CODE, & DEV TOOLS (156-185)
   // ============================================
   { id: "json-formatter", name: "JSON Formatter", description: "Format and beautify JSON data", category: "data", icon: Braces, from: "JSON", to: "Formatted", popular: true, toolType: 'data' },
+  { id: "uuid-generator", name: "UUID Generator", description: "Generate random UUID v4 identifiers", category: "data", icon: Hash, from: "Options", to: "UUID", toolType: 'data' },
   { id: "json-validator", name: "JSON Validator", description: "Validate JSON syntax", category: "data", icon: Check, from: "JSON", to: "Valid", toolType: 'data' },
   { id: "json-to-csv", name: "JSON to CSV Converter", description: "Convert JSON to CSV format", category: "data", icon: RefreshCw, from: "JSON", to: "CSV", popular: true, toolType: 'data' },
   { id: "csv-to-json", name: "CSV to JSON Converter", description: "Convert CSV to JSON format", category: "data", icon: RefreshCw, from: "CSV", to: "JSON", toolType: 'data' },
@@ -165,6 +169,7 @@ export const tools: Tool[] = [
   // 🫀 HEALTH & FITNESS TOOLS (186-200)
   // ============================================
   { id: "bmi-calculator", name: "BMI Calculator", description: "Calculate Body Mass Index", category: "health", icon: Scale, from: "Height/Weight", to: "BMI", popular: true, toolType: 'health' },
+  { id: "love-calculator", name: "Love Calculator", description: "Fun couple compatibility and relationship score test", category: "health", icon: Heart, from: "Names", to: "Score", popular: true, toolType: 'health' },
   { id: "body-fat", name: "Body Fat Calculator", description: "Estimate body fat percentage", category: "health", icon: Activity, from: "Measurements", to: "Body Fat %", toolType: 'health' },
   { id: "calorie-calculator", name: "Calorie Calculator", description: "Calculate daily calorie needs", category: "health", icon: Cookie, from: "Activity", to: "Calories", popular: true, toolType: 'health' },
   { id: "bmr-calculator", name: "BMR Calculator", description: "Free BMR calculator — find your basal metabolic rate, resting calories and TDEE with the Mifflin-St Jeor formula", category: "health", icon: Activity, from: "Stats", to: "BMR", toolType: 'health' },
