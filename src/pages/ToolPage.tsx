@@ -9,7 +9,6 @@ import { addRecentlyUsed } from "@/components/home/RecentlyUsedTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateToolBreadcrumbs } from "@/components/SEOBreadcrumb";
 import ToolUniqueContent from "@/components/ToolUniqueContent";
-import AdUnit from "@/components/AdUnit";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -413,9 +412,6 @@ const ToolPage = () => {
                 </Suspense>
               </div>
 
-              {/* Ad below tool */}
-              <AdUnit size="rectangle" />
-
               {/* Rating & Views Section */}
               <div className="mt-6">
                 <ToolRating toolId={tool.id} toolName={tool.name} />
@@ -462,8 +458,6 @@ const ToolPage = () => {
                 toolCategory={tool.category}
               />
 
-              <AdUnit size="banner" />
-
               {/* AI Help Section - Available on ALL tools */}
               <div className="mt-6">
                 <ToolAIHelp toolName={tool.name} toolDescription={tool.description} />
@@ -478,8 +472,6 @@ const ToolPage = () => {
                   toolDescription={tool.description}
                 />
               </Suspense>
-
-              <AdUnit size="rectangle" />
 
               {/* Comments Section */}
               <Suspense fallback={<div className="h-32 bg-muted rounded-xl animate-pulse mt-6" />}>
@@ -660,7 +652,7 @@ const ToolPage = () => {
             {/* Sidebar */}
             <aside className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
-                <AdUnit size="rectangle" className="my-0" />
+
 
                 {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
@@ -671,8 +663,6 @@ const ToolPage = () => {
                     ))}
                   </div>
                 </section>
-
-                <AdUnit size="rectangle" className="my-0" />
               </div>
             </aside>
           </div>

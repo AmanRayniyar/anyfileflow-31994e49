@@ -11,7 +11,6 @@ import { cn } from "@/lib/utils";
 import { useAllEnabledTools } from "@/hooks/useAllEnabledTools";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateSimpleBreadcrumbs, BreadcrumbItem } from "@/components/SEOBreadcrumb";
-import AdUnit from "@/components/AdUnit";
 
 const ToolsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -87,8 +86,6 @@ const ToolsPage = () => {
               </p>
             )}
           </div>
-
-          <AdUnit size="banner" />
 
           {/* Search */}
           <div className="max-w-2xl mb-8">
@@ -189,8 +186,6 @@ const ToolsPage = () => {
               <p className="text-muted-foreground">No tools found in this category.</p>
             </div>
           )}
-
-          <AdUnit size="rectangle" />
 
           {/* Recommended External Tools */}
           <aside className="mt-8 p-5 bg-card border border-border rounded-xl">

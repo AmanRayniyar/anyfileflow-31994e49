@@ -12,7 +12,6 @@ import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateBlogBreadcrumbs } from "@/components/SEOBreadcrumb";
 import { BlogSidebar } from "@/components/blog/BlogSidebar";
 import BlogTableOfContents from "@/components/blog/BlogTableOfContents";
-import AdUnit from "@/components/AdUnit";
 
 const BlogPostSkeleton = () => {
   const [progress, setProgress] = useState(0);
@@ -201,12 +200,10 @@ const BlogPostPage = () => {
                   ))}
                 </div>
               </footer>
-              <AdUnit size="banner" />
             </article>
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <AdUnit size="rectangle" />
               <BlogSidebar />
             </div>
           </div>

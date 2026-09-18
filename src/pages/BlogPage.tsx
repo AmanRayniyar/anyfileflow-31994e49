@@ -7,7 +7,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import SEOHead from "@/components/SEOHead";
 import SEOBreadcrumb, { generateSimpleBreadcrumbs } from "@/components/SEOBreadcrumb";
 import { BlogSidebar } from "@/components/blog/BlogSidebar";
-import AdUnit from "@/components/AdUnit";
 
 const BlogPostSkeleton = () => (
   <article className="bg-card border border-border rounded-xl overflow-hidden">
@@ -55,9 +54,6 @@ const BlogPage = () => {
                   Tips, tutorials, and updates from AnyFile Flow
                 </p>
               </header>
-
-              <AdUnit size="banner" />
-
 
               {loading ? (
                 <div className="space-y-8">
@@ -131,7 +127,6 @@ const BlogPage = () => {
 
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <AdUnit size="rectangle" className="my-0 mb-6" />
               <BlogSidebar />
             </div>
           </div>

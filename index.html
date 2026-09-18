@@ -243,17 +243,7 @@
       });
     </script>
 
-    <!-- Monetization: popunder (deferred so it never blocks first paint) -->
-    <script>
-      window.addEventListener('load', function() {
-        setTimeout(function() {
-          var p = document.createElement('script');
-          p.src = 'https://furydonkeypharmacy.com/ee/c9/8d/eec98d468a3664f6488a29f27283fcd5.js';
-          p.async = true;
-          document.body.appendChild(p);
-        }, 3000);
-      });
-    </script>
+    <!-- Social bar loaded via ConsentedAdScripts after user consent -->
 
   </body>
 </html>
