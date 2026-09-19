@@ -59,7 +59,14 @@ export interface CategoryInfo {
 }
 
 export const categories: CategoryInfo[] = [
-  { id: "image", name: "File & Image Tools", description: "Convert, resize, compress images and files", icon: Image, colorClass: "text-tool-image", bgClass: "bg-tool-image/10" },
+  { id: "image", name: "Image Tools", description: "Convert, resize, crop and compress images", icon: Image, colorClass: "text-tool-image", bgClass: "bg-tool-image/10" },
+  { id: "document", name: "PDF & Documents", description: "Split, protect, unlock and edit PDF files", icon: FileText, colorClass: "text-tool-document", bgClass: "bg-tool-document/10" },
+  { id: "audio", name: "Audio Tools", description: "Cut, join, record and analyse audio", icon: Music, colorClass: "text-tool-audio", bgClass: "bg-tool-audio/10" },
+  { id: "video", name: "Video Tools", description: "Extract audio and create looping videos", icon: Video, colorClass: "text-tool-video", bgClass: "bg-tool-video/10" },
+  { id: "text", name: "Text & Productivity", description: "Writing helpers, generators and timers", icon: Type, colorClass: "text-tool-text", bgClass: "bg-tool-text/10" },
+  { id: "data", name: "Developer & Data", description: "JSON, encoding, hashing and web utilities", icon: Code, colorClass: "text-tool-code", bgClass: "bg-tool-code/10" },
+  { id: "health", name: "Health & Fitness", description: "BMI, calories, BMR and wellness calculators", icon: HeartPulse, colorClass: "text-tool-health", bgClass: "bg-tool-health/10" },
+  { id: "finance", name: "Finance Calculators", description: "Loans, investments, tax and salary maths", icon: Calculator, colorClass: "text-tool-finance", bgClass: "bg-tool-finance/10" },
 ];
 
 export const tools: Tool[] = [

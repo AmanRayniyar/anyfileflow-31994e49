@@ -49,6 +49,17 @@
     --tool-code: 199 89% 48%;
     --tool-data: 45 93% 47%;
     --tool-text: 215 16% 47%;
+    --tool-health: 340 75% 55%;
+    --tool-finance: 152 60% 36%;
+
+    /* Premium surfaces, gradients & elevation */
+    --gradient-hero: radial-gradient(120% 90% at 50% -10%, hsl(var(--flow-start) / 0.16) 0%, transparent 60%),
+                     radial-gradient(90% 70% at 85% 10%, hsl(var(--flow-end) / 0.14) 0%, transparent 65%);
+    --gradient-sheen: linear-gradient(115deg, transparent 0%, hsl(0 0% 100% / 0.55) 45%, transparent 70%);
+    --shadow-premium: 0 1px 2px hsl(222 47% 11% / 0.05), 0 12px 32px -12px hsl(222 47% 11% / 0.18);
+    --shadow-elevated: 0 2px 4px hsl(222 47% 11% / 0.06), 0 24px 50px -18px hsl(var(--flow-start) / 0.35);
+    --shadow-glow: 0 0 0 1px hsl(var(--flow-start) / 0.25), 0 18px 45px -16px hsl(var(--flow-start) / 0.45);
+    --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .dark {
@@ -79,6 +90,16 @@
     --border: 217 33% 17%;
     --input: 217 33% 17%;
     --ring: 199 89% 48%;
+
+    --tool-health: 340 75% 62%;
+    --tool-finance: 152 55% 48%;
+
+    --gradient-hero: radial-gradient(120% 90% at 50% -10%, hsl(var(--flow-start) / 0.22) 0%, transparent 62%),
+                     radial-gradient(90% 70% at 85% 10%, hsl(var(--flow-end) / 0.18) 0%, transparent 65%);
+    --gradient-sheen: linear-gradient(115deg, transparent 0%, hsl(0 0% 100% / 0.12) 45%, transparent 70%);
+    --shadow-premium: 0 1px 2px hsl(0 0% 0% / 0.4), 0 12px 32px -12px hsl(0 0% 0% / 0.55);
+    --shadow-elevated: 0 2px 4px hsl(0 0% 0% / 0.4), 0 24px 50px -18px hsl(var(--flow-start) / 0.4);
+    --shadow-glow: 0 0 0 1px hsl(var(--flow-start) / 0.4), 0 18px 45px -16px hsl(var(--flow-start) / 0.5);
   }
 }
 
