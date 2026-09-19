@@ -147,7 +147,7 @@ const QRCodeGeneratorSeoContent = () => {
         "@type": "WebPage",
         "name": "Free QR Code Generator Online - Create Custom QR Codes | AnyFile Flow",
         "description": "Best free QR code generator 2025 - Create QR codes with logo, custom colors, high-resolution downloads. No watermark, no signup. Works on all devices.",
-        "url": "https://anyfileflow.com/tool/qr-code-generator",
+        "url": "https://anyfileflow.lovable.app/tool/qr-generator",
         "inLanguage": "en",
         "isPartOf": {
           "@type": "WebSite",

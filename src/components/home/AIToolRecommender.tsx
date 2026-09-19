@@ -9,10 +9,10 @@ const suggestions = [{
   toolIds: ["image-compressor", "image-cropper", "jpg-to-png"]
 }, {
   query: "I want to edit my podcast audio",
-  toolIds: ["audio-cutter", "noise-removal", "volume-booster"]
+  toolIds: ["audio-cutter", "audio-joiner", "pitch-changer"]
 }, {
   query: "I need to work with PDF documents",
-  toolIds: ["pdf-merger", "pdf-compressor", "pdf-splitter"]
+  toolIds: ["pdf-splitter", "pdf-protect", "pdf-metadata"]
 }, {
   query: "I want to create marketing materials",
   toolIds: ["qr-generator", "meme-generator", "watermark-image"]

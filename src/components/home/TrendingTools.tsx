@@ -6,8 +6,8 @@ import { useAllToolStats } from "@/hooks/useAllToolStats";
 
 // Fallback trending tool IDs when no data
 const fallbackTrendingIds = [
-  "jpg-to-png", "image-compressor", "pdf-merger", "qr-generator", 
-  "background-remover", "video-compressor", "speech-to-text", "typing-test"
+  "jpg-to-png", "image-compressor", "pdf-splitter", "qr-generator", 
+  "watermark-image", "word-counter", "text-to-speech", "typing-test"
 ];
 
 // Pre-computed format function
