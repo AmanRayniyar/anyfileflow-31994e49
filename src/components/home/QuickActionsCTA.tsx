@@ -18,17 +18,17 @@ const quickActions = [
     color: "from-green-500 to-emerald-500"
   },
   {
-    title: "Merge PDFs",
-    description: "Combine multiple PDFs",
+    title: "Split PDF",
+    description: "Extract or split pages",
     icon: Layers,
-    href: "/tool/pdf-merger",
+    href: "/tool/pdf-splitter",
     color: "from-red-500 to-pink-500"
   },
   {
-    title: "Compress PDF",
-    description: "Reduce PDF size",
+    title: "Protect PDF",
+    description: "Add a password to PDFs",
     icon: FileText,
-    href: "/tool/pdf-compressor",
+    href: "/tool/pdf-protect",
     color: "from-orange-500 to-amber-500"
   },
   {
