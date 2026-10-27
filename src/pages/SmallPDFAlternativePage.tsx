@@ -13,7 +13,7 @@ const comparisons = [
   { feature: "Daily Conversion Limit", anyfile: "Unlimited", competitor: "2-3 free/day" },
   { feature: "File Storage", anyfile: "Never stored", competitor: "Temporary server storage" },
   { feature: "Processing Location", anyfile: "Local (in browser)", competitor: "Cloud servers" },
-  { feature: "Number of Tools", anyfile: "1000+ tools", competitor: "20-30 tools" },
+  { feature: "Number of Tools", anyfile: "190+ tools", competitor: "20-30 tools" },
   { feature: "Watermarks", anyfile: "Never", competitor: "Sometimes (free tier)" },
   { feature: "Mobile Support", anyfile: "Fully optimized", competitor: "Limited" },
   { feature: "AI Features", anyfile: "Built-in", competitor: "Premium only" }
@@ -25,7 +25,7 @@ const SmallPDFAlternativePage = memo(() => {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Best SmallPDF Alternative - AnyFile Flow",
-    "description": "Looking for a free SmallPDF alternative? AnyFile Flow offers 1000+ tools with unlimited usage, no registration, and complete privacy.",
+    "description": "Looking for a free SmallPDF alternative? AnyFile Flow offers 190+ tools with unlimited usage, no registration, and complete privacy.",
     "url": "https://anyfileflow.com/smallpdf-alternative",
     "mainEntity": {
       "@type": "SoftwareApplication",
@@ -44,7 +44,7 @@ const SmallPDFAlternativePage = memo(() => {
     <>
       <SEOHead
         title="Best SmallPDF Alternative - Free Online PDF & File Tools | AnyFile Flow"
-        description="Looking for a free SmallPDF alternative? AnyFile Flow offers 1000+ tools with unlimited usage, no registration, and complete privacy. Convert PDF, images, audio, video and more."
+        description="Looking for a free SmallPDF alternative? AnyFile Flow offers 190+ tools with unlimited usage, no registration, and complete privacy. Convert PDF, images, audio, video and more."
         keywords="SmallPDF alternative, free PDF tools, PDF converter, file converter, iLovePDF alternative, online PDF editor, free PDF compressor"
       />
       <Helmet>
@@ -72,7 +72,7 @@ const SmallPDFAlternativePage = memo(() => {
               to="/tools" 
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
             >
-              Explore 1000+ Free Tools
+              Explore 190+ Free Tools
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </section>
@@ -168,7 +168,7 @@ const SmallPDFAlternativePage = memo(() => {
                 <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
                   <Globe className="h-6 w-6 text-primary" aria-hidden="true" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">1000+ Tools</h3>
+                <h3 className="font-semibold text-foreground mb-2">190+ Tools</h3>
                 <p className="text-sm text-muted-foreground">PDF, images, audio, video, text, and more</p>
               </div>
               <div className="bg-card border border-border rounded-xl p-6 text-center">

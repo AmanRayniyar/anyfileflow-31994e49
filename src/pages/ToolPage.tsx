@@ -1,4 +1,6 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
+import AdBanner from "@/components/AdBanner";
 import { useEffect, lazy, Suspense, useMemo, useState, useCallback } from "react";
 import ShareButton from "@/components/ShareButton";
 import ToolAIHelp from "@/components/ToolAIHelp";
@@ -118,11 +120,17 @@ const ToolPage = () => {
 
     return (
       <div className="min-h-screen bg-background">
+        <Helmet>
+          <title>Page Not Found (404) - AnyFile Flow</title>
+          <meta name="robots" content="noindex, nofollow" />
+          <meta name="prerender-status-code" content="404" />
+        </Helmet>
         <Header />
         <main className="container mx-auto px-4 py-16" role="main">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Tool Not Found</h1>
-            <p className="text-muted-foreground mb-6">The tool you're looking for doesn't exist.</p>
+            <p className="text-6xl font-bold text-foreground mb-4">404</p>
+            <h1 className="text-2xl font-bold text-foreground mb-4">Page not found</h1>
+            <p className="text-muted-foreground mb-6">This tool doesn't exist or has been removed. Browse our 190+ working tools instead.</p>
             <Button variant="hero" asChild>
               <Link to="/tools">Browse All Tools</Link>
             </Button>
@@ -417,6 +425,9 @@ const ToolPage = () => {
                 <ToolRating toolId={tool.id} toolName={tool.name} />
               </div>
 
+              {/* Ad: below the tool, after the user has finished using it */}
+              <AdBanner />
+
               {/* Info Section */}
               <section className="bg-card border border-border rounded-2xl p-4 sm:p-6 md:p-8 mt-6" aria-labelledby="how-to-use">
                 <h2 id="how-to-use" className="text-lg sm:text-xl font-bold text-foreground mb-4">
@@ -472,6 +483,9 @@ const ToolPage = () => {
                   toolDescription={tool.description}
                 />
               </Suspense>
+
+              {/* Ad: end of content, before comments */}
+              <AdBanner />
 
               {/* Comments Section */}
               <Suspense fallback={<div className="h-32 bg-muted rounded-xl animate-pulse mt-6" />}>
@@ -631,7 +645,7 @@ const ToolPage = () => {
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   This tool is part of <strong>AnyFile Flow</strong> — also known as <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
-                  We offer 1000+ free online tools to help you convert, edit, and transform your files.
+                  We offer 190+ free online tools to help you convert, edit, and transform your files.
                 </p>
                 <nav className="flex flex-wrap gap-2" aria-label="Brand navigation">
                   <Link to="/brand" className="text-xs text-primary hover:underline">

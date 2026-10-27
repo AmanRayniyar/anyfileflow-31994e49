@@ -54,16 +54,16 @@ const MostPopularToday = memo(() => {
             if (!tool) return null;
             const Icon = tool.icon;
             const stats = getStats(tool.id);
-            const displayRating = stats.averageRating > 0 ? stats.averageRating : 4.5 + (index * 0.1);
-            const viewCount = stats.viewCount || 100000 + Math.floor(Math.random() * 400000);
-            const totalRatings = stats.totalRatings || 20000 + Math.floor(Math.random() * 30000);
+            const displayRating = stats.averageRating;
+            const viewCount = stats.viewCount;
+            const totalRatings = stats.totalRatings;
             
             return (
               <Link
                 key={tool.id}
                 to={`/tool/${tool.id}`}
                 className="group relative bg-card border border-border rounded-xl p-4 hover:border-primary/50 hover:shadow-lg transition-all overflow-hidden"
-                aria-label={`${tool.name} - rated ${displayRating.toFixed(1)} stars`}
+                aria-label={tool.name}
               >
                 {index < 3 && (
                   <div className="absolute top-2 right-2">
@@ -89,6 +89,7 @@ const MostPopularToday = memo(() => {
                       {tool.description}
                     </p>
                     <div className="flex items-center gap-3">
+                      {totalRatings > 0 && (
                       <div className="flex items-center gap-1">
                         <div className="flex items-center gap-0.5">
                           {[...Array(5)].map((_, i) => (
@@ -109,11 +110,13 @@ const MostPopularToday = memo(() => {
                           {displayRating.toFixed(1)} ({formatCount(totalRatings)})
                         </span>
                       </div>
-                      
+                      )}
+                      {viewCount > 0 && (
                       <span className="flex items-center gap-1 text-xs text-muted-foreground">
                         <Eye className="h-3 w-3" aria-hidden="true" />
                         {formatCount(viewCount)}
                       </span>
+                      )}
                     </div>
                   </div>
                 </div>

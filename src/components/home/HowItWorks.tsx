@@ -6,7 +6,7 @@ const steps = [
     icon: Search,
     step: 1,
     title: "Choose a Tool",
-    description: "Select from 1000+ available online tools"
+    description: "Select from 190+ available online tools"
   },
   {
     icon: Upload,

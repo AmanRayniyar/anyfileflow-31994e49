@@ -50,14 +50,14 @@ const TrendingTools = memo(() => {
             if (!tool) return null;
             const Icon = tool.icon;
             const stats = getStats(tool.id);
-            const viewCount = stats.viewCount || 100000 + Math.floor(Math.random() * 400000);
+            const viewCount = stats.viewCount;
             
             return (
               <Link
                 key={tool.id}
                 to={`/tool/${tool.id}`}
                 className="group flex items-center gap-3 p-3 bg-card border border-border rounded-xl hover:border-orange-500/50 hover:shadow-md transition-all"
-                aria-label={`${tool.name} - trending tool with ${formatCount(viewCount)} views`}
+                aria-label={`${tool.name} - trending tool`}
               >
                 <div className="relative">
                   <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center group-hover:bg-orange-500/20 transition-colors">
@@ -72,10 +72,12 @@ const TrendingTools = memo(() => {
                     {tool.name.replace(' Converter', '').replace(' Tool', '')}
                   </h3>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Eye className="h-3 w-3" aria-hidden="true" />
-                      {formatCount(viewCount)}
-                    </span>
+                    {viewCount > 0 && (
+                      <span className="flex items-center gap-1">
+                        <Eye className="h-3 w-3" aria-hidden="true" />
+                        {formatCount(viewCount)}
+                      </span>
+                    )}
                     {stats.averageRating > 0 && (
                       <span className="flex items-center gap-0.5">
                         <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" aria-hidden="true" />

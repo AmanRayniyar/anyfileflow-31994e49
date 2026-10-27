@@ -90,7 +90,7 @@ const DisclaimerPage = () => {
               If you have any questions about this Disclaimer, please contact us at:
             </p>
             <ul>
-              <li>Email: info@anyfileflow.com</li>
+              <li>Email: anyfileflow@gmail.com</li>
               <li>Founder: Aman Rauniyar</li>
             </ul>
           </article>

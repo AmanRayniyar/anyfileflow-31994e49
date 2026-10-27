@@ -13,6 +13,7 @@ import { Helmet } from "react-helmet-async";
 import TrustBadges from "@/components/home/TrustBadges";
 import WhyAnyFileFlow from "@/components/home/WhyAnyFileFlow";
 import QuickActionsCTA from "@/components/home/QuickActionsCTA";
+import AdBanner from "@/components/AdBanner";
 
 // Lazy load below-fold components
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
@@ -68,7 +69,7 @@ const Index = memo(() => {
       "name": "AnyFile Flow",
       "alternateName": ["AnyFileFlow", "Any File Flow"],
       "url": "https://anyfileflow.com/",
-      "description": "1000+ free online tools for file conversion, editing, and more",
+      "description": "190+ free online tools for file conversion, editing, and more",
       "potentialAction": {
         "@type": "SearchAction",
         "target": "https://anyfileflow.com/tools?search={search_term_string}",
@@ -82,7 +83,7 @@ const Index = memo(() => {
       "alternateName": ["AnyFileFlow", "Any File Flow"],
       "url": "https://anyfileflow.com/",
       "logo": "https://anyfileflow.com/logo.png",
-      "description": "AnyFile Flow is a free, browser-based file conversion platform offering 1000+ online tools for image, PDF, audio, video, text, data, and developer tasks. Files are processed locally with zero server storage.",
+      "description": "AnyFile Flow is a free, browser-based file conversion platform offering 190+ online tools for image, PDF, audio, video, text, data, and developer tasks. Files are processed locally with zero server storage.",
       "founder": {
         "@type": "Person",
         "name": "Aman Rauniyar",
@@ -143,7 +144,7 @@ const Index = memo(() => {
           "name": "What is AnyFile Flow?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "AnyFile Flow is a free, browser-based file conversion platform offering 1000+ online tools for image, PDF, audio, video, text, data, and developer tasks."
+            "text": "AnyFile Flow is a free, browser-based file conversion platform offering 190+ online tools for image, PDF, audio, video, text, data, and developer tasks."
           }
         },
         {
@@ -185,8 +186,8 @@ const Index = memo(() => {
   return (
     <>
       <SEOHead
-        title="AnyFile Flow | AnyFileFlow | Any File Flow - 1000+ Free Online File Conversion Tools"
-        description="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. 1000+ free online tools for image, document, audio, video conversion. Fast, secure, no registration required."
+        title="AnyFile Flow | AnyFileFlow | Any File Flow - 190+ Free Online File Conversion Tools"
+        description="Welcome to AnyFile Flow — also called AnyFileFlow or Any File Flow. 190+ free online tools for image, document, audio, video conversion. Fast, secure, no registration required."
         keywords="AnyFile Flow, AnyFileFlow, Any File Flow, anyfileflow, anyfile, any file flow, file converter, image converter, pdf tools, audio converter, video editor, online tools, free tools, jpg to png, webp converter"
       />
       <Helmet>
@@ -217,7 +218,7 @@ const Index = memo(() => {
             <div className="max-w-2xl mx-auto">
               <div className="text-center mb-4">
                 <h2 className="text-lg font-semibold text-foreground mb-1">Find Your Tool Instantly</h2>
-                <p className="text-sm text-muted-foreground">Search 1000+ free tools by name or function</p>
+                <p className="text-sm text-muted-foreground">Search 190+ free tools by name or function</p>
               </div>
               <SearchBar large />
             </div>
@@ -243,6 +244,8 @@ const Index = memo(() => {
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
             <MostPopularToday />
           </Suspense>
+
+          <AdBanner />
 
 
           {/* Category Filter Buttons */}

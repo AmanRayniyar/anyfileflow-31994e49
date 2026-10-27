@@ -21,7 +21,7 @@ const AboutAnyFileFlow = memo(() => {
           {/* AI-Readable Plain Text Content */}
           <div className="bg-card border border-border rounded-2xl p-6 md:p-8 mb-8">
             <p className="text-base md:text-lg text-foreground leading-relaxed mb-4">
-              AnyFile Flow is a free, browser-based file conversion platform offering 1000+ online tools 
+              AnyFile Flow is a free, browser-based file conversion platform offering 190+ online tools 
               for image, PDF, audio, video, text, data, and developer tasks.
             </p>
             <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-4">

@@ -148,8 +148,8 @@ const ContactPage = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground">Email</h3>
-                      <p className="text-muted-foreground">contact@anyfileflow.com</p>
-                      <p className="text-muted-foreground">support@anyfileflow.com</p>
+                      <p className="text-muted-foreground">anyfileflow@gmail.com</p>
+                      <p className="text-muted-foreground">anyfileflow@gmail.com</p>
                     </div>
                   </div>
 

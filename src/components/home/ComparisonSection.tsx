@@ -16,7 +16,7 @@ const comparisons = [{
   zamzar: "⛔ 2 files/day"
 }, {
   feature: "Number of tools",
-  anyfile: "🧰 200+ tools",
+  anyfile: "🧰 190+ tools",
   smallpdf: "🔢 20–60 tools",
   zamzar: "🔢 30+ formats"
 }, {

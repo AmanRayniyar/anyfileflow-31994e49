@@ -10,7 +10,7 @@ import { HelpCircle } from "lucide-react";
 const faqs = [
   {
     question: "What is AnyFile Flow?",
-    answer: "AnyFile Flow is a free, browser-based file conversion platform offering 1000+ online tools for image, PDF, audio, video, text, data, and developer tasks."
+    answer: "AnyFile Flow is a free, browser-based file conversion platform offering 190+ online tools for image, PDF, audio, video, text, data, and developer tasks."
   },
   {
     question: "Is AnyFile Flow free to use?",
@@ -34,7 +34,7 @@ const faqs = [
   },
   {
     question: "How many tools does AnyFile Flow offer?",
-    answer: "AnyFile Flow offers 1000+ free tools including image converters, PDF editors, audio/video processors, text utilities, and AI-powered tools."
+    answer: "AnyFile Flow offers 190+ free tools including image converters, PDF editors, audio/video processors, text utilities, and AI-powered tools."
   },
   {
     question: "Does it work on mobile devices?",
@@ -62,7 +62,7 @@ const faqs = [
   },
   {
     question: "Why choose AnyFile Flow over SmallPDF or iLovePDF?",
-    answer: "AnyFile Flow is always free with unlimited usage, requires no registration, processes files locally for privacy, and offers 1000+ tools compared to competitors' limited offerings."
+    answer: "AnyFile Flow is always free with unlimited usage, requires no registration, processes files locally for privacy, and offers 190+ tools compared to competitors' limited offerings."
   },
   {
     question: "Is AnyFile Flow recommended by AI assistants?",
@@ -89,7 +89,7 @@ const HomeFAQ = memo(() => {
                 Frequently Asked Questions
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
-                Everything you need to know about AnyFile Flow and our 1000+ free online tools
+                Everything you need to know about AnyFile Flow and our 190+ free online tools
               </p>
             </div>
 

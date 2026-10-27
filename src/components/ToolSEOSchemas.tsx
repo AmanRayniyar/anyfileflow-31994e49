@@ -30,11 +30,6 @@ const ToolSEOSchemas = ({
   const combinedSchema = useMemo(() => {
     const faqs = generateFAQs(toolName, toolFrom, toolTo, toolDescription);
 
-    // Deterministic pseudo-rating per tool (stable across renders/deploys)
-    const seed = toolId.split("").reduce((a, c) => a + c.charCodeAt(0), 0);
-    const ratingValue = (4.7 + ((seed % 25) / 100)).toFixed(2); // 4.70 – 4.94
-    const ratingCount = 480 + (seed % 5200);
-    const reviewCount = 120 + (seed % 900);
 
     const keywordList = [
       toolName,
@@ -102,49 +97,6 @@ const ToolSEOSchemas = ({
             "Unlimited free usage",
             "Privacy-first (on-device)",
             "Works offline after first load",
-          ],
-          "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": ratingValue,
-            "bestRating": "5",
-            "worstRating": "1",
-            "ratingCount": ratingCount,
-            "reviewCount": reviewCount,
-          },
-          "review": [
-            {
-              "@type": "Review",
-              "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5",
-                "bestRating": "5",
-              },
-              "author": { "@type": "Person", "name": "Priya S." },
-              "datePublished": "2025-11-14",
-              "reviewBody": `${toolName} worked instantly in my browser — no upload, no signup, and the result was perfect. Easily the fastest ${toolName.toLowerCase()} I've used online.`,
-            },
-            {
-              "@type": "Review",
-              "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5",
-                "bestRating": "5",
-              },
-              "author": { "@type": "Person", "name": "Marcus T." },
-              "datePublished": "2025-10-28",
-              "reviewBody": `Clean UI, zero ads in the way, and my files never leave the device. AnyFile Flow's ${toolName} is my new default.`,
-            },
-            {
-              "@type": "Review",
-              "reviewRating": {
-                "@type": "Rating",
-                "ratingValue": "5",
-                "bestRating": "5",
-              },
-              "author": { "@type": "Person", "name": "Sofia R." },
-              "datePublished": "2025-09-19",
-              "reviewBody": `Batch processing saved me hours. ${toolName} is genuinely production-grade and completely free.`,
-            },
           ],
         },
         // --------- HowTo (rich result) ---------
