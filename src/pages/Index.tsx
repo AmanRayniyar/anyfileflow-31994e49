@@ -13,6 +13,7 @@ import { Helmet } from "react-helmet-async";
 import TrustBadges from "@/components/home/TrustBadges";
 import WhyAnyFileFlow from "@/components/home/WhyAnyFileFlow";
 import QuickActionsCTA from "@/components/home/QuickActionsCTA";
+import AdBanner from "@/components/AdBanner";
 
 // Lazy load below-fold components
 const BlogPreview = lazy(() => import("@/components/BlogPreview"));
@@ -243,6 +244,8 @@ const Index = memo(() => {
           <Suspense fallback={<SectionSkeleton height="h-64" />}>
             <MostPopularToday />
           </Suspense>
+
+          <AdBanner />
 
 
           {/* Category Filter Buttons */}

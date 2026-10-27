@@ -484,6 +484,9 @@ const ToolPage = () => {
                 />
               </Suspense>
 
+              {/* Ad: end of content, before comments */}
+              <AdBanner />
+
               {/* Comments Section */}
               <Suspense fallback={<div className="h-32 bg-muted rounded-xl animate-pulse mt-6" />}>
                 <ToolComments toolId={tool.id} />
