@@ -72,10 +72,12 @@ const TrendingTools = memo(() => {
                     {tool.name.replace(' Converter', '').replace(' Tool', '')}
                   </h3>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Eye className="h-3 w-3" aria-hidden="true" />
-                      {formatCount(viewCount)}
-                    </span>
+                    {viewCount > 0 && (
+                      <span className="flex items-center gap-1">
+                        <Eye className="h-3 w-3" aria-hidden="true" />
+                        {formatCount(viewCount)}
+                      </span>
+                    )}
                     {stats.averageRating > 0 && (
                       <span className="flex items-center gap-0.5">
                         <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" aria-hidden="true" />
