@@ -425,6 +425,9 @@ const ToolPage = () => {
                 <ToolRating toolId={tool.id} toolName={tool.name} />
               </div>
 
+              {/* Ad: below the tool, after the user has finished using it */}
+              <AdBanner />
+
               {/* Info Section */}
               <section className="bg-card border border-border rounded-2xl p-4 sm:p-6 md:p-8 mt-6" aria-labelledby="how-to-use">
                 <h2 id="how-to-use" className="text-lg sm:text-xl font-bold text-foreground mb-4">
