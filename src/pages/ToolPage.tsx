@@ -118,11 +118,17 @@ const ToolPage = () => {
 
     return (
       <div className="min-h-screen bg-background">
+        <Helmet>
+          <title>Page Not Found (404) - AnyFile Flow</title>
+          <meta name="robots" content="noindex, nofollow" />
+          <meta name="prerender-status-code" content="404" />
+        </Helmet>
         <Header />
         <main className="container mx-auto px-4 py-16" role="main">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-foreground mb-4">Tool Not Found</h1>
-            <p className="text-muted-foreground mb-6">The tool you're looking for doesn't exist.</p>
+            <p className="text-6xl font-bold text-foreground mb-4">404</p>
+            <h1 className="text-2xl font-bold text-foreground mb-4">Page not found</h1>
+            <p className="text-muted-foreground mb-6">This tool doesn't exist or has been removed. Browse our 190+ working tools instead.</p>
             <Button variant="hero" asChild>
               <Link to="/tools">Browse All Tools</Link>
             </Button>
