@@ -15,7 +15,7 @@ const NotFound = () => {
     <>
       <SEOHead
         title="Page Not Found - AnyFile Flow"
-        description="The page you're looking for doesn't exist. Return to AnyFile Flow homepage to explore 1000+ free online tools."
+        description="The page you're looking for doesn't exist. Return to AnyFile Flow homepage to explore 190+ free online tools."
         noIndex={true}
       />
       <div className="min-h-screen bg-background">

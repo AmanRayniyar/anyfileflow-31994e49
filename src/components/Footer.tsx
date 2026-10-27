@@ -49,7 +49,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="text-xs text-muted-foreground mb-2">
-              <strong>AnyFile Flow</strong> — 1000+ free online tools for file conversion.
+              <strong>AnyFile Flow</strong> — 190+ free online tools for file conversion.
             </p>
             <div className="flex items-center gap-2 mb-1">
               <div className="relative">

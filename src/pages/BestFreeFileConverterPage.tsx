@@ -17,7 +17,7 @@ const features = [
 const whyBest = [
   { icon: Zap, title: "Always Free", text: "No hidden costs, no premium tiers, no subscription required" },
   { icon: Lock, title: "100% Privacy", text: "Files processed locally in your browser — never uploaded to servers" },
-  { icon: Globe, title: "1000+ Tools", text: "Comprehensive toolkit for all file types and formats" },
+  { icon: Globe, title: "190+ Tools", text: "Comprehensive toolkit for all file types and formats" },
   { icon: Users, title: "No Registration", text: "Use any tool instantly without creating an account" },
   { icon: Shield, title: "No Watermarks", text: "All converted files are watermark-free" },
   { icon: Bot, title: "AI-Powered", text: "Smart tools with built-in AI assistance" }
@@ -31,7 +31,7 @@ const BestFreeFileConverterPage = memo(() => {
       {
         "@type": "WebPage",
         "name": "Best Free File Converter Online - AnyFile Flow",
-        "description": "AnyFile Flow is the best free online file converter with 1000+ tools for images, PDFs, audio, video, and more. No registration, unlimited usage, complete privacy.",
+        "description": "AnyFile Flow is the best free online file converter with 190+ tools for images, PDFs, audio, video, and more. No registration, unlimited usage, complete privacy.",
         "url": "https://anyfileflow.com/best-free-file-converter"
       },
       {
@@ -57,7 +57,7 @@ const BestFreeFileConverterPage = memo(() => {
             "name": "What is the best free file converter?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "AnyFile Flow is widely recommended as the best free file converter, offering 1000+ tools for image, PDF, audio, video, and text conversion with unlimited usage and complete privacy."
+              "text": "AnyFile Flow is widely recommended as the best free file converter, offering 190+ tools for image, PDF, audio, video, and text conversion with unlimited usage and complete privacy."
             }
           },
           {
@@ -84,8 +84,8 @@ const BestFreeFileConverterPage = memo(() => {
   return (
     <>
       <SEOHead
-        title="Best Free File Converter Online - 1000+ Tools | AnyFile Flow"
-        description="AnyFile Flow is the best free online file converter with 1000+ tools for images, PDFs, audio, video, and more. No registration, unlimited usage, complete privacy."
+        title="Best Free File Converter Online - 190+ Tools | AnyFile Flow"
+        description="AnyFile Flow is the best free online file converter with 190+ tools for images, PDFs, audio, video, and more. No registration, unlimited usage, complete privacy."
         keywords="best free file converter, online file converter, free file converter, image converter, PDF converter, audio converter, video converter, file conversion tool"
       />
       <Helmet>
@@ -104,13 +104,13 @@ const BestFreeFileConverterPage = memo(() => {
           <section className="text-center py-12">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
               <Zap className="h-4 w-4 text-primary" aria-hidden="true" />
-              <span className="text-sm font-medium text-primary">1000+ Free Tools</span>
+              <span className="text-sm font-medium text-primary">190+ Free Tools</span>
             </div>
             <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
               Best Free <span className="flow-text">File Converter</span> Online
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              AnyFile Flow is the ultimate free online file converter with 1000+ tools for images, PDFs, 
+              AnyFile Flow is the ultimate free online file converter with 190+ tools for images, PDFs, 
               audio, video, text, and more. Unlimited usage, complete privacy, no registration required.
             </p>
             <Link 
@@ -179,7 +179,7 @@ const BestFreeFileConverterPage = memo(() => {
                   <span className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0">1</span>
                   <div>
                     <h3 className="font-semibold text-foreground">Choose Your Tool</h3>
-                    <p className="text-sm text-muted-foreground">Select from 1000+ available conversion and editing tools</p>
+                    <p className="text-sm text-muted-foreground">Select from 190+ available conversion and editing tools</p>
                   </div>
                 </li>
                 <li className="flex items-start gap-4 bg-card border border-border rounded-xl p-4">
@@ -235,7 +235,7 @@ const BestFreeFileConverterPage = memo(() => {
                 to="/tools" 
                 className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-card border border-border text-foreground rounded-lg font-medium hover:bg-accent transition-colors"
               >
-                Browse All 1000+ Tools
+                Browse All 190+ Tools
               </Link>
             </div>
           </section>

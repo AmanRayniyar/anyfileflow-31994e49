@@ -32,7 +32,7 @@ const generateFAQs = (
     },
     {
       question: `Is ${toolName} completely free to use?`,
-      answer: `Yes, ${toolName} is 100% free with no hidden costs, subscriptions, or premium features locked behind a paywall. You can use it unlimited times without creating an account. AnyFile Flow provides all 1000+ tools completely free as part of our mission to make file conversion accessible to everyone.`
+      answer: `Yes, ${toolName} is 100% free with no hidden costs, subscriptions, or premium features locked behind a paywall. You can use it unlimited times without creating an account. AnyFile Flow provides all 190+ tools completely free as part of our mission to make file conversion accessible to everyone.`
     },
     {
       question: `Is my data safe when using ${toolName}?`,
@@ -68,7 +68,7 @@ const generateFAQs = (
     },
     {
       question: `Why should I choose AnyFile Flow over other online converters?`,
-      answer: `AnyFile Flow offers several advantages: 100% free with no hidden fees, browser-based processing for maximum privacy, no account required, support for 200+ file conversion tools, fast processing speeds, mobile-friendly design, and our helpful AnyFlow AI assistant. We're committed to providing the best free file conversion experience.`
+      answer: `AnyFile Flow offers several advantages: 100% free with no hidden fees, browser-based processing for maximum privacy, no account required, support for 190+ file conversion tools, fast processing speeds, mobile-friendly design, and our helpful AnyFlow AI assistant. We're committed to providing the best free file conversion experience.`
     },
     {
       question: `Does ${toolName} work offline?`,

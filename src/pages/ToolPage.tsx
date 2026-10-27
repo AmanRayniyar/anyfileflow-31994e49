@@ -631,7 +631,7 @@ const ToolPage = () => {
                 </h3>
                 <p className="text-sm text-muted-foreground mb-4">
                   This tool is part of <strong>AnyFile Flow</strong> — also known as <strong>AnyFileFlow</strong> or <strong>Any File Flow</strong>. 
-                  We offer 1000+ free online tools to help you convert, edit, and transform your files.
+                  We offer 190+ free online tools to help you convert, edit, and transform your files.
                 </p>
                 <nav className="flex flex-wrap gap-2" aria-label="Brand navigation">
                   <Link to="/brand" className="text-xs text-primary hover:underline">

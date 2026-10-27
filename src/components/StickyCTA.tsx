@@ -18,7 +18,7 @@ const StickyCTA = () => {
     <div className="fixed bottom-0 left-0 right-0 z-40 bg-primary/95 backdrop-blur-sm border-t border-primary-foreground/10 py-2 px-4 animate-in slide-in-from-bottom duration-300">
       <div className="container mx-auto flex items-center justify-between gap-4">
         <p className="text-primary-foreground text-sm font-medium hidden sm:block">
-          🚀 1000+ Free Tools — No signup required
+          🚀 190+ Free Tools — No signup required
         </p>
         <div className="flex items-center gap-2 w-full sm:w-auto justify-center">
           <Link

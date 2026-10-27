@@ -13,7 +13,7 @@ const comparisons = [
   { feature: "Daily Task Limit", anyfile: "Unlimited", competitor: "Limited free tier" },
   { feature: "File Storage", anyfile: "Never stored", competitor: "Cloud storage" },
   { feature: "Processing Location", anyfile: "Browser (local)", competitor: "External servers" },
-  { feature: "Number of Tools", anyfile: "1000+ tools", competitor: "25+ PDF tools" },
+  { feature: "Number of Tools", anyfile: "190+ tools", competitor: "25+ PDF tools" },
   { feature: "Non-PDF Tools", anyfile: "Images, audio, video, text", competitor: "PDF only" },
   { feature: "Watermarks", anyfile: "Never", competitor: "Free tier may have" },
   { feature: "Mobile Friendly", anyfile: "Fully responsive", competitor: "App required" }
@@ -25,7 +25,7 @@ const ILovePDFAlternativePage = memo(() => {
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Best iLovePDF Alternative - AnyFile Flow",
-    "description": "Looking for a free iLovePDF alternative? AnyFile Flow offers 1000+ tools with unlimited usage, no registration, and complete privacy.",
+    "description": "Looking for a free iLovePDF alternative? AnyFile Flow offers 190+ tools with unlimited usage, no registration, and complete privacy.",
     "url": "https://anyfileflow.com/ilovepdf-alternative",
     "mainEntity": {
       "@type": "SoftwareApplication",
@@ -44,7 +44,7 @@ const ILovePDFAlternativePage = memo(() => {
     <>
       <SEOHead
         title="Best iLovePDF Alternative - Free Online PDF & File Tools | AnyFile Flow"
-        description="Looking for a free iLovePDF alternative? AnyFile Flow offers 1000+ tools with unlimited usage, no registration, and complete privacy. More than just PDF tools."
+        description="Looking for a free iLovePDF alternative? AnyFile Flow offers 190+ tools with unlimited usage, no registration, and complete privacy. More than just PDF tools."
         keywords="iLovePDF alternative, free PDF tools, PDF converter, file converter, SmallPDF alternative, online PDF editor, PDF compressor free"
       />
       <Helmet>
@@ -66,13 +66,13 @@ const ILovePDFAlternativePage = memo(() => {
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Looking for an iLovePDF alternative? AnyFile Flow offers all PDF tools plus 
-              1000+ additional converters — completely free with no limits.
+              190+ additional converters — completely free with no limits.
             </p>
             <Link 
               to="/tools" 
               className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
             >
-              Explore 1000+ Free Tools
+              Explore 190+ Free Tools
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </section>
@@ -154,7 +154,7 @@ const ILovePDFAlternativePage = memo(() => {
                 <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
                   <Zap className="h-6 w-6 text-primary" aria-hidden="true" />
                 </div>
-                <h3 className="font-semibold text-foreground mb-2">1000+ Tools</h3>
+                <h3 className="font-semibold text-foreground mb-2">190+ Tools</h3>
                 <p className="text-sm text-muted-foreground">Not just PDFs — images, audio, video, text & more</p>
               </div>
               <div className="bg-card border border-border rounded-xl p-6 text-center">

@@ -12,7 +12,7 @@ const AboutPage = () => {
     "@context": "https://schema.org",
     "@type": "AboutPage",
     "name": "About AnyFile Flow",
-    "description": "Learn about AnyFile Flow (also known as AnyFileFlow, Any File Flow). 200+ free online file conversion tools.",
+    "description": "Learn about AnyFile Flow (also known as AnyFileFlow, Any File Flow). 190+ free online file conversion tools.",
     "url": "https://anyfileflow.com/about",
     "mainEntity": {
       "@type": "Organization",
@@ -102,7 +102,7 @@ const AboutPage = () => {
             <div className="p-3 rounded-xl bg-tool-document/10 w-fit mb-4">
               <Users className="h-6 w-6 text-tool-document" aria-hidden="true" />
             </div>
-            <h3 className="text-xl font-bold text-foreground mb-2">200+ Tools</h3>
+            <h3 className="text-xl font-bold text-foreground mb-2">190+ Tools</h3>
             <p className="text-muted-foreground">
               From image conversions to document processing, audio editing to data transformation – AnyFileFlow has got you covered.
             </p>
@@ -135,7 +135,7 @@ const AboutPage = () => {
             Ready to get started with AnyFile Flow?
           </h2>
           <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
-            Explore AnyFileFlow's collection of 200+ free tools and start converting your files today. No registration needed.
+            Explore AnyFileFlow's collection of 190+ free tools and start converting your files today. No registration needed.
           </p>
           <Button variant="hero" size="lg" asChild>
             <Link to="/tools">Browse All Tools</Link>
