@@ -1,6 +1,7 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import AdBanner from "@/components/AdBanner";
+import ToolBannerOverlay from "@/components/ToolBannerOverlay";
 import { useEffect, lazy, Suspense, useMemo, useState, useCallback } from "react";
 import ShareButton from "@/components/ShareButton";
 import ToolAIHelp from "@/components/ToolAIHelp";
@@ -366,6 +367,7 @@ const ToolPage = () => {
       />
       
       <div className="min-h-screen bg-background">
+        <ToolBannerOverlay toolId={tool.id} />
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-primary-foreground px-4 py-2 rounded-md z-50">
           Skip to main content
         </a>
@@ -386,7 +388,7 @@ const ToolPage = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Main Content */}
-            <article className="lg:col-span-2">
+            <article className="lg:col-span-2 min-w-0">
               <div className="bg-card border border-border rounded-2xl p-4 sm:p-6 md:p-8">
                 {/* Tool Header */}
                 <header className="flex items-start gap-3 sm:gap-4 mb-6 sm:mb-8">
@@ -425,8 +427,8 @@ const ToolPage = () => {
                 <ToolRating toolId={tool.id} toolName={tool.name} />
               </div>
 
-              {/* Ad: below the tool, after the user has finished using it */}
-              <AdBanner />
+              {/* On smaller devices, the sidebar placement moves below the working tool. */}
+              <AdBanner className="lg:hidden" />
 
               {/* Info Section */}
               <section className="bg-card border border-border rounded-2xl p-4 sm:p-6 md:p-8 mt-6" aria-labelledby="how-to-use">
@@ -664,9 +666,11 @@ const ToolPage = () => {
             </article>
 
             {/* Sidebar */}
-            <aside className="lg:col-span-1">
-              <div className="lg:sticky lg:top-24 space-y-6">
-
+            <aside className="lg:col-span-1 min-w-0 space-y-6">
+              <div className="hidden lg:block lg:sticky lg:top-24">
+                <AdBanner placement="sidebar" />
+              </div>
+              <div>
 
                 {/* Related Tools */}
                 <section className="bg-card border border-border rounded-2xl p-4 sm:p-6" aria-labelledby="related-tools">
