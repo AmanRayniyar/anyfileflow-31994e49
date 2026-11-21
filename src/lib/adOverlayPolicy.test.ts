@@ -3,13 +3,11 @@ import { strict as assert } from "node:assert";
 import { canShowBannerOverlay } from "./adOverlayPolicy";
 
 describe("unobtrusive banner overlay", () => {
-  it("waits one minute and a different tool visit", () => {
-    assert.equal(canShowBannerOverlay(1000, 60999, false, "word-counter", "bmi-calculator"), false);
-    assert.equal(canShowBannerOverlay(1000, 61000, false, "word-counter", "bmi-calculator"), true);
-    assert.equal(canShowBannerOverlay(1000, 61000, false, null, "bmi-calculator"), false);
-    assert.equal(canShowBannerOverlay(1000, 61000, false, "word-counter", "word-counter"), false);
+  it("opens automatically after five seconds, never earlier", () => {
+    assert.equal(canShowBannerOverlay(4_999, false), false);
+    assert.equal(canShowBannerOverlay(5_000, false), true);
   });
-  it("never repeats within the session", () => {
-    assert.equal(canShowBannerOverlay(1000, 900000, true, "word-counter", "bmi-calculator"), false);
+  it("does not reopen after cancellation during the same tool visit", () => {
+    assert.equal(canShowBannerOverlay(900_000, true), false);
   });
 });

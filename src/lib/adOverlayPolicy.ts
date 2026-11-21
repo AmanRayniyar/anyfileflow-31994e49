@@ -1,3 +1,5 @@
-export function canShowBannerOverlay(startedAt: number, now: number, shown: boolean, previousTool: string | null, currentTool: string) {
-  return !shown && startedAt > 0 && now - startedAt >= 60_000 && previousTool !== null && previousTool !== currentTool;
+export const BANNER_OVERLAY_DELAY_MS = 5_000;
+
+export function canShowBannerOverlay(elapsedMs: number, shown: boolean) {
+  return !shown && elapsedMs >= BANNER_OVERLAY_DELAY_MS;
 }
